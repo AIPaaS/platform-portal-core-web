@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+    xmlns:dubbox="http://dubbox.aic.com/schema/rest/client"
+    xsi:schemaLocation="
+          http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://code.alibabatech.com/schema/dubbo
+          http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+          http://dubbox.aic.com/schema/rest/client http://dubbox.aic.com/schema/rest/client/dubbox-rest-client.xsd">
+	
+	
+	<bean id="DubboRestClient_SYS" class="com.binary.framework.dubbo.rest.DubboRestClient">
+		<constructor-arg value="${dubbox.rest.root.sys}" />
+	</bean>
+	<bean id="DubboRestClient_DEV" class="com.binary.framework.dubbo.rest.DubboRestClient">
+		<constructor-arg value="${dubbox.rest.root.dev}" />
+	</bean>
+	<bean id="DubboRestClient_DEP" class="com.binary.framework.dubbo.rest.DubboRestClient">
+		<constructor-arg value="${dubbox.rest.root.dep}" />
+	</bean>
+
+	
+	<dubbox:rest id="DubboxRest_SysFrameSvc" interface="com.aic.paas.frame.cross.rest.SysFrameSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_MerchentSvc" interface="com.aic.paas.frame.cross.rest.MerchentSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_SysOpOrgSvc" interface="com.aic.paas.frame.cross.rest.SysOpOrgSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_SysOpRoleSvc" interface="com.aic.paas.frame.cross.rest.SysOpRoleSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_SysOrgSvc" interface="com.aic.paas.frame.cross.rest.SysOrgSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_SysRoleSvc" interface="com.aic.paas.frame.cross.rest.SysRoleSvc" client="DubboRestClient_SYS" />
+	<dubbox:rest id="DubboxRest_SysOpSvc" interface="com.aic.paas.web.rest.SysOpSvc" client="DubboRestClient_SYS" />
+	
+	
+	<dubbox:rest id="DubboxRest_PcCompRoomSvc" interface="com.aic.paas.web.rest.PcCompRoomSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcComputerSvc" interface="com.aic.paas.web.rest.PcComputerSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcDataCenterSvc" interface="com.aic.paas.web.rest.PcDataCenterSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcImageRepositorySvc" interface="com.aic.paas.web.rest.PcImageRepositorySvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcNetZoneSvc" interface="com.aic.paas.web.rest.PcNetZoneSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcResCenterSvc" interface="com.aic.paas.web.rest.PcResCenterSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PsMntResApplySvc" interface="com.aic.paas.web.rest.PsMntResApplySvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PsMntResSvc" interface="com.aic.paas.web.rest.PsMntResSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PsResCenterResSvc" interface="com.aic.paas.web.rest.PsResCenterResSvc" client="DubboRestClient_DEP" />
+	
+	
+	<dubbox:rest id="DubboxRest_PcImageSvc" interface="com.aic.paas.web.rest.PcImageSvc" client="DubboRestClient_DEV" />
+	
+	
+	<dubbox:rest id="DubboxRest_PcAppImageSvc" interface="com.aic.paas.web.rest.PcAppImageSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcAppResApplySvc" interface="com.aic.paas.web.rest.PcAppResApplySvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcAppResSvc" interface="com.aic.paas.web.rest.PcAppResSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcAppSvc" interface="com.aic.paas.web.rest.PcAppSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcServiceSvc" interface="com.aic.paas.web.rest.PcServiceSvc" client="DubboRestClient_DEP" />
+		
+	
+	
+</beans>
+
+
+
