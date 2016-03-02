@@ -2,8 +2,8 @@ package com.aic.paas.web.res.peer;
 
 import java.util.List;
 
-import com.aic.paas.web.dep.bean.AppResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
+import com.aic.paas.web.res.bean.AppResInfo;
 import com.aic.paas.web.res.bean.CPcAppRes;
 import com.aic.paas.web.res.bean.CPcAppResApply;
 import com.aic.paas.web.res.bean.CPcAppResFlow;

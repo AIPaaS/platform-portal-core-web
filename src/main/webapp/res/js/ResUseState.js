@@ -92,7 +92,7 @@ function showAppResUseModal(appId){
 	var obj =  CurrDataMap["key_"+appId];
 	$("#div_title").html("应用[<font color='blue'>"+obj.app.appCode+"</font>]资源占用情况");
 	$("#appResUseTable").html("");
-	RS.ajax({url:"/dep/app/queryAppNetZoneResInfo",ps:{appId:appId},cb:function(rs) {
+	RS.ajax({url:"/dep/app/queryAppNetZoneResInfo",ps:{appId:appId,appVnoId:obj.appVnos[0].id},cb:function(rs) {
 		if(!CU.isEmpty(rs)){
 			var row = CurrDataMap["key_"+appId];
 			row.FLAG_SUMMARY = true;

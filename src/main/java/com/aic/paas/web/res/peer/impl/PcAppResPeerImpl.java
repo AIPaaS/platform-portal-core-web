@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aic.paas.comm.util.SystemUtil;
 import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
-import com.aic.paas.web.dep.bean.AppResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
 import com.aic.paas.web.dep.bean.PcApp;
 import com.aic.paas.web.dep.peer.PcAppPeer;
 import com.aic.paas.web.integration.UserAuthentication;
+import com.aic.paas.web.res.bean.AppResInfo;
 import com.aic.paas.web.res.bean.CPcAppRes;
 import com.aic.paas.web.res.bean.CPcAppResApply;
 import com.aic.paas.web.res.bean.CPcAppResFlow;
@@ -73,7 +73,7 @@ public class PcAppResPeerImpl implements PcAppResPeer {
 			
 			for(int i=0; i<infos.size(); i++) {
 				AppResInfo info = infos.get(i);
-//				info.setAppResList(resmap.get(info.getApp().getId()));
+				info.setAppResList(resmap.get(info.getApp().getId()));
 			}
 		}
 		return infos;

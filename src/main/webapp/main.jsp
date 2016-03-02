@@ -37,6 +37,14 @@ function forward(url) {
 		<table>
 			<tr>
 				<td>
+					<span style="padding-left:20px;">资源管理</span><br>
+					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10201')">租户资源配额</a></span><br>
+					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10202')">应用资源审批</a></span><br>
+					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10203')">资源使用情况</a></span><br>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<span style="padding-left:20px;">部署管理</span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10401')">应用定义</a></span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10402')">应用资源管理</a></span><br>
@@ -44,14 +52,6 @@ function forward(url) {
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10404')">外部服务管理</a></span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10405')">应用部署配置</a></span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10406')">应用运行管理</a></span><br>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<span style="padding-left:20px;">资源管理</span><br>
-					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10201')">租户资源配额</a></span><br>
-					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10202')">应用资源审批</a></span><br>
-					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10203')">资源使用情况</a></span><br>
 				</td>
 			</tr>
 		</table>

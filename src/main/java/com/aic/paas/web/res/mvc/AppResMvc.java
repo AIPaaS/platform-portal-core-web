@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.aic.paas.web.dep.bean.AppResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
+import com.aic.paas.web.res.bean.AppResInfo;
 import com.aic.paas.web.res.bean.CPcAppRes;
 import com.aic.paas.web.res.bean.CPcAppResApply;
 import com.aic.paas.web.res.bean.CPcAppResFlow;
