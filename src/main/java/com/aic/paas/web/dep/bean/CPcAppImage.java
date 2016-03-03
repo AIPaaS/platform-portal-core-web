@@ -60,6 +60,29 @@ public class CPcAppImage implements Condition {
 
 
 	/**
+	 * condition-field: 镜像ID[IMAGE_ID] operate-Equal[=]
+	 */
+	private Long imageId;
+
+
+	/**
+	 * condition-field: 镜像ID[IMAGE_ID] operate-In[in]
+	 */
+	private Long[] imageIds;
+
+
+	/**
+	 * condition-field: 镜像ID[IMAGE_ID] operate-GTEqual[>=]
+	 */
+	private Long startImageId;
+
+	/**
+	 * condition-field: 镜像ID[IMAGE_ID] operate-LTEqual[<=]
+	 */
+	private Long endImageId;
+
+
+	/**
 	 * condition-field: 应用ID[APP_ID] operate-Equal[=]
 	 */
 	private Long appId;
@@ -103,29 +126,6 @@ public class CPcAppImage implements Condition {
 	 * condition-field: 应用版本ID[APP_VNO_ID] operate-LTEqual[<=]
 	 */
 	private Long endAppVnoId;
-
-
-	/**
-	 * condition-field: 镜像ID[IMAGE_ID] operate-Equal[=]
-	 */
-	private Long imageId;
-
-
-	/**
-	 * condition-field: 镜像ID[IMAGE_ID] operate-In[in]
-	 */
-	private Long[] imageIds;
-
-
-	/**
-	 * condition-field: 镜像ID[IMAGE_ID] operate-GTEqual[>=]
-	 */
-	private Long startImageId;
-
-	/**
-	 * condition-field: 镜像ID[IMAGE_ID] operate-LTEqual[<=]
-	 */
-	private Long endImageId;
 
 
 	/**
@@ -516,6 +516,108 @@ public class CPcAppImage implements Condition {
 
 
 	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-Equal[=]
+	 * 定时容器字段
+	 */
+	private Long timerStartTime;
+
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-In[in]
+	 * 定时容器字段
+	 */
+	private Long[] timerStartTimes;
+
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-GTEqual[>=]
+	 * 定时容器字段
+	 */
+	private Long startTimerStartTime;
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-LTEqual[<=]
+	 * 定时容器字段
+	 */
+	private Long endTimerStartTime;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-Equal[=]
+	 * 定时容器字段
+	 */
+	private Long timerEndTime;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-In[in]
+	 * 定时容器字段
+	 */
+	private Long[] timerEndTimes;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-GTEqual[>=]
+	 * 定时容器字段
+	 */
+	private Long startTimerEndTime;
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-LTEqual[<=]
+	 * 定时容器字段
+	 */
+	private Long endTimerEndTime;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-Equal[=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer timerType;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-In[in]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer[] timerTypes;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-GTEqual[>=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer startTimerType;
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-LTEqual[<=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer endTimerType;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-Like[like]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExp;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-Equal[=]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExpEqual;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-In[in]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String[] timerExps;
+
+
+	/**
 	 * condition-field: 备用字段_1[CUSTOM_1] operate-Equal[=]
 	 */
 	private Long custom1;
@@ -753,6 +855,38 @@ public class CPcAppImage implements Condition {
 	}
 
 
+	public Long getImageId() {
+		return this.imageId;
+	}
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
+	}
+
+
+	public Long[] getImageIds() {
+		return this.imageIds;
+	}
+	public void setImageIds(Long[] imageIds) {
+		this.imageIds = imageIds;
+	}
+
+
+	public Long getStartImageId() {
+		return this.startImageId;
+	}
+	public void setStartImageId(Long startImageId) {
+		this.startImageId = startImageId;
+	}
+
+
+	public Long getEndImageId() {
+		return this.endImageId;
+	}
+	public void setEndImageId(Long endImageId) {
+		this.endImageId = endImageId;
+	}
+
+
 	public Long getAppId() {
 		return this.appId;
 	}
@@ -814,38 +948,6 @@ public class CPcAppImage implements Condition {
 	}
 	public void setEndAppVnoId(Long endAppVnoId) {
 		this.endAppVnoId = endAppVnoId;
-	}
-
-
-	public Long getImageId() {
-		return this.imageId;
-	}
-	public void setImageId(Long imageId) {
-		this.imageId = imageId;
-	}
-
-
-	public Long[] getImageIds() {
-		return this.imageIds;
-	}
-	public void setImageIds(Long[] imageIds) {
-		this.imageIds = imageIds;
-	}
-
-
-	public Long getStartImageId() {
-		return this.startImageId;
-	}
-	public void setStartImageId(Long startImageId) {
-		this.startImageId = startImageId;
-	}
-
-
-	public Long getEndImageId() {
-		return this.endImageId;
-	}
-	public void setEndImageId(Long endImageId) {
-		this.endImageId = endImageId;
 	}
 
 
@@ -1334,6 +1436,126 @@ public class CPcAppImage implements Condition {
 	}
 	public void setEndSetupNum(Integer endSetupNum) {
 		this.endSetupNum = endSetupNum;
+	}
+
+
+	public Long getTimerStartTime() {
+		return this.timerStartTime;
+	}
+	public void setTimerStartTime(Long timerStartTime) {
+		this.timerStartTime = timerStartTime;
+	}
+
+
+	public Long[] getTimerStartTimes() {
+		return this.timerStartTimes;
+	}
+	public void setTimerStartTimes(Long[] timerStartTimes) {
+		this.timerStartTimes = timerStartTimes;
+	}
+
+
+	public Long getStartTimerStartTime() {
+		return this.startTimerStartTime;
+	}
+	public void setStartTimerStartTime(Long startTimerStartTime) {
+		this.startTimerStartTime = startTimerStartTime;
+	}
+
+
+	public Long getEndTimerStartTime() {
+		return this.endTimerStartTime;
+	}
+	public void setEndTimerStartTime(Long endTimerStartTime) {
+		this.endTimerStartTime = endTimerStartTime;
+	}
+
+
+	public Long getTimerEndTime() {
+		return this.timerEndTime;
+	}
+	public void setTimerEndTime(Long timerEndTime) {
+		this.timerEndTime = timerEndTime;
+	}
+
+
+	public Long[] getTimerEndTimes() {
+		return this.timerEndTimes;
+	}
+	public void setTimerEndTimes(Long[] timerEndTimes) {
+		this.timerEndTimes = timerEndTimes;
+	}
+
+
+	public Long getStartTimerEndTime() {
+		return this.startTimerEndTime;
+	}
+	public void setStartTimerEndTime(Long startTimerEndTime) {
+		this.startTimerEndTime = startTimerEndTime;
+	}
+
+
+	public Long getEndTimerEndTime() {
+		return this.endTimerEndTime;
+	}
+	public void setEndTimerEndTime(Long endTimerEndTime) {
+		this.endTimerEndTime = endTimerEndTime;
+	}
+
+
+	public Integer getTimerType() {
+		return this.timerType;
+	}
+	public void setTimerType(Integer timerType) {
+		this.timerType = timerType;
+	}
+
+
+	public Integer[] getTimerTypes() {
+		return this.timerTypes;
+	}
+	public void setTimerTypes(Integer[] timerTypes) {
+		this.timerTypes = timerTypes;
+	}
+
+
+	public Integer getStartTimerType() {
+		return this.startTimerType;
+	}
+	public void setStartTimerType(Integer startTimerType) {
+		this.startTimerType = startTimerType;
+	}
+
+
+	public Integer getEndTimerType() {
+		return this.endTimerType;
+	}
+	public void setEndTimerType(Integer endTimerType) {
+		this.endTimerType = endTimerType;
+	}
+
+
+	public String getTimerExp() {
+		return this.timerExp;
+	}
+	public void setTimerExp(String timerExp) {
+		this.timerExp = timerExp;
+	}
+
+
+	public String getTimerExpEqual() {
+		return this.timerExpEqual;
+	}
+	public void setTimerExpEqual(String timerExpEqual) {
+		this.timerExpEqual = timerExpEqual;
+	}
+
+
+	public String[] getTimerExps() {
+		return this.timerExps;
+	}
+	public void setTimerExps(String[] timerExps) {
+		this.timerExps = timerExps;
 	}
 
 

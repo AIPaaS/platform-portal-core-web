@@ -51,6 +51,13 @@ public class PcAppDepHistory implements EntityBean {
 
 
 	/**
+	 * mapping-field: 应用类型[APP_TYPE]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer appType;
+
+
+	/**
 	 * mapping-field: 应用版本号[APP_VERSION_NO]
 	 */
 	private String appVersionNo;
@@ -226,6 +233,34 @@ public class PcAppDepHistory implements EntityBean {
 
 
 	/**
+	 * mapping-field: 定时开始时间[TIMER_START_TIME]
+	 * 定时容器字段
+	 */
+	private Long timerStartTime;
+
+
+	/**
+	 * mapping-field: 定时结束时间[TIMER_END_TIME]
+	 * 定时容器字段
+	 */
+	private Long timerEndTime;
+
+
+	/**
+	 * mapping-field: 定时器类型[TIMER_TYPE]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer timerType;
+
+
+	/**
+	 * mapping-field: 定时表达式[TIMER_EXP]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExp;
+
+
+	/**
 	 * mapping-field: 备用字段_1[CUSTOM_1]
 	 */
 	private Long custom1;
@@ -353,6 +388,14 @@ public class PcAppDepHistory implements EntityBean {
 	}
 	public void setAppName(String appName) {
 		this.appName = appName;
+	}
+
+
+	public Integer getAppType() {
+		return this.appType;
+	}
+	public void setAppType(Integer appType) {
+		this.appType = appType;
 	}
 
 
@@ -569,6 +612,38 @@ public class PcAppDepHistory implements EntityBean {
 	}
 	public void setDependContNames(String dependContNames) {
 		this.dependContNames = dependContNames;
+	}
+
+
+	public Long getTimerStartTime() {
+		return this.timerStartTime;
+	}
+	public void setTimerStartTime(Long timerStartTime) {
+		this.timerStartTime = timerStartTime;
+	}
+
+
+	public Long getTimerEndTime() {
+		return this.timerEndTime;
+	}
+	public void setTimerEndTime(Long timerEndTime) {
+		this.timerEndTime = timerEndTime;
+	}
+
+
+	public Integer getTimerType() {
+		return this.timerType;
+	}
+	public void setTimerType(Integer timerType) {
+		this.timerType = timerType;
+	}
+
+
+	public String getTimerExp() {
+		return this.timerExp;
+	}
+	public void setTimerExp(String timerExp) {
+		this.timerExp = timerExp;
 	}
 
 

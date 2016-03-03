@@ -38,6 +38,13 @@ public class PcApp implements EntityBean {
 
 
 	/**
+	 * mapping-field: 应用类型[APP_TYPE]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer appType;
+
+
+	/**
 	 * mapping-field: 所属数据中心[DATA_CENTER_ID]
 	 */
 	private Long dataCenterId;
@@ -144,6 +151,14 @@ public class PcApp implements EntityBean {
 	}
 	public void setAppName(String appName) {
 		this.appName = appName;
+	}
+
+
+	public Integer getAppType() {
+		return this.appType;
+	}
+	public void setAppType(Integer appType) {
+		this.appType = appType;
 	}
 
 

@@ -26,6 +26,12 @@ public class PcAppImage implements EntityBean {
 
 
 	/**
+	 * mapping-field: 镜像ID[IMAGE_ID]
+	 */
+	private Long imageId;
+
+
+	/**
 	 * mapping-field: 应用ID[APP_ID]
 	 */
 	private Long appId;
@@ -35,12 +41,6 @@ public class PcAppImage implements EntityBean {
 	 * mapping-field: 应用版本ID[APP_VNO_ID]
 	 */
 	private Long appVnoId;
-
-
-	/**
-	 * mapping-field: 镜像ID[IMAGE_ID]
-	 */
-	private Long imageId;
 
 
 	/**
@@ -169,6 +169,34 @@ public class PcAppImage implements EntityBean {
 
 
 	/**
+	 * mapping-field: 定时开始时间[TIMER_START_TIME]
+	 * 定时容器字段
+	 */
+	private Long timerStartTime;
+
+
+	/**
+	 * mapping-field: 定时结束时间[TIMER_END_TIME]
+	 * 定时容器字段
+	 */
+	private Long timerEndTime;
+
+
+	/**
+	 * mapping-field: 定时器类型[TIMER_TYPE]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer timerType;
+
+
+	/**
+	 * mapping-field: 定时表达式[TIMER_EXP]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExp;
+
+
+	/**
 	 * mapping-field: 备用字段_1[CUSTOM_1]
 	 */
 	private Long custom1;
@@ -253,6 +281,14 @@ public class PcAppImage implements EntityBean {
 	}
 
 
+	public Long getImageId() {
+		return this.imageId;
+	}
+	public void setImageId(Long imageId) {
+		this.imageId = imageId;
+	}
+
+
 	public Long getAppId() {
 		return this.appId;
 	}
@@ -266,14 +302,6 @@ public class PcAppImage implements EntityBean {
 	}
 	public void setAppVnoId(Long appVnoId) {
 		this.appVnoId = appVnoId;
-	}
-
-
-	public Long getImageId() {
-		return this.imageId;
-	}
-	public void setImageId(Long imageId) {
-		this.imageId = imageId;
 	}
 
 
@@ -426,6 +454,38 @@ public class PcAppImage implements EntityBean {
 	}
 	public void setSetupNum(Integer setupNum) {
 		this.setupNum = setupNum;
+	}
+
+
+	public Long getTimerStartTime() {
+		return this.timerStartTime;
+	}
+	public void setTimerStartTime(Long timerStartTime) {
+		this.timerStartTime = timerStartTime;
+	}
+
+
+	public Long getTimerEndTime() {
+		return this.timerEndTime;
+	}
+	public void setTimerEndTime(Long timerEndTime) {
+		this.timerEndTime = timerEndTime;
+	}
+
+
+	public Integer getTimerType() {
+		return this.timerType;
+	}
+	public void setTimerType(Integer timerType) {
+		this.timerType = timerType;
+	}
+
+
+	public String getTimerExp() {
+		return this.timerExp;
+	}
+	public void setTimerExp(String timerExp) {
+		this.timerExp = timerExp;
 	}
 
 

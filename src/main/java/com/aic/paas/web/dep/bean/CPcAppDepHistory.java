@@ -146,6 +146,33 @@ public class CPcAppDepHistory implements Condition {
 
 
 	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-Equal[=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer appType;
+
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-In[in]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer[] appTypes;
+
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-GTEqual[>=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer startAppType;
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-LTEqual[<=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer endAppType;
+
+
+	/**
 	 * condition-field: 应用版本号[APP_VERSION_NO] operate-Like[like]
 	 */
 	private String appVersionNo;
@@ -638,6 +665,108 @@ public class CPcAppDepHistory implements Condition {
 
 
 	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-Equal[=]
+	 * 定时容器字段
+	 */
+	private Long timerStartTime;
+
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-In[in]
+	 * 定时容器字段
+	 */
+	private Long[] timerStartTimes;
+
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-GTEqual[>=]
+	 * 定时容器字段
+	 */
+	private Long startTimerStartTime;
+
+	/**
+	 * condition-field: 定时开始时间[TIMER_START_TIME] operate-LTEqual[<=]
+	 * 定时容器字段
+	 */
+	private Long endTimerStartTime;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-Equal[=]
+	 * 定时容器字段
+	 */
+	private Long timerEndTime;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-In[in]
+	 * 定时容器字段
+	 */
+	private Long[] timerEndTimes;
+
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-GTEqual[>=]
+	 * 定时容器字段
+	 */
+	private Long startTimerEndTime;
+
+	/**
+	 * condition-field: 定时结束时间[TIMER_END_TIME] operate-LTEqual[<=]
+	 * 定时容器字段
+	 */
+	private Long endTimerEndTime;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-Equal[=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer timerType;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-In[in]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer[] timerTypes;
+
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-GTEqual[>=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer startTimerType;
+
+	/**
+	 * condition-field: 定时器类型[TIMER_TYPE] operate-LTEqual[<=]
+	 * 定时容器字段 1=周期型 2=日历型
+	 */
+	private Integer endTimerType;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-Like[like]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExp;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-Equal[=]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String timerExpEqual;
+
+
+	/**
+	 * condition-field: 定时表达式[TIMER_EXP] operate-In[in]
+	 * 定时容器字段 周期型：为间隔秒数；日历型：为CRON表达式
+	 */
+	private String[] timerExps;
+
+
+	/**
 	 * condition-field: 备用字段_1[CUSTOM_1] operate-Equal[=]
 	 */
 	private Long custom1;
@@ -1038,6 +1167,38 @@ public class CPcAppDepHistory implements Condition {
 	}
 	public void setAppNames(String[] appNames) {
 		this.appNames = appNames;
+	}
+
+
+	public Integer getAppType() {
+		return this.appType;
+	}
+	public void setAppType(Integer appType) {
+		this.appType = appType;
+	}
+
+
+	public Integer[] getAppTypes() {
+		return this.appTypes;
+	}
+	public void setAppTypes(Integer[] appTypes) {
+		this.appTypes = appTypes;
+	}
+
+
+	public Integer getStartAppType() {
+		return this.startAppType;
+	}
+	public void setStartAppType(Integer startAppType) {
+		this.startAppType = startAppType;
+	}
+
+
+	public Integer getEndAppType() {
+		return this.endAppType;
+	}
+	public void setEndAppType(Integer endAppType) {
+		this.endAppType = endAppType;
 	}
 
 
@@ -1670,6 +1831,126 @@ public class CPcAppDepHistory implements Condition {
 	}
 	public void setDependContNames(String dependContNames) {
 		this.dependContNames = dependContNames;
+	}
+
+
+	public Long getTimerStartTime() {
+		return this.timerStartTime;
+	}
+	public void setTimerStartTime(Long timerStartTime) {
+		this.timerStartTime = timerStartTime;
+	}
+
+
+	public Long[] getTimerStartTimes() {
+		return this.timerStartTimes;
+	}
+	public void setTimerStartTimes(Long[] timerStartTimes) {
+		this.timerStartTimes = timerStartTimes;
+	}
+
+
+	public Long getStartTimerStartTime() {
+		return this.startTimerStartTime;
+	}
+	public void setStartTimerStartTime(Long startTimerStartTime) {
+		this.startTimerStartTime = startTimerStartTime;
+	}
+
+
+	public Long getEndTimerStartTime() {
+		return this.endTimerStartTime;
+	}
+	public void setEndTimerStartTime(Long endTimerStartTime) {
+		this.endTimerStartTime = endTimerStartTime;
+	}
+
+
+	public Long getTimerEndTime() {
+		return this.timerEndTime;
+	}
+	public void setTimerEndTime(Long timerEndTime) {
+		this.timerEndTime = timerEndTime;
+	}
+
+
+	public Long[] getTimerEndTimes() {
+		return this.timerEndTimes;
+	}
+	public void setTimerEndTimes(Long[] timerEndTimes) {
+		this.timerEndTimes = timerEndTimes;
+	}
+
+
+	public Long getStartTimerEndTime() {
+		return this.startTimerEndTime;
+	}
+	public void setStartTimerEndTime(Long startTimerEndTime) {
+		this.startTimerEndTime = startTimerEndTime;
+	}
+
+
+	public Long getEndTimerEndTime() {
+		return this.endTimerEndTime;
+	}
+	public void setEndTimerEndTime(Long endTimerEndTime) {
+		this.endTimerEndTime = endTimerEndTime;
+	}
+
+
+	public Integer getTimerType() {
+		return this.timerType;
+	}
+	public void setTimerType(Integer timerType) {
+		this.timerType = timerType;
+	}
+
+
+	public Integer[] getTimerTypes() {
+		return this.timerTypes;
+	}
+	public void setTimerTypes(Integer[] timerTypes) {
+		this.timerTypes = timerTypes;
+	}
+
+
+	public Integer getStartTimerType() {
+		return this.startTimerType;
+	}
+	public void setStartTimerType(Integer startTimerType) {
+		this.startTimerType = startTimerType;
+	}
+
+
+	public Integer getEndTimerType() {
+		return this.endTimerType;
+	}
+	public void setEndTimerType(Integer endTimerType) {
+		this.endTimerType = endTimerType;
+	}
+
+
+	public String getTimerExp() {
+		return this.timerExp;
+	}
+	public void setTimerExp(String timerExp) {
+		this.timerExp = timerExp;
+	}
+
+
+	public String getTimerExpEqual() {
+		return this.timerExpEqual;
+	}
+	public void setTimerExpEqual(String timerExpEqual) {
+		this.timerExpEqual = timerExpEqual;
+	}
+
+
+	public String[] getTimerExps() {
+		return this.timerExps;
+	}
+	public void setTimerExps(String[] timerExps) {
+		this.timerExps = timerExps;
 	}
 
 

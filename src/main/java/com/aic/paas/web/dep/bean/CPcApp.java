@@ -96,6 +96,33 @@ public class CPcApp implements Condition {
 
 
 	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-Equal[=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer appType;
+
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-In[in]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer[] appTypes;
+
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-GTEqual[>=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer startAppType;
+
+	/**
+	 * condition-field: 应用类型[APP_TYPE] operate-LTEqual[<=]
+	 * 1=一般应用 2=定时应用
+	 */
+	private Integer endAppType;
+
+
+	/**
 	 * condition-field: 所属数据中心[DATA_CENTER_ID] operate-Equal[=]
 	 */
 	private Long dataCenterId;
@@ -442,6 +469,38 @@ public class CPcApp implements Condition {
 	}
 	public void setAppNames(String[] appNames) {
 		this.appNames = appNames;
+	}
+
+
+	public Integer getAppType() {
+		return this.appType;
+	}
+	public void setAppType(Integer appType) {
+		this.appType = appType;
+	}
+
+
+	public Integer[] getAppTypes() {
+		return this.appTypes;
+	}
+	public void setAppTypes(Integer[] appTypes) {
+		this.appTypes = appTypes;
+	}
+
+
+	public Integer getStartAppType() {
+		return this.startAppType;
+	}
+	public void setStartAppType(Integer startAppType) {
+		this.startAppType = startAppType;
+	}
+
+
+	public Integer getEndAppType() {
+		return this.endAppType;
+	}
+	public void setEndAppType(Integer endAppType) {
+		this.endAppType = endAppType;
 	}
 
 
