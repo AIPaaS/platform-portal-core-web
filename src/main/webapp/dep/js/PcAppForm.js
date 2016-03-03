@@ -116,7 +116,7 @@ function showSelectMgrs(){
 function submitForm(){
 	var bean = PU.getFormData("form_app");
 	if(CU.isEmpty(MgrOpIds)) {
-		CC.showMsg({msg:"请选择产品管理员!"});
+		CC.showMsg({msg:"请选择应用管理员!"});
 		return ;
 	}
 	bean.strMgrIds = MgrOpIds.join(",");
