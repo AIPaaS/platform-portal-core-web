@@ -50,6 +50,7 @@
 	<dubbox:rest id="DubboxRest_PcAppResSvc" interface="com.aic.paas.web.rest.PcAppResSvc" client="DubboRestClient_DEP" />
 	<dubbox:rest id="DubboxRest_PcAppSvc" interface="com.aic.paas.web.rest.PcAppSvc" client="DubboRestClient_DEP" />
 	<dubbox:rest id="DubboxRest_PcServiceSvc" interface="com.aic.paas.web.rest.PcServiceSvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcAppDeploySvc" interface="com.aic.paas.web.rest.PcAppDeploySvc" client="DubboRestClient_DEP" />
 		
 	
 	
