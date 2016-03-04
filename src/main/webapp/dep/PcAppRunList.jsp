@@ -166,7 +166,7 @@ String ContextPath = request.getContextPath();
 			</td>
 
 			<td class="text-center">
-				<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" title="启动">
+				<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
