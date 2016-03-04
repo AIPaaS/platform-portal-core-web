@@ -12,7 +12,7 @@ public class AppImageSettings implements Serializable {
 	
 	
 	/** 镜像 **/
-//	private PcImage image;
+	private PcImage image;
 	
 	
 	/** 开放服务信息 **/
@@ -84,14 +84,14 @@ public class AppImageSettings implements Serializable {
 	}
 
 
-//	public PcImage getImage() {
-//		return image;
-//	}
-//
-//
-//	public void setImage(PcImage image) {
-//		this.image = image;
-//	}
+	public PcImage getImage() {
+		return image;
+	}
+
+
+	public void setImage(PcImage image) {
+		this.image = image;
+	}
 	
 	
 	
