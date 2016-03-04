@@ -388,7 +388,15 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	public AppImageSettings getAppImageSettings(Long appImageId) {
 		BinaryUtils.checkEmpty(appImageId, "appImageId");
 		userAuth.verifyAppImageAuth(appImageId);
-		return appImageSvc.getAppImageSettings(appImageId);
+		AppImageSettings settings = appImageSvc.getAppImageSettings(appImageId);
+		if(settings != null) {
+			Long imageId = settings.getAppImage().getImageId();
+			if(imageId != null) {
+				PcImage image = imageSvc.queryImageById(imageId);
+				settings.setImage(image);
+			}
+		}
+		return settings;
 	}
 
 

@@ -26,6 +26,16 @@ public interface PcAppDeploySvc {
 
 
 	
+	/**
+	 *分页查询
+	 * @param pageNum : 指定页码
+	 * @param pageSize : 指定页行数
+	 * @param cdt : 条件对象
+	 * @param orders : 排序字段, 多字段以逗号分隔
+	 */
+	public List<PcAppDepHistory> queryDepHistoryPage2(Integer pageNum, Integer pageSize, CPcAppDepHistory cdt, String orders);
+	
+	
 	
 	
 	/**
@@ -57,6 +67,33 @@ public interface PcAppDeploySvc {
 	 */
 	public List<PcAppDepInstance> queryDepInstance(Long depHistoryId, CPcAppDepInstance cdt, String orders);
 	
+	
+	
+	
+	/**
+	 * 跟据历史发布信息获取实例
+	 * @param depHistoryId
+	 * @return
+	 */
+	public Page<PcAppDepInstance> queryDepInstancePage(Integer pageNum, Integer pageSize, CPcAppDepInstance cdt, String orders);
+	
+	
+	/**
+	 * 跟据历史发布信息获取实例
+	 * @param depHistoryId
+	 * @return
+	 */
+	public List<PcAppDepInstance> queryDepInstancePage2(Integer pageNum, Integer pageSize, CPcAppDepInstance cdt, String orders);
+	
+	
+	
+	
+	/**
+	 * 跟据历史发布信息获取实例
+	 * @param depHistoryId
+	 * @return
+	 */
+	public List<PcAppDepInstance> queryDepInstanceList(CPcAppDepInstance cdt, String orders);
 	
 	
 	
