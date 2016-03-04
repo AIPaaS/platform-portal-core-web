@@ -25,8 +25,8 @@ public class PcServicePeerImpl implements PcServicePeer {
 	
 	@Autowired
 	PcServiceSvc serviceSvc;
-	@Autowired
-	IExternalServiceManager iExternalServiceManager;
+//	@Autowired
+//	IExternalServiceManager iExternalServiceManager;
 
 	
 	
@@ -174,13 +174,13 @@ public class PcServicePeerImpl implements PcServicePeer {
 			if(record.getAppImageId() != null) BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
 		}
 		//调用辅助后场begin
-		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
-		externalServiceReq.setClusterId(record.getResCenterId().toString());
-		externalServiceReq.setServiceId(record.getSvcCode());
-		externalServiceReq.setServiceName(record.getSvcName());
-		externalServiceReq.setAddress(record.getSvcUrl());
-		externalServiceReq.setPort(record.getPort());
-		iExternalServiceManager.add(JSON.toString(externalServiceReq));
+//		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
+//		externalServiceReq.setClusterId(record.getResCenterId().toString());
+//		externalServiceReq.setServiceId(record.getSvcCode());
+//		externalServiceReq.setServiceName(record.getSvcName());
+//		externalServiceReq.setAddress(record.getSvcUrl());
+//		externalServiceReq.setPort(record.getPort());
+//		iExternalServiceManager.add(JSON.toString(externalServiceReq));
 		//调用辅助后场end
 		return serviceSvc.saveOrUpdate(record);
 	}
