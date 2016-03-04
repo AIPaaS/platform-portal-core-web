@@ -35,6 +35,7 @@
     <bean class="com.aic.paas.web.res.peer.impl.PsResPeerImpl" />
     
     
+    <bean class="com.aic.paas.web.dep.peer.impl.PcAppMonitorPeerImpl" />
     
    	
 	
