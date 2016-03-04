@@ -51,6 +51,12 @@ public class PcService implements EntityBean {
 
 
 	/**
+	 * mapping-field: IP[IP]
+	 */
+	private String ip;
+
+
+	/**
 	 * mapping-field: 开放端口[PORT]
 	 */
 	private Integer port;
@@ -60,6 +66,12 @@ public class PcService implements EntityBean {
 	 * mapping-field: 开放URL[SVC_URL]
 	 */
 	private String svcUrl;
+
+
+	/**
+	 * mapping-field: 服务DNS[DOMAIN_NAME]
+	 */
+	private String domainName;
 
 
 	/**
@@ -125,13 +137,6 @@ public class PcService implements EntityBean {
 
 
 	/**
-	 * mapping-field: 所属应用[APP_ID]
-	 * 外部服务字段（暂不用）
-	 */
-	private Long appId;
-
-
-	/**
 	 * mapping-field: 创建人ID[USER_ID]
 	 * 外部服务字段
 	 */
@@ -143,6 +148,13 @@ public class PcService implements EntityBean {
 	 * 外部服务字段
 	 */
 	private String userName;
+
+
+	/**
+	 * mapping-field: 所属应用[APP_ID]
+	 * 应用服务定义表
+	 */
+	private Long appId;
 
 
 	/**
@@ -259,6 +271,14 @@ public class PcService implements EntityBean {
 	}
 
 
+	public String getIp() {
+		return this.ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+
 	public Integer getPort() {
 		return this.port;
 	}
@@ -272,6 +292,14 @@ public class PcService implements EntityBean {
 	}
 	public void setSvcUrl(String svcUrl) {
 		this.svcUrl = svcUrl;
+	}
+
+
+	public String getDomainName() {
+		return this.domainName;
+	}
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 
 
@@ -347,14 +375,6 @@ public class PcService implements EntityBean {
 	}
 
 
-	public Long getAppId() {
-		return this.appId;
-	}
-	public void setAppId(Long appId) {
-		this.appId = appId;
-	}
-
-
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -368,6 +388,14 @@ public class PcService implements EntityBean {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+
+	public Long getAppId() {
+		return this.appId;
+	}
+	public void setAppId(Long appId) {
+		this.appId = appId;
 	}
 
 

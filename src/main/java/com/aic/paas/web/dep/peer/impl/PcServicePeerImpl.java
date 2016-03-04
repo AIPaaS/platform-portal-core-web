@@ -7,21 +7,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.aic.paas.comm.util.SystemUtil;
 import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.CPcService;
+import com.aic.paas.web.dep.bean.ExternalServiceReq;
 import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
+import com.aic.paas.web.rest.IExternalServiceManager;
 import com.aic.paas.web.rest.PcServiceSvc;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.exception.ServiceException;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 public class PcServicePeerImpl implements PcServicePeer {
 	
 	
 	@Autowired
 	PcServiceSvc serviceSvc;
+//	@Autowired
+//	IExternalServiceManager iExternalServiceManager;
 
 	
 	
@@ -168,6 +173,15 @@ public class PcServicePeerImpl implements PcServicePeer {
 			if(record.getUserName() != null) BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
 			if(record.getAppImageId() != null) BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
 		}
+		//调用辅助后场begin
+//		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
+//		externalServiceReq.setClusterId(record.getResCenterId().toString());
+//		externalServiceReq.setServiceId(record.getSvcCode());
+//		externalServiceReq.setServiceName(record.getSvcName());
+//		externalServiceReq.setAddress(record.getSvcUrl());
+//		externalServiceReq.setPort(record.getPort());
+//		iExternalServiceManager.add(JSON.toString(externalServiceReq));
+		//调用辅助后场end
 		return serviceSvc.saveOrUpdate(record);
 	}
 
