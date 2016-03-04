@@ -52,6 +52,7 @@ function forward(url) {
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10404')">外部服务管理</a></span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10405')">应用部署配置</a></span><br>
 					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10406')">应用运行管理</a></span><br>
+					<span style="padding-left:60px;"><a href="###" onclick="forward2ModuCode('10407')">应用运行监控</a></span><br>
 				</td>
 			</tr>
 		</table>
