@@ -52,6 +52,7 @@ String ContextPath = request.getContextPath();
 							<tr>
 								<th class="text-center">应用代码</th>
 								<th class="text-center">应用名称</th>
+								<th class="text-center">应用类型</th>
 								<th class="text-center">数据中心</th>
 								<th class="text-center">资源中心</th>
 								<th class="text-center">最近版本号</th>
@@ -99,6 +100,13 @@ String ContextPath = request.getContextPath();
 		<tr>
 			<td class="text-center"><a href="<%=ContextPath%>/dispatch/mc/1040101?id={{= row.app.id}}&pageNum={{= pageNum}}">{{= row.app.appCode}}</a></td>
 			<td class="text-center">{{= row.app.appName}}</td>
+			<td class="text-center">
+				{{if row.app.appType==1}}
+					一般应用
+				{{else row.app.appType==2}}
+					定时应用
+				{{/if}}
+			</td>
 			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.app.dataCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.app.resCenterId,false)}}</td>
 			<td class="text-center" id="td_version_{{= row.app.id}}">{{= row.app.versionNo}}</td>

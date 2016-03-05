@@ -32,6 +32,19 @@ String ContextPath = request.getContextPath();
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="appType" class="col-lg-2 control-label">应用类型<font color="red">*</font>:</label>
+				<div class="col-lg-5">
+					<select id="appType" name="appType" required class="form-control">
+						<option>&nbsp;</option>
+						<option value="1">一般应用</option>
+						<option value="2">定时应用</option>
+					</select>
+				</div>
+				<div class="col-lg-5">
+					<span>1-20位</span>
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="dataCenterId" class="col-lg-2 control-label">所属数据中心<font color="red">*</font>:</label>
 				<div class="col-lg-5">
 					<select id="dataCenterId" name="dataCenterId" required class="form-control">

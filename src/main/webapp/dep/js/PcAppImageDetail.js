@@ -3,6 +3,7 @@ var ParamPageNum = 1;
 var CurrDataMap = {};
 var AppId = "";
 var AppVnoId = "";
+var APP = null;
 
 var bgcolors = ["emerald-bg","red-bg","yellow-bg","green-bg","purple-bg","gray-bg"];
 
@@ -35,6 +36,8 @@ function initData(cb) {
 			pageBack();
 			return;
 		}
+		APP = rs;
+		
 		$("#span_app_title").html("["+rs.appCode+"]["+rs.appName+"]");
 		
 		RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
@@ -85,6 +88,12 @@ function query(pageNum){
 				});
 			}
 		}
+		
+		if(APP.appType==2 && !CU.isEmpty(rs) && rs.length>0) {
+			$("#btn_add").hide();
+		}else {
+			$("#btn_add").show();
+		}
 	}});
 	
 }
@@ -95,7 +104,7 @@ function removeAppImage(id){
 	var obj = CurrDataMap["key_"+id];
 	CC.showMsg({msg:"您确定要删除容器[<font color='blue'>"+obj.appImage.containerName+"</font>]吗?",option:2,callback:function(r) {
 		if(r != "ok") return ;
-		RS.ajax({url:"/dep/app/removeAppImage",ps:{id:id},cb:function() {
+		RS.ajax({url:"/dep/appimage/removeAppImage",ps:{appImageId:id},cb:function() {
 			query(ParamPageNum);
 		}});
 	}});

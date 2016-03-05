@@ -108,6 +108,8 @@ String ContextPath = request.getContextPath();
 						<th class="text-center">服务器IP</th>
 						<th class="text-center">实例名</th>
 						<th class="text-center">状态</th>
+						<th class="text-center">状态时间</th>
+						<th class="text-center">操作</th>
 					</tr>
 				</thead>
 				<tbody id="depInstanceTable">
@@ -118,19 +120,7 @@ String ContextPath = request.getContextPath();
          </div>
          <div class="row-fluid">
 					<div class="col-lg-6">
-						<label>
-							每页
-								<select name="mod_selPageSize"  class="pagination" id="mod_grid_pageSize" >
-									<option value="10">10</option>
-									<option value="15">15</option>
-									<option value="20" selected>20</option>
-									<option value="25">25</option>
-									<option value="30">30</option>
-									<option value="40">40</option>
-									<option value="50">50</option>
-								</select>
-							条记录
-						</label>
+						
 					</div>
 					<div class="col-lg-6">
 						<div class="pagination pull-right" id="mod_pagination_box">
@@ -138,7 +128,7 @@ String ContextPath = request.getContextPath();
 						</div>
 					</div>
 				</div>
-         <iframe frameborder="0" width="795" height="400" src="http://10.1.235.130:14101/paas-fe-amc-inner/monitorInfo/index?dockername=gloomy_hamilton"></iframe>
+         <iframe id="if_montior_dockerinstance" frameborder="0" width="795" height="400" src="<%=ContextPath%>/dep/PcAppMonitorEmpty.jsp"></iframe>
       </div>
 	</div>
 </div>
@@ -161,12 +151,6 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-comment fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
-				<a id="a_monitor_log_{{= row.id}}" href="###" class="table-link" title="监控日志">
-					<span class="fa-stack">
-						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-book fa-stack-1x fa-inverse"></i>
-					</span>
-				</a>
 			</td>
 		</tr>
 {{/each}}
@@ -178,6 +162,15 @@ String ContextPath = request.getContextPath();
 			<td class="text-center">{{= row.serverIp}}</a></td>
 			<td class="text-center">{{= row.instanceName}}</td>
 			<td class="text-center">{{= PU.getDropValue("V_IS_VALID",row.status,false)}}</td>
+			<td class="text-center">{{= CU.toStringDateTime(row.time)}}</td>
+			<td class="text-center">
+				<a id="a_forward2monitorinstance_{{= row.id}}" href="###" class="table-link" title="">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-hand-o-right fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+			</td>
 		</tr>
 {{/each}}
 </script>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aic.paas.web.dep.bean.AppMgrInfo;
 import com.aic.paas.web.dep.bean.AppResInfo;
+import com.aic.paas.web.dep.bean.AppTimerInfo;
 import com.aic.paas.web.dep.bean.AppZoneResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
 import com.aic.paas.web.dep.bean.PcApp;
@@ -28,6 +29,8 @@ public class PcAppMvc {
 	
 	@Autowired
 	PcAppPeer appPeer;
+	
+	
 	
 	
 	@RequestMapping("/queryInfoPage")
@@ -102,5 +105,14 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, page);
 	}
 	
+	
+	
+	@RequestMapping("/queryAppTimerPage")
+	public void queryAppTimerPage(HttpServletRequest request,HttpServletResponse response, Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
+		if(cdt == null) cdt = new CPcApp();
+//		cdt.setSetupStatus(1);
+		Page<AppTimerInfo> page = appPeer.queryMgrAppTimerInfoPage(pageNum, pageSize, cdt, orders);
+		ControllerUtils.returnJson(request, response, page);
+	}
 	
 }

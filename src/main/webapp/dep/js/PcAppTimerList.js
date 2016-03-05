@@ -1,7 +1,5 @@
 var ParamPageNum = 1;
-
 var CurrDataMap = {};
-var CurrInstanceDataMap = {};
 
 var TreeData = null;
 var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区域
@@ -21,6 +19,10 @@ function init() {
 function initData(cb) {
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
+	
+	var selstatushtml = PU.getSelectOptionsHtml("V_PC_APP_STATUS");
+	$("#status").html(selstatushtml);
+	
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
 		DROP["DV_RES_CENTER_CODE"] = result["rc"];
@@ -28,7 +30,6 @@ function initData(cb) {
 		var dropList = [];
 		for(var i=0; i<result["dc"].length; i++) dropList.push(result["dc"][i]);
 		for(var i=0; i<result["rc"].length; i++) dropList.push(result["rc"][i]);
-		for(var i=0; i<result["nc"].length; i++) dropList.push(result["nc"][i]);
 		TreeData = toTreeData(dropList);
 		if(CU.isFunction(cb))cb();
 	}});
@@ -54,8 +55,8 @@ function initListener() {
 	$("#appName").bind("keyup", doCdtTFKeyUp);
 	$("#forcenter").bind("focus",function(){
 		var sul = $('#sel_forcenter');
-		sul.css("top", $("#forcenter").offset().top+$("#forcenter").height()+10);
-		sul.css("left", $("#forcenter").offset().left+$("#forcenter").width()-50);
+		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height());
+		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()*2-40);
 		sul.show(); 
 	});
 	$("#forcenter").on("blur", function() {
@@ -67,9 +68,10 @@ function initListener() {
 	$("#sel_forcenter").bind("click", function() {
 		if(!$("#sel_forcenter").is(":hidden")) $("#forcenter").focus();
 	});
+	$("#status").bind("change", function(){query();});
+	
 	$("#btn_query").bind("click",function(){query();});
 	$("#grid_pageSize").bind("change",function(){query();});
-	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040101?pageNum="+ParamPageNum;});
 }
 function initFace() {
 }
@@ -104,30 +106,37 @@ function toTreeData(dropList) {
 	return tree;
 }
 
+function getNetZoneName(netZoneId) {
+	if(CU.isEmpty(netZoneId)) return "";
+	var item = CU.getDropItemRecord("DV_NET_ZONE_CODE", netZoneId);
+	if(CU.isEmpty(item)) return "";
+	return "["+item.attributes.zoneCode+"] "+item.name;
+}
+
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
-	$("#appMonitorTable").html("");
+	$("#appImageTable").html("");
 	$("#ul_pagination").remove();
 	$("#pagination_box").html('<ul id="ul_pagination" class="pagination-sm"></ul>');
 	var pageSize = $("#grid_pageSize").val();
 	var appCode = $("#appCode").val();
 	var appName = $("#appName").val();
+	var status = $("#status").val();
 	var orders = "APP_CODE , ID";
 	
-	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,orders:orders};
+	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders,appType:2};
 	
 	if(!CU.isEmpty(SelForCenterType) && !CU.isEmpty(SelForCenterId)) {
-		switch (SelForCenterType) {		//1=数据中心    2=资源中心  3=网络区域
+		switch (SelForCenterType) {		//1=数据中心    2=资源中心 
 			case "1": ps.dataCenterId = SelForCenterId; break;
 			case "2": ps.resCenterId = SelForCenterId; break;
-			case "3": ps.netZoneId = SelForCenterId; break;
 		}
 	}
-	RS.ajax({url:"/dep/appmonitor/queryDepHistoryPage",ps:ps,cb:function(r) {
+	RS.ajax({url:"/dep/app/queryAppTimerPage",ps:ps,cb:function(r) {
 		if(!CU.isEmpty(r)){
 			var data = r.data;
 			for(var i=0;i<data.length;i++){
-				CurrDataMap["key_"+data[i].id] = data[i];
+				CurrDataMap["key_"+data[i].app.id] = data[i];
 			}
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
@@ -143,74 +152,36 @@ function query(pageNum){
 		        }
 		    	
 		    });
-			
-			$("#appMonitorTable-tmpl").tmpl(r).appendTo("#appMonitorTable");
+			$("#appImageTable-tmpl").tmpl(r).appendTo("#appImageTable");
 			for(var i=0;i<data.length;i++){
-				$("#a_monitor_history_"+data[i].id).bind("click",function(){
+				$("#a_app_start_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					showDepInstance(obj.id);
+					startTask(obj);
+				});
+				$("#a_app_update_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					updateTask(obj);
+				});
+				$("#a_app_stop_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					stopTask(obj);
 				});
 			}
 		}
 	}});
-}
-
-
-
-function queryDepInstance(id,pageNum){
-	$("#depInstanceTable").html("");
-	$("#mod_ul_pagination").remove();
-	$("#mod_pagination_box").html('<ul id="mod_ul_pagination" class="pagination-sm"></ul>');
 	
-	var ps = {pageNum:pageNum,pageSize:5,depHistoryId:id,orders:"ID"};
-	
-	RS.ajax({url:"/dep/appmonitor/queryDepInstancePage",ps:ps,cb:function(r) {
-		if(!CU.isEmpty(r)){
-			var data = r.data;
-			for(var i=0;i<data.length;i++){
-				CurrInstanceDataMap["key_"+data[i].id] = data[i];
-			}
-			$("#mod_ul_pagination").twbsPagination({
-		        totalPages: r.totalPages?r.totalPages:1,
-		        visiblePages: 7,
-		        startPage: r.pageNum,
-		        first:"首页",
-		        prev:"上一页",
-		        next:"下一页",
-		        last:"尾页",
-		        onPageClick: function (event, page) {
-		        	queryDepInstance(id,page);
-		        }
-		    });
-			$("#depInstanceTable-tmpl").tmpl(r).appendTo("#depInstanceTable");
-			for(var i=0;i<data.length;i++){
-				$("#a_forward2monitorinstance_"+data[i].id).bind("click",function(){
-					var obj = CurrInstanceDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					forward2MonitorDockerInstance(obj.instanceName);
-				});
-			}
-		}
-	}});
-}
-
-
-
-function showDepInstance(id){
-	var obj =  CurrDataMap["key_"+id];
-	$("#div_depInstanceTitle").html("容器[<font color='blue'>"+obj.containerName+"</font>]运行实例信息");
-	queryDepInstance(id,1);
-	$('#div_dep_instance').modal('show');
-}
-
-
-function forward2MonitorDockerInstance(dockerName) {
-	var url = ContextPath + "/dep/appmonitor/forward2MonitorDockerInstance?dockerName=" + dockerName;
-	$("#if_montior_dockerinstance").prop("src", url);
 }
 
 
 
 
+
+function startTask(appinfo) {
+	alert("startTask["+appinfo.app.id+"] 待开发...");
+}
+function stopTask(appinfo) {
+	alert("stopTask["+appinfo.app.id+"] 待开发...");
+}
 
 
 

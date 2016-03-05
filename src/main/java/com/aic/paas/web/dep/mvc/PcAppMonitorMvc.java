@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +15,7 @@ import com.aic.paas.web.dep.bean.CPcAppDepInstance;
 import com.aic.paas.web.dep.bean.PcAppDepHistory;
 import com.aic.paas.web.dep.bean.PcAppDepInstance;
 import com.aic.paas.web.dep.peer.PcAppMonitorPeer;
+import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
 
@@ -25,6 +27,10 @@ public class PcAppMonitorMvc {
 	
 	@Autowired
 	PcAppMonitorPeer peer;
+	
+	
+	@Value("${integration.monitor.docker.instance.url}")
+	String monitorDockerInstanceUrl;
 	
 	
 	
@@ -46,4 +52,15 @@ public class PcAppMonitorMvc {
 		Page<PcAppDepInstance> page = peer.queryDepInstancePage(pageNum, pageSize, depHistoryId, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
+	
+	
+	@RequestMapping("/forward2MonitorDockerInstance")
+	public String forward2MonitorDockerInstance(HttpServletRequest request,HttpServletResponse response, String dockerName) {
+		BinaryUtils.checkEmpty(dockerName, "dockerName");
+		String url = monitorDockerInstanceUrl + dockerName;
+		return "redirect:"+url;
+	}
+	
+	
+	
 }

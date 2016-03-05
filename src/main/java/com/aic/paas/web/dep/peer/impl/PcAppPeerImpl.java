@@ -16,12 +16,16 @@ import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.AppInfo;
 import com.aic.paas.web.dep.bean.AppMgrInfo;
 import com.aic.paas.web.dep.bean.AppResInfo;
+import com.aic.paas.web.dep.bean.AppTimerInfo;
 import com.aic.paas.web.dep.bean.AppZoneResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
+import com.aic.paas.web.dep.bean.CPcAppImage;
 import com.aic.paas.web.dep.bean.PcApp;
+import com.aic.paas.web.dep.bean.PcAppImage;
 import com.aic.paas.web.dep.peer.PcAppPeer;
 import com.aic.paas.web.integration.UserAuthentication;
 import com.aic.paas.web.res.bean.PcAppRes;
+import com.aic.paas.web.rest.PcAppImageSvc;
 import com.aic.paas.web.rest.PcAppSvc;
 import com.aic.paas.web.rest.SysOpSvc;
 import com.binary.core.lang.ArrayUtils;
@@ -36,6 +40,9 @@ public class PcAppPeerImpl implements PcAppPeer {
 	
 	@Autowired
 	SysOpSvc sysOpSvc;
+	
+	@Autowired
+	PcAppImageSvc appImageSvc;
 	
 	
 	@Autowired
@@ -181,6 +188,49 @@ public class PcAppPeerImpl implements PcAppPeer {
 		cdt.setMntId(user.getMerchent().getId());
 		Page<AppResInfo> page = appSvc.queryMgrResInfoPage(pageNum, pageSize, user.getId(), cdt, orders);
 		return page;
+	}
+	
+	
+	@Override
+	public Page<AppTimerInfo> queryMgrAppTimerInfoPage(Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
+		Page<AppResInfo> page = queryMgrResInfoPage(pageNum, pageSize, cdt, orders);
+		List<AppResInfo> ls = page.getData();
+		
+		Page<AppTimerInfo> timerinfo = new Page<AppTimerInfo>(page.getPageNum(), page.getPageSize(), page.getTotalRows(), page.getTotalPages(), new ArrayList<AppTimerInfo>());
+		if(ls!=null && ls.size()>0) {
+			List<AppTimerInfo> appls = new ArrayList<AppTimerInfo>();
+			timerinfo.setData(appls);
+			
+			Long[] appIds = new Long[ls.size()];
+			for(int i=0; i<ls.size(); i++) {
+				AppResInfo info = ls.get(i);
+				
+				AppTimerInfo timer = new AppTimerInfo();
+				timer.setApp(info.getApp());
+				timer.setAppVnos(info.getAppVnos());
+				timer.setImageTotal(info.getImageTotal());
+				timer.setLastTask(info.getLastTask());
+				timer.setResidueRes(info.getResidueRes());
+				timer.setTotalRes(info.getTotalRes());
+				appls.add(timer);
+				
+				appIds[i] = info.getApp().getId();
+			}
+			
+			CPcAppImage imgcdt = new CPcAppImage();
+			imgcdt.setAppIds(appIds);
+			imgcdt.setSetupNum(9);
+			List<PcAppImage> appImageList = appImageSvc.queryList(imgcdt, null);
+			
+			Map<Long, PcAppImage> map = BinaryUtils.toObjectMap(appImageList, "appId");
+			for(int i=0; i<appls.size(); i++) {
+				AppTimerInfo info = appls.get(i);
+				Long appId = info.getApp().getId();
+				info.setAppImage(map.get(appId));
+			}
+			
+		}
+		return timerinfo;
 	}
 	
 	

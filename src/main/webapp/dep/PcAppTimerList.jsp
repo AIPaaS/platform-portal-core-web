@@ -31,6 +31,12 @@ String ContextPath = request.getContextPath();
 					<div class="form-group pull-left">
 						<input type="text" name="forcenter" id="forcenter" class="form-control" style="width:120px;" readOnly >
 					</div>
+					<div class="form-group pull-left">
+						&nbsp;状态:
+					</div>
+					<div class="form-group pull-left">
+						<select type="text" name="status" id="status" class="form-control" style="width:100px;"  ></select>
+					</div>
 				</div>
 				<button id="btn_query" class="btn btn-primary"><i class="fa fa-search fa-lg"></i> 查询</button>
 			</div>
@@ -53,11 +59,10 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">应用名称</th>
 								<th class="text-center">数据中心</th>
 								<th class="text-center">资源中心</th>
-								<th class="text-center">最近版本号</th>
-								<th class="text-center">占用资源</th>
-								<th class="text-center">容器个数</th>
-								<th class="text-center">容器实例数</th>
-								<th class="text-center">容器占用资源</th>
+								<th class="text-center">版本号</th>
+								<th class="text-center">资源分配</th>
+								<th class="text-center">开始时间</th>
+								<th class="text-center">执行间隔</th>
 								<th class="text-center">操作</th>
 							</tr>
 						</thead>
@@ -123,7 +128,6 @@ String ContextPath = request.getContextPath();
 	</div>
 </div>
 
-
 <script id="appImageTable-tmpl" type="text/x-jquery-tmpl">
 	{{each(i,row) data}}
 		<tr>
@@ -138,31 +142,26 @@ String ContextPath = request.getContextPath();
 				{{/if}}
 			</td>
 			<td class="text-center">
-				{{if !CU.isEmpty(row.imageTotal)}}
-					{{= row.imageTotal.custom1}}
+				{{if !CU.isEmpty(row.appImage)}}
+					{{= CU.toStringDateTime(row.appImage.timerStartTime)}}
 				{{/if}}
 			</td>
 			<td class="text-center">
-				{{if !CU.isEmpty(row.imageTotal)}}
-					{{= row.imageTotal.instanceCount}}
+				{{if !CU.isEmpty(row.lastTask)}}
+					{{= CU.toStringDateTime(row.appImage.taskStartTime)}}
 				{{/if}}
 			</td>
 			<td class="text-center">
-				{{if !CU.isEmpty(row.imageTotal)}}
-					<font color='#cc0000'>C: {{= row.imageTotal.cpuCount/100}}个，M: {{= CU.toMegaByteUnit(row.imageTotal.memSize,false)}}，D: {{= CU.toMegaByteUnit(row.imageTotal.diskSize,false)}}</font>
-				{{/if}}
-			</td>
-			<td class="text-center">
-				<a id="a_app_image_setup_{{= row.app.id}}" href="###" class="table-link" data-placement="left" data-title="选择应用版本" >
+				<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" title="启动">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-life-saver fa-stack-1x fa-inverse"></i>
+						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
-				<a id="a_app_res_use_{{= row.app.id}}" href="###" class="table-link" title="应用资源占用情况">
+				<a id="a_app_stop_{{= row.app.id}}" href="###" class="table-link danger" title="停止">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-star-half-o fa-stack-1x fa-inverse"></i>
+						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>			
 			</td>

@@ -5,6 +5,7 @@ var APP = null;
 
 var AppImageId = "";
 var AppVnoId = "";
+var AppType = "";
 var ParamPageNum = 1;
 
 var BTN_TYPE = 1;	//-1=prev 0=save 1=next
@@ -59,6 +60,7 @@ function initData(cb) {
 		}
 		
 		APP = rs.app;
+		AppType = APP.appType;
 		DROP["DV_IMAGE_CODE"] = rs.imageDropList;
 		DROP["DV_NET_ZONE_CODE"] = rs.netZoneDropList;
 		
@@ -67,6 +69,12 @@ function initData(cb) {
 		
 		var ncselHtml = PU.getSelectOptionsHtml("DV_NET_ZONE_CODE");
 		$("#netZoneId").html(ncselHtml);
+		
+		if(AppType == 1){
+			$("#div_time").hide();
+		}else{
+			$("#div_time").show();
+		}
 		
 		if(CU.isFunction(cb))cb();
 	}});
@@ -85,6 +93,12 @@ function initComponent() {
 
 /** 对组件设置监听 **/
 function initListener() {
+	$('#maskedDate').datetimepicker({
+		minView: "month",
+		format: "yyyy-mm-dd hh:ii:ss", 
+		language: "zh-CN",
+		autoclose:true
+	});
 	$("#netZoneId").bind("change", refreshCompTagsSource);
 	$("#isSupportFlex").bind("change",function(){
 		if($("#isSupportFlex").prop("checked")){
@@ -224,11 +238,22 @@ function queryInfo(cb){
 		OldUseRes.cpuCount = rs.cpuCount;
 		OldUseRes.memSize = rs.memSize;
 		OldUseRes.diskSize = rs.diskSize;
+	
 		
 		if(!CU.isEmpty(rs.cpuCount)) rs.cpuCount = rs.cpuCount/100;
 		if(!CU.isEmpty(rs.cpuFlexUpperLimit)) rs.cpuFlexUpperLimit = rs.cpuFlexUpperLimit/100;
 		if(!CU.isEmpty(rs.cpuFlexLowerLimit)) rs.cpuFlexLowerLimit = rs.cpuFlexLowerLimit/100;
 		PU.setFormData(rs, "form_appImage");
+		if(AppType == 2){
+			var timerStartTime = rs.timerStartTime;
+			$("#maskedDate").val(CU.toStringDateTime(timerStartTime));
+			
+			var timerExp = parseFloat(rs.timerExp);
+			$("#timer1").val(mo(timerExp/3600));
+			$("#timer2").val(mo(timerExp%3600/60));
+			$("#timer3").val(timerExp%60);
+		}
+		
 		var isSupportFlex = rs.isSupportFlex;
 		if(isSupportFlex){
 			$("#div_isSupportFlex_yes").show();
@@ -243,9 +268,40 @@ function queryInfo(cb){
 	}});
 }
 
+
+function mo(f) {
+	var s = f+"";
+	if(s.indexOf('.')>0) {
+		s = s.substring(0,s.indexOf('.'));
+	}
+	return parseInt(s, 10);
+}
+
+
 /**提交表单**/
 function submitForm(cb){
+	
+	
 	var bean = PU.getFormData("form_appImage");
+	
+	if(AppType == 2){
+		var d = $("#maskedDate").val();
+		d = d.replace(/-/g, "");
+		d = d.replace(/ /g, "");
+		d = d.replace(/:/g, "");
+		bean.timerStartTime = d;
+		
+		var t1 = parseInt($("#timer1").val(),10);
+		var t2 = parseInt($("#timer2").val(),10);
+		var t3 = parseInt($("#timer3").val(),10);
+		var timerExp = t1*3600+t2*60+t3;
+		
+		bean.timerExp = timerExp;
+		bean.timerType = 1;
+	}else{
+		delete bean.timerStratTime;
+		delete bean.timerExp;
+	}
 	
 	bean.isSupportFlex = $("#isSupportFlex").prop("checked") ? 1 : 0;
 	if(!bean.isSupportFlex){
@@ -300,7 +356,7 @@ function submitForm(cb){
 
 function nextForm() {
 	submitForm(function() {
-		var url = ContextPath + "/dispatch/mc/104050103?appId=" + AppId + "&appVnoId=" + AppVnoId + "&appImageId="+AppImageId;
+		var url = ContextPath + "/dispatch/mc/104050103?appId=" + AppId + "&appVnoId=" + AppVnoId + "&appImageId="+AppImageId + "&appType=" + AppType;
 		if(!CU.isEmpty(ParamPageNum)) url += "&pageNum="+ParamPageNum;
 		window.location = url;
 	});

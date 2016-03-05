@@ -10,6 +10,7 @@ import com.aic.paas.web.dep.bean.PcAppDepHistory;
 import com.aic.paas.web.dep.bean.PcAppDepInstance;
 import com.aic.paas.web.dep.peer.PcAppMonitorPeer;
 import com.aic.paas.web.rest.PcAppDeploySvc;
+import com.binary.core.util.BinaryUtils;
 import com.binary.jdbc.Page;
 
 public class PcAppMonitorPeerImpl implements PcAppMonitorPeer {
@@ -29,7 +30,10 @@ public class PcAppMonitorPeerImpl implements PcAppMonitorPeer {
 
 	@Override
 	public Page<PcAppDepInstance> queryDepInstancePage(Integer pageNum,Integer pageSize, Long depHistoryId, CPcAppDepInstance cdt,String orders) {
-		return svc.queryDepInstancePage(pageNum, pageSize, depHistoryId, cdt, orders);
+		BinaryUtils.checkEmpty(depHistoryId, "depHistoryId");
+		if(cdt == null) cdt = new CPcAppDepInstance();
+		cdt.setAppDepHistoryId(depHistoryId);
+		return svc.queryDepInstancePage(pageNum, pageSize, cdt, orders);
 	}
 
 	

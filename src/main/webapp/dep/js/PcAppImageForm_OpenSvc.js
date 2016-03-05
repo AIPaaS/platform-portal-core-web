@@ -3,6 +3,8 @@
 var AppId = "";
 var AppVnoId = "";
 var AppImageId = "";
+var APP = null;
+var AppType = "";
 var ParamPageNum = 1;
 
 var BTN_TYPE = 1;	//-1=prev 0=save 1=next
@@ -36,12 +38,27 @@ function initData(cb) {
 		return;
 	}
 	
-	$("#protocol").html("");
-	$("#paramsTable").html("");
-	$("#div_isOpen_yes").hide();
-	var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
-	$("#protocol").html(selhtml);
-	if(CU.isFunction(cb))cb();
+	RS.ajax({url:"/dep/appimage/getAppImageFormInit",ps:{appId:AppId},cb:function(rs) {
+		if(CU.isEmpty(rs)) {
+			alert("没有找到应用["+AppId+"]!");
+			pageBack();
+			return;
+		}
+		
+		APP = rs.app;
+		AppType = APP.appType;
+		
+		if(AppType == 2){
+			$("#isOpen").prop("disabled",true);
+		}
+		
+		$("#protocol").html("");
+		$("#paramsTable").html("");
+		$("#div_isOpen_yes").hide();
+		var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
+		$("#protocol").html(selhtml);
+		if(CU.isFunction(cb))cb();
+	}});
 }
 
 /** 初始化组件 **/

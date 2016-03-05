@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.aic.paas.web.dep.bean.AppMgrInfo;
 import com.aic.paas.web.dep.bean.AppResInfo;
+import com.aic.paas.web.dep.bean.AppTimerInfo;
 import com.aic.paas.web.dep.bean.AppZoneResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
 import com.aic.paas.web.dep.bean.PcApp;
@@ -96,6 +97,16 @@ public interface PcAppPeer {
 	public Page<AppResInfo> queryMgrResInfoPage(Integer pageNum, Integer pageSize, CPcApp cdt, String orders);
 	
 		
+	/**
+	 * 分页查询应用部署信息
+	 * @param pageNum : 指定页码
+	 * @param pageSize : 指定页行数
+	 * @param cdt : 条件对象
+	 * @param orders : 排序字段, 多字段以逗号分隔
+	 * @return 
+	 */
+	public Page<AppTimerInfo> queryMgrAppTimerInfoPage(Integer pageNum, Integer pageSize, CPcApp cdt, String orders);
+	
 	
 	
 	/**
