@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,6 +17,7 @@ import com.aic.paas.web.dep.bean.AppZoneResInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
 import com.aic.paas.web.dep.bean.PcApp;
 import com.aic.paas.web.dep.peer.PcAppPeer;
+import com.binary.core.http.HttpClient;
 import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
@@ -29,6 +31,10 @@ public class PcAppMvc {
 	
 	@Autowired
 	PcAppPeer appPeer;
+	
+	
+	@Value("${project.task.root}")
+	String taskRoot;
 	
 	
 	
@@ -114,5 +120,17 @@ public class PcAppMvc {
 		Page<AppTimerInfo> page = appPeer.queryMgrAppTimerInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
+	
+	
+	@RequestMapping("/startDeploy")
+	public void startDeploy(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		client.request("/dep/appimage/startDeploy?appId="+appId+"&appVnoId="+appVnoId);
+		ControllerUtils.returnJson(request, response, true);
+	}
+	
+	
 	
 }

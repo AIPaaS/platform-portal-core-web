@@ -122,6 +122,24 @@ public class CPcService implements Condition {
 
 
 	/**
+	 * condition-field: IP[IP] operate-Like[like]
+	 */
+	private String ip;
+
+
+	/**
+	 * condition-field: IP[IP] operate-Equal[=]
+	 */
+	private String ipEqual;
+
+
+	/**
+	 * condition-field: IP[IP] operate-In[in]
+	 */
+	private String[] ips;
+
+
+	/**
 	 * condition-field: 开放端口[PORT] operate-Equal[=]
 	 */
 	private Integer port;
@@ -148,6 +166,12 @@ public class CPcService implements Condition {
 	 * condition-field: 开放URL[SVC_URL] operate-Like[like]
 	 */
 	private String svcUrl;
+
+
+	/**
+	 * condition-field: 服务DNS[DOMAIN_NAME] operate-Like[like]
+	 */
+	private String domainName;
 
 
 	/**
@@ -341,33 +365,6 @@ public class CPcService implements Condition {
 
 
 	/**
-	 * condition-field: 所属应用[APP_ID] operate-Equal[=]
-	 * 外部服务字段（暂不用）
-	 */
-	private Long appId;
-
-
-	/**
-	 * condition-field: 所属应用[APP_ID] operate-In[in]
-	 * 外部服务字段（暂不用）
-	 */
-	private Long[] appIds;
-
-
-	/**
-	 * condition-field: 所属应用[APP_ID] operate-GTEqual[>=]
-	 * 外部服务字段（暂不用）
-	 */
-	private Long startAppId;
-
-	/**
-	 * condition-field: 所属应用[APP_ID] operate-LTEqual[<=]
-	 * 外部服务字段（暂不用）
-	 */
-	private Long endAppId;
-
-
-	/**
 	 * condition-field: 创建人ID[USER_ID] operate-Equal[=]
 	 * 外部服务字段
 	 */
@@ -413,6 +410,33 @@ public class CPcService implements Condition {
 	 * 外部服务字段
 	 */
 	private String[] userNames;
+
+
+	/**
+	 * condition-field: 所属应用[APP_ID] operate-Equal[=]
+	 * 应用服务定义表
+	 */
+	private Long appId;
+
+
+	/**
+	 * condition-field: 所属应用[APP_ID] operate-In[in]
+	 * 应用服务定义表
+	 */
+	private Long[] appIds;
+
+
+	/**
+	 * condition-field: 所属应用[APP_ID] operate-GTEqual[>=]
+	 * 应用服务定义表
+	 */
+	private Long startAppId;
+
+	/**
+	 * condition-field: 所属应用[APP_ID] operate-LTEqual[<=]
+	 * 应用服务定义表
+	 */
+	private Long endAppId;
 
 
 	/**
@@ -756,6 +780,30 @@ public class CPcService implements Condition {
 	}
 
 
+	public String getIp() {
+		return this.ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+
+	public String getIpEqual() {
+		return this.ipEqual;
+	}
+	public void setIpEqual(String ipEqual) {
+		this.ipEqual = ipEqual;
+	}
+
+
+	public String[] getIps() {
+		return this.ips;
+	}
+	public void setIps(String[] ips) {
+		this.ips = ips;
+	}
+
+
 	public Integer getPort() {
 		return this.port;
 	}
@@ -793,6 +841,14 @@ public class CPcService implements Condition {
 	}
 	public void setSvcUrl(String svcUrl) {
 		this.svcUrl = svcUrl;
+	}
+
+
+	public String getDomainName() {
+		return this.domainName;
+	}
+	public void setDomainName(String domainName) {
+		this.domainName = domainName;
 	}
 
 
@@ -1020,38 +1076,6 @@ public class CPcService implements Condition {
 	}
 
 
-	public Long getAppId() {
-		return this.appId;
-	}
-	public void setAppId(Long appId) {
-		this.appId = appId;
-	}
-
-
-	public Long[] getAppIds() {
-		return this.appIds;
-	}
-	public void setAppIds(Long[] appIds) {
-		this.appIds = appIds;
-	}
-
-
-	public Long getStartAppId() {
-		return this.startAppId;
-	}
-	public void setStartAppId(Long startAppId) {
-		this.startAppId = startAppId;
-	}
-
-
-	public Long getEndAppId() {
-		return this.endAppId;
-	}
-	public void setEndAppId(Long endAppId) {
-		this.endAppId = endAppId;
-	}
-
-
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -1105,6 +1129,38 @@ public class CPcService implements Condition {
 	}
 	public void setUserNames(String[] userNames) {
 		this.userNames = userNames;
+	}
+
+
+	public Long getAppId() {
+		return this.appId;
+	}
+	public void setAppId(Long appId) {
+		this.appId = appId;
+	}
+
+
+	public Long[] getAppIds() {
+		return this.appIds;
+	}
+	public void setAppIds(Long[] appIds) {
+		this.appIds = appIds;
+	}
+
+
+	public Long getStartAppId() {
+		return this.startAppId;
+	}
+	public void setStartAppId(Long startAppId) {
+		this.startAppId = startAppId;
+	}
+
+
+	public Long getEndAppId() {
+		return this.endAppId;
+	}
+	public void setEndAppId(Long endAppId) {
+		this.endAppId = endAppId;
 	}
 
 
