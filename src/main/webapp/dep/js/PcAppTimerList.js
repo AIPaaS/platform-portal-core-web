@@ -124,7 +124,7 @@ function query(pageNum){
 	var status = $("#status").val();
 	var orders = "APP_CODE , ID";
 	
-	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders,appType:2};
+	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders};
 	
 	if(!CU.isEmpty(SelForCenterType) && !CU.isEmpty(SelForCenterId)) {
 		switch (SelForCenterType) {		//1=数据中心    2=资源中心 
@@ -154,10 +154,13 @@ function query(pageNum){
 		    });
 			$("#appImageTable-tmpl").tmpl(r).appendTo("#appImageTable");
 			for(var i=0;i<data.length;i++){
-				$("#a_app_start_"+data[i].app.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					startTask(obj);
+				$("#a_app_start_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 1)
 				});
+				
 				$("#a_app_update_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
 					updateTask(obj);
@@ -174,14 +177,74 @@ function query(pageNum){
 
 
 
+//type:1=start	2=restart	3=stop
+function getSelectAppVnoTpl(appId, type) {
+	var tpl = [];
+	var obj = CurrDataMap["key_"+appId];
+	var height = 30;
+	
+	if(!CU.isEmpty(obj) && !CU.isEmpty(obj.appVnos)) {
+		var appVnos = obj.appVnos;
+		for(var i=0; i<appVnos.length; i++) {
+			tpl.push("<input id='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"' name=id='a_app_image_dep_"+type+"_"+appId+"' type='radio' onclick='selectAppVnoTplClick(this, "+type+")'>"
+						+ "<span style='padding-left:5px;'></span>"
+						+ "<label for='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"'>" + appVnos[i].versionNo 
+						+ "<span style='padding-left:25px;'></span>"
+						+ "<font color='"+(appVnos[i].setupStatus==1?"#008800":"#ff0000")+"'>["+(appVnos[i].setupStatus==1?"已完成":"未完成")+"]</font></label>");
+		}
+		
+		height *= appVnos.length;
+	}
+		
+	return "<div style='height:"+height+"px;'>"+tpl.join("<br>")+"</div>";
+}
+
+
+
+function selectAppVnoTplClick(rb, type) {
+	var id = rb.id;
+	var appVnoId = id.substring(id.lastIndexOf('_')+1);
+	id = id.substring(0, id.lastIndexOf('_'));
+	var appId = id.substring(id.lastIndexOf('_')+1);
+	if(type == 1) {
+		$("#a_app_start_"+appId).editable("hide");
+		
+		alert("定时部署");
+//		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+//			CC.showMsg({msg:"部署成功!"});
+//		}});
+	}
+}
+
+
+
+function toPoideTime(time) {
+	if(CU.isEmpty(time)) return "";
+	
+	var timerExp = parseFloat(time);
+	return mo(timerExp/3600)+"时"+mo(timerExp%3600/60)+"分"+(timerExp%60)+"秒";
+}
+function mo(f) {
+	var s = f+"";
+	if(s.indexOf('.')>0) {
+		s = s.substring(0,s.indexOf('.'));
+	}
+	return parseInt(s, 10);
+}
+
 
 
 function startTask(appinfo) {
 	alert("startTask["+appinfo.app.id+"] 待开发...");
 }
+function updateTask(appinfo) {
+	alert("updateTask["+appinfo.app.id+"] 待开发...");
+}
 function stopTask(appinfo) {
 	alert("stopTask["+appinfo.app.id+"] 待开发...");
 }
+
+
 
 
 
