@@ -161,14 +161,26 @@ function query(pageNum){
 					tpl:getSelectAppVnoTpl(data[i].app.id, 1)
 				});
 				
-				$("#a_app_update_"+data[i].app.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					updateTask(obj);
+				$("#a_app_update_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 2)
 				});
-				$("#a_app_stop_"+data[i].app.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					stopTask(obj);
+				$("#a_app_stop_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 3)
 				});
+				
+				$("#a_app_pause_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 4)
+				});
+				
 			}
 		}
 	}});
@@ -208,8 +220,31 @@ function selectAppVnoTplClick(rb, type) {
 	var appId = id.substring(id.lastIndexOf('_')+1);
 	if(type == 1) {
 		$("#a_app_start_"+appId).editable("hide");
+		
 		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
 			CC.showMsg({msg:"部署成功!"});
+			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+			$("#a_app_start_"+appId).html(im);
+			$("#a_app_start_"+appId).parent().parent().find(".deploy").html('<font color="#008800">部署中</font>');
+			$("#a_app_start_"+appId).unbind();
+		}});
+	}
+	if(type == 2 ){
+		$("#a_app_update_"+appId).editable("hide");
+		RS.ajax({url:"/dep/app/updateDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+			CC.showMsg({msg:"部署成功!"});
+		}});
+	}
+	if(type == 3 ){
+		$("#a_app_stop_"+appId).editable("hide");
+		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+			CC.showMsg({msg:"停止成功!"});
+		}});
+	}
+	if(type == 4 ){
+		$("#a_app_stop_"+appId).editable("hide");
+		RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+			CC.showMsg({msg:"停止成功!"});
 		}});
 	}
 }

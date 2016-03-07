@@ -94,7 +94,7 @@ function initComponent() {
 /** 对组件设置监听 **/
 function initListener() {
 	$('#maskedDate').datetimepicker({
-		minView: "month",
+//		minView: "month",
 		format: "yyyy-mm-dd hh:ii:ss", 
 		language: "zh-CN",
 		autoclose:true

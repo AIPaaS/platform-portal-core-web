@@ -8,6 +8,7 @@ var ParamPageNum = 1;
 
 var BTN_TYPE = 1;	//-1=prev 0=save 1=next
 var GridAddId = 1;
+var APP = null;
 
 var ImagesList = [];
 var ServiceList = [];
@@ -51,7 +52,21 @@ function initData(cb) {
 		for(var i=0; i<ServiceList.length; i++) {
 			ServiceMap["SVC_"+ServiceList[i].svc.id] = ServiceList[i];
 		}
-		if(CU.isFunction(cb)) cb();
+
+		RS.ajax({url:"/dep/appimage/getAppImageFormInit",ps:{appId:AppId},cb:function(rs) {
+			if(CU.isEmpty(rs)) {
+				alert("没有找到应用["+AppId+"]!");
+				pageBack();
+				return;
+			}
+			APP = rs.app;
+			var appType = APP.appType;
+			if(appType == 2){
+				$("#div_opensvc_param").hide();
+			}
+		}});
+		
+		if(CU.isFunction(cb))cb();
 	}});
 }
 

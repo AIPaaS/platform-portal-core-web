@@ -1,38 +1,41 @@
-var ParamPageNum = 1;
 var CurrDataMap = {};
+var CurrSvcId = "";
+
+var ParamPageNum = 1;
+
+var GridAddId = 1;
 
 var TreeData = null;
 var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区域
 var SelForCenterId = null;
 
 var mouseenter = false;
+
+
 function init() {
 	initData(function() {
 		initComponent();
 		initListener();
 		initFace();
-		query(ParamPageNum);
+		query();
 	});
 	
 }
 
+
 function initData(cb) {
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
-	
-	var selstatushtml = PU.getSelectOptionsHtml("V_PC_APP_STATUS");
-	$("#status").html(selstatushtml);
-	
-	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
+	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true ,opts:"dc|rc"},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
 		DROP["DV_RES_CENTER_CODE"] = result["rc"];
-		DROP["DV_NET_ZONE_CODE"] = result["nc"];
 		var dropList = [];
-		for(var i=0; i<result["dc"].length; i++) dropList.push(result["dc"][i]);
-		for(var i=0; i<result["rc"].length; i++) dropList.push(result["rc"][i]);
+		for(var i=1; i<result["dc"].length; i++) dropList.push(result["dc"][i]);
+		for(var i=1; i<result["rc"].length; i++) dropList.push(result["rc"][i]);
 		TreeData = toTreeData(dropList);
-		if(CU.isFunction(cb))cb();
+		if(CU.isFunction(cb)) cb();
 	}});
+	
 }
 function initComponent() {
 	$("#sel_forcenter").treeview({data:TreeData,color:"#428bca",selectedBackColor:"#f0f8ff",selectedColor:"#428bca",collapseIcon:"fa fa-minus-square-o",expandIcon:"fa fa-plus-square-o",onNodeSelected: function(e, node) {
@@ -49,10 +52,12 @@ function initComponent() {
 		query(1);
 	}});
 	$("#sel_forcenter").treeview("collapseAll", {silent:true});
+	
 }
 function initListener() {
-	$("#appCode").bind("keyup", doCdtTFKeyUp);
-	$("#appName").bind("keyup", doCdtTFKeyUp);
+	$("#svcCode").bind("keyup", doCdtTFKeyUp);
+	$("#svcName").bind("keyup", doCdtTFKeyUp);
+	
 	$("#forcenter").bind("focus",function(){
 		var sul = $('#sel_forcenter');
 		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height());
@@ -68,18 +73,24 @@ function initListener() {
 	$("#sel_forcenter").bind("click", function() {
 		if(!$("#sel_forcenter").is(":hidden")) $("#forcenter").focus();
 	});
-	$("#status").bind("change", function(){query();});
 	
 	$("#btn_query").bind("click",function(){query();});
 	$("#grid_pageSize").bind("change",function(){query();});
+	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040401?pageNum="+ParamPageNum;});
+	$("#a_add_param").bind("click",function(){addParamRow();});
+	$("#btn_Ok").bind("click",function(){saveSvcParams();});
+	
+	RS.setAjaxLodingButton("btn_Ok");
 }
 function initFace() {
 }
+
 
 /** 执行条件文本框回车查询 **/
 function doCdtTFKeyUp(e) {
 	if(e.keyCode === 13) query(1);
 }
+
 function toTreeData(dropList) {
 	var tree = [{}];
 	var pnobj = {};
@@ -106,25 +117,17 @@ function toTreeData(dropList) {
 	return tree;
 }
 
-function getNetZoneName(netZoneId) {
-	if(CU.isEmpty(netZoneId)) return "";
-	var item = CU.getDropItemRecord("DV_NET_ZONE_CODE", netZoneId);
-	if(CU.isEmpty(item)) return "";
-	return "["+item.attributes.zoneCode+"] "+item.name;
-}
-
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
-	$("#appImageTable").html("");
+	$("#externalSvcTable").html("");
 	$("#ul_pagination").remove();
 	$("#pagination_box").html('<ul id="ul_pagination" class="pagination-sm"></ul>');
 	var pageSize = $("#grid_pageSize").val();
-	var appCode = $("#appCode").val();
-	var appName = $("#appName").val();
-	var status = $("#status").val();
-	var orders = "APP_CODE , ID";
+	var svcCode = $("#svcCode").val();
+	var svcName = $("#svcName").val();
+	var orders = "SVC_CODE ,ID";
 	
-	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders};
+	var ps = {pageNum:pageNum,pageSize:pageSize,svcCode:svcCode,svcName:svcName,orders:orders};
 	
 	if(!CU.isEmpty(SelForCenterType) && !CU.isEmpty(SelForCenterId)) {
 		switch (SelForCenterType) {		//1=数据中心    2=资源中心 
@@ -132,11 +135,12 @@ function query(pageNum){
 			case "2": ps.resCenterId = SelForCenterId; break;
 		}
 	}
-	RS.ajax({url:"/dep/app/queryAppTimerPage",ps:ps,cb:function(r) {
+	
+	RS.ajax({url:"/image/service/queryPage",ps:ps,cb:function(r) {
 		if(!CU.isEmpty(r)){
 			var data = r.data;
 			for(var i=0;i<data.length;i++){
-				CurrDataMap["key_"+data[i].app.id] = data[i];
+				CurrDataMap["key_"+data[i].id] = data[i];
 			}
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
@@ -152,99 +156,91 @@ function query(pageNum){
 		        }
 		    	
 		    });
-			$("#appImageTable-tmpl").tmpl(r).appendTo("#appImageTable");
+			$('#externalSvcTable-tmpl').tmpl(r).appendTo("#externalSvcTable");
 			for(var i=0;i<data.length;i++){
-				$("#a_app_start_"+data[i].app.id).editable({
-					display:false,
-					showbuttons: false,
-			        value:"",
-					tpl:getSelectAppVnoTpl(data[i].app.id, 1)
-				});
-				
-				$("#a_app_update_"+data[i].app.id).bind("click",function(){
+				$("#a_svc_params_"+data[i].id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					updateTask(obj);
-				});
-				$("#a_app_stop_"+data[i].app.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					stopTask(obj);
+					showSvcParams(obj.id);
 				});
 			}
 		}
 	}});
 	
 }
-
-
-
-//type:1=start	2=restart	3=stop
-function getSelectAppVnoTpl(appId, type) {
-	var tpl = [];
-	var obj = CurrDataMap["key_"+appId];
-	var height = 30;
-	
-	if(!CU.isEmpty(obj) && !CU.isEmpty(obj.appVnos)) {
-		var appVnos = obj.appVnos;
-		for(var i=0; i<appVnos.length; i++) {
-			tpl.push("<input id='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"' name=id='a_app_image_dep_"+type+"_"+appId+"' type='radio' onclick='selectAppVnoTplClick(this, "+type+")'>"
-						+ "<span style='padding-left:5px;'></span>"
-						+ "<label for='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"'>" + appVnos[i].versionNo 
-						+ "<span style='padding-left:25px;'></span>"
-						+ "<font color='"+(appVnos[i].setupStatus==1?"#008800":"#ff0000")+"'>["+(appVnos[i].setupStatus==1?"已完成":"未完成")+"]</font></label>");
+function showSvcParams(id){
+	CurrSvcId = id;
+	var obj =  CurrDataMap["key_"+id];
+	$("#div_SvcParamsTitle").html("服务[<font color='blue'>"+obj.svcName+"</font>]参数列表");
+	$("#SvcParamsTable").html("");
+	RS.ajax({url:"/external/service/queryParams",ps:{svcId:obj.id, orders:"ID"},cb:function(rs) {
+		for(var i=0;i<rs.length;i++){
+			addParamRow(rs[i]);
 		}
-		
-		height *= appVnos.length;
-	}
-		
-	return "<div style='height:"+height+"px;'>"+tpl.join("<br>")+"</div>";
+	}});
+	$('#div_compTags').modal('show');
 }
 
 
 
-function selectAppVnoTplClick(rb, type) {
-	var id = rb.id;
-	var appVnoId = id.substring(id.lastIndexOf('_')+1);
-	id = id.substring(0, id.lastIndexOf('_'));
-	var appId = id.substring(id.lastIndexOf('_')+1);
-	if(type == 1) {
-		$("#a_app_start_"+appId).editable("hide");
-		
-		alert("定时部署");
-//		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
-//			CC.showMsg({msg:"部署成功!"});
-//		}});
-	}
-}
 
-
-
-function toPoideTime(time) {
-	if(CU.isEmpty(time)) return "";
+function addParamRow(obj) {
+	var key = CU.isEmpty(obj)||CU.isEmpty(obj.kvKey) ? "" : obj.kvKey;
+	var desc = CU.isEmpty(obj)||CU.isEmpty(obj.keyDesc) ? "" : obj.keyDesc;
 	
-	var timerExp = parseFloat(time);
-	return mo(timerExp/3600)+"时"+mo(timerExp%3600/60)+"分"+(timerExp%60)+"秒";
+	GridAddId ++ ;
+	var trid = "tr_add_" + GridAddId;
+	var tr = $("<tr id='"+trid+"'></tr>");
+	var a = $("<a href=\"###\" class=\"table-link  danger\" title=\"删除参数\">"
+			+ "<span class=\"fa-stack\">"
+			+ "<i class=\"fa fa-square fa-stack-2x\"></i>"
+			+ "<i class=\"fa fa-minus fa-stack-1x fa-inverse\"></i>"
+			+ "</span>"
+			+ "</a>");
+	tr.append($("<td class=\"text-center\"><input type=\"text\" class=\"form-control\" name=\"param_key\" value=\""+key+"\" maxlength=\"50\" /></td>"));
+	tr.append($("<td class=\"text-center\"><input type=\"text\" class=\"form-control\" name=\"param_desc\" value=\""+desc+"\" maxlength=\"200\"  /></td>"));
+	tr.append($("<td class=\"text-center\"></td>").append(a));
+	a.bind("click", function() {removeTag(trid);});
+	$("#SvcParamsTable").append(tr);
 }
-function mo(f) {
-	var s = f+"";
-	if(s.indexOf('.')>0) {
-		s = s.substring(0,s.indexOf('.'));
+function saveSvcParams(){
+	var params = [];
+	var keys = [];
+	
+	var param_keys = $("input[name='param_key']");
+	var param_descs = $("input[name='param_desc']");
+	for(var i=0;i<param_keys.length;i++){
+		var v = $.trim($(param_keys[i]).val());
+		var desc = $.trim($(param_descs[i]).val());
+		if(v.length == 0) {
+			CC.showMsg({msg:"第["+(i+1)+"]行，参数名不可以为空!"});
+			return false;
+		}
+		if(keys.indexOf(v) > -1) {
+ 			CC.showMsg({msg:"参数名<font color='blue'>["+v+"]</font>不可以重复!"});
+    		return;
+ 		}
+ 		keys.push(v);
+ 		
+ 		var param = {};
+		param.kvKey = v;
+		param.keyDesc = desc;
+		params.push(param);
+ 		
 	}
-	return parseInt(s, 10);
+	var paramsStr = "";
+	if(params.length>0){
+		paramsStr = CU.toString(params);
+	}
+	RS.ajax({url:"/external/service/resetParams",ps:{svcId:CurrSvcId, paramsStr:paramsStr},cb:function(r) {
+		$("#btn_Ok").prop("title", "保存成功");
+		$("#btn_Ok").tooltip("show");
+		setTimeout(function(){
+			$("#btn_Ok").prop("title", "");
+			$("#btn_Ok").tooltip("destroy");
+		}, 2000);
+	}});
 }
-
-
-
-function startTask(appinfo) {
-	alert("startTask["+appinfo.app.id+"] 待开发...");
+function removeTag(elId){
+	$("#"+elId).remove();
 }
-function updateTask(appinfo) {
-	alert("updateTask["+appinfo.app.id+"] 待开发...");
-}
-function stopTask(appinfo) {
-	alert("stopTask["+appinfo.app.id+"] 待开发...");
-}
-
-
-
-
 

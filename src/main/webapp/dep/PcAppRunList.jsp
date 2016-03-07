@@ -140,7 +140,7 @@ String ContextPath = request.getContextPath();
 			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.app.dataCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.app.resCenterId,false)}}</td>
 			<td class="text-center">{{= row.app.versionNo}}</td>
-			<td class="text-center">
+			<td class="text-center deploy">
 				{{html PU.getDropValue("V_PC_APP_STATUS",row.app.status,true)}}
 			</td>
 
@@ -166,10 +166,24 @@ String ContextPath = request.getContextPath();
 			</td>
 
 			<td class="text-center">
-				<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
+				
+				{{if  row.app.status ==1 }}
+					<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
+				{{else row.app.status == 2 }}
+				<a id="a_app_loading_{{= row.app.id}}" href="###" class="table-link danger loader" data-placement="left" title="启动">
+					<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+				</a>	
+
+				{{else row.app.status == 3  }}
+				<a id="a_app_pause_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="暂停">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-pause fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
 				<a id="a_app_update_{{= row.app.id}}" href="###" class="table-link" title="升级">
@@ -178,12 +192,32 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>
-				<a id="a_app_stop_{{= row.app.id}}" href="###" class="table-link danger" title="停止">
+
+				{{else row.app.status == 4  }}
+				<a id="a_app_open_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
 					</span>
-				</a>			
+				</a>	
+				<a id="a_app_update_{{= row.app.id}}" href="###" class="table-link" title="升级">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				
+				{{/if}}
+				<a id="a_app_log_{{= row.app.id}}" href="###" class="table-link" title="查看日志">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>		
+				
+				
+
+
 			</td>
 		</tr>
 {{/each}}
