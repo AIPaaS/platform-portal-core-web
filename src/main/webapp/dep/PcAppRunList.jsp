@@ -186,6 +186,12 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-pause fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
+				<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
 				<a id="a_app_update_{{= row.app.id}}" href="###" class="table-link" title="升级">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
@@ -198,6 +204,12 @@ String ContextPath = request.getContextPath();
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
+				<a id="a_app_pause_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="暂停">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-pause fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
 				<a id="a_app_update_{{= row.app.id}}" href="###" class="table-link" title="升级">
