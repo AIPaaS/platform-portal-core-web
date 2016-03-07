@@ -88,6 +88,7 @@ if(resList!=null && resList.size()>0) {
 
 <script src="<%=ContextPath%>/frame/js/util/CommonUtils.js"></script>
 <script src="<%=ContextPath%>/frame/js/util/json2.js"></script>
+<script src="<%=ContextPath%>/frame/js/util/Cookie.js"></script>
 <script src="<%=ContextPath%>/frame/js/util/RemoteService.js"></script>
 <script src="<%=ContextPath%>/frame/js/util/PageRequest.js"></script>
 <script src="<%=ContextPath%>/frame/js/util/ProjectUtils.js"></script>
@@ -117,6 +118,7 @@ if(resList!=null && resList.size()>0) {
 <script type="text/javascript">
 <%
 out.print("var ContextPath = '"+ContextPath+"';");
+out.print("var cookie = new Cookie();");
 out.print("var MODU = "+JSON.toString(modu)+";");		//当前模块对象
 out.print("var SU = {id:"+user.getId()+",userCode:\""+user.getUserCode()+"\",userName:\""+user.getUserName()+"\"};");		//登录用户
 out.print("var DROP = "+JSON.toString(dropmap)+";");
@@ -216,6 +218,24 @@ var CC = {
 				}
 			}
 		}
+	},
+	
+	getParentLayoutBorder : function() {
+		var w = PRQ.get("ParentLeftWidth");
+		var h = PRQ.get("ParentHeaderHeight");
+		if(CU.isEmpty(w)) {
+			w = cookie.get("ParentLeftWidth");
+			if(CU.isEmpty(w)) w = "0";
+		}else {
+			cookie.put("ParentLeftWidth", w);
+		}
+		if(CU.isEmpty(h)) {
+			h = cookie.get("ParentHeaderHeight");
+			if(CU.isEmpty(h)) h = "0";
+		}else {
+			cookie.put("ParentHeaderHeight", h);
+		}
+		return {width:parseInt(w,10),height:parseInt(h,10)};
 	}
 };
 
