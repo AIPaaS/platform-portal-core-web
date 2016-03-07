@@ -23,7 +23,7 @@ String ContextPath = request.getContextPath();
 					<a href="###" id="btn_select_imgs" data-type="checklist" data-title="选择镜像" class="fa fa-search fa-lg" data-placement="bottom"></a>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="form-group" id="div_opensvc_param">
 				<div class="col-lg-12">
 					<table class="table">
 						<thead>
