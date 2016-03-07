@@ -17,7 +17,7 @@ function forward2ModuCode(mc) {
 }
 
 function forward(url) {
-	document.getElementById("if_page").src = url + "?d="+new Date().getTime();
+	document.getElementById("if_page").src = url + "?ParentLeftWidth=220&ParentHeaderHeight=50&d="+new Date().getTime();
 }
 
 
