@@ -149,6 +149,8 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, true);
 	}
 	
+	
+	
 	@RequestMapping("/startApp")
 	public void startApp(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
 		BinaryUtils.checkEmpty(appId, "appId");

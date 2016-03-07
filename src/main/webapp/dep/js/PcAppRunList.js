@@ -181,6 +181,13 @@ function query(pageNum){
 					tpl:getSelectAppVnoTpl(data[i].app.id, 4)
 				});
 				
+				$("#a_app_destory_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 5)
+				});
+				
 			}
 		}
 	}});
@@ -245,6 +252,20 @@ function selectAppVnoTplClick(rb, type) {
 		$("#a_app_stop_"+appId).editable("hide");
 		RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
 			CC.showMsg({msg:"停止成功!"});
+		}});
+	}
+	if(type == 5 ){
+		
+		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+			$("#a_app_destory_"+appId).editable("hide");
+			$("#a_app_start_"+appId).show();
+			$("#a_app_destory_"+appId).hide();
+			$("#a_app_pause_"+appId).hide();
+			$("#a_app_open_"+appId).hide();
+			$("#a_app_update_"+appId).hide();
+			
+			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
+			CC.showMsg({msg:"销毁成功!"});
 		}});
 	}
 }

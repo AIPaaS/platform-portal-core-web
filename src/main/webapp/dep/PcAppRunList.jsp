@@ -180,6 +180,18 @@ String ContextPath = request.getContextPath();
 				</a>	
 
 				{{else row.app.status == 3  }}
+				<a id="a_app_destory_{{= row.app.id}}" href="###" class="table-link danger" title="销毁">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				<a id="a_app_start_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" data-placement="left" title="启动">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
 				<a id="a_app_pause_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="暂停">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
@@ -200,6 +212,18 @@ String ContextPath = request.getContextPath();
 				</a>
 
 				{{else row.app.status == 4  }}
+				<a id="a_app_destory_{{= row.app.id}}" href="###" class="table-link danger" title="销毁">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				<a id="a_app_start_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" data-placement="left" title="启动">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
 				<a id="a_app_open_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
@@ -218,6 +242,7 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>
+
 				
 				{{/if}}
 				<a id="a_app_log_{{= row.app.id}}" href="###" class="table-link" title="查看日志">
