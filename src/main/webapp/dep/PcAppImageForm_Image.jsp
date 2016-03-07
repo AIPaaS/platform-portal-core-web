@@ -27,8 +27,10 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="imageId" class="pull-left  control-label" style="width:100px;">镜像<font color="red">*</font>:</label>
 				<div class="pull-left ">
-					<select id="imageId" name="imageId" required style="width:400px;" class="form-control">
+					<select id="imageId" name="imageId"  style="z-index:10;POSITION: absolute;width:400px;CLIP: rect(0px auto auto 380px);"
+					onchange="document.getElementById('image').value=this.options[this.selectedIndex].text" class="form-control">
 					</select>
+					<INPUT id="image" required name="image" style="z-index:11;LEFT: 0px; TOP: 0px; WIDTH: 381px;height: 33px;position: relative;"/>
 				</div>
 				<div class="pull-left ">
 					<span></span>
@@ -37,8 +39,10 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="netZoneId" class="pull-left  control-label" style="width:100px;">网络区域<font color="red">*</font>:</label>
 				<div class="pull-left ">
-					<select id="netZoneId" name="netZoneId" required style="width:400px;" class="form-control">
+					<select id="netZoneId" name="netZoneId" required style="POSITION: absolute;width:400px;"
+					class="form-control">
 					</select>
+					
 				</div>
 				<div class="pull-left ">
 					<span></span>
