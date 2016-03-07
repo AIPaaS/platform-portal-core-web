@@ -131,6 +131,41 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, true);
 	}
 	
+	@RequestMapping("/updateDeploy")
+	public void updateDeploy(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		client.request("/dep/appimage/reDeploy?appId="+appId+"&appVnoId="+appVnoId);
+		ControllerUtils.returnJson(request, response, true);
+	}
+	
+	@RequestMapping("/stopDeploy")
+	public void stopDeploy(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		client.request("/dep/appimage/stopDeploy?appId="+appId+"&appVnoId="+appVnoId);
+		ControllerUtils.returnJson(request, response, true);
+	}
+	
+	@RequestMapping("/startApp")
+	public void startApp(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		client.request("/dep/appimage/startApp?appId="+appId+"&appVnoId="+appVnoId);
+		ControllerUtils.returnJson(request, response, true);
+	}
+	
+	@RequestMapping("/pauseApp")
+	public void pauseApp(HttpServletRequest request,HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		client.request("/dep/appimage/startApp?appId="+appId+"&appVnoId="+appVnoId);
+		ControllerUtils.returnJson(request, response, true);
+	}
 	
 	
 }
