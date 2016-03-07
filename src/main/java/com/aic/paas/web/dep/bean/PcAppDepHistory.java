@@ -21,6 +21,12 @@ public class PcAppDepHistory implements EntityBean {
 
 
 	/**
+	 * mapping-field: 任务ID[TASK_ID]
+	 */
+	private Long taskId;
+
+
+	/**
 	 * mapping-field: 租户ID[MNT_ID]
 	 */
 	private Long mntId;
@@ -348,6 +354,14 @@ public class PcAppDepHistory implements EntityBean {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+
+	public Long getTaskId() {
+		return this.taskId;
+	}
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
 	}
 
 
