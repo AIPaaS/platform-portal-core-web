@@ -83,6 +83,12 @@ public class CPcAppImage implements Condition {
 
 
 	/**
+	 * condition-field: 镜像[IMAGE] operate-Like[like]
+	 */
+	private String image;
+
+
+	/**
 	 * condition-field: 应用ID[APP_ID] operate-Equal[=]
 	 */
 	private Long appId;
@@ -884,6 +890,14 @@ public class CPcAppImage implements Condition {
 	}
 	public void setEndImageId(Long endImageId) {
 		this.endImageId = endImageId;
+	}
+
+
+	public String getImage() {
+		return this.image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 
