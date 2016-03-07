@@ -41,6 +41,29 @@ public class CPcAppDepHistory implements Condition {
 
 
 	/**
+	 * condition-field: 任务ID[TASK_ID] operate-Equal[=]
+	 */
+	private Long taskId;
+
+
+	/**
+	 * condition-field: 任务ID[TASK_ID] operate-In[in]
+	 */
+	private Long[] taskIds;
+
+
+	/**
+	 * condition-field: 任务ID[TASK_ID] operate-GTEqual[>=]
+	 */
+	private Long startTaskId;
+
+	/**
+	 * condition-field: 任务ID[TASK_ID] operate-LTEqual[<=]
+	 */
+	private Long endTaskId;
+
+
+	/**
 	 * condition-field: 租户ID[MNT_ID] operate-Equal[=]
 	 */
 	private Long mntId;
@@ -1023,6 +1046,38 @@ public class CPcAppDepHistory implements Condition {
 	}
 	public void setEndId(Long endId) {
 		this.endId = endId;
+	}
+
+
+	public Long getTaskId() {
+		return this.taskId;
+	}
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
+	}
+
+
+	public Long[] getTaskIds() {
+		return this.taskIds;
+	}
+	public void setTaskIds(Long[] taskIds) {
+		this.taskIds = taskIds;
+	}
+
+
+	public Long getStartTaskId() {
+		return this.startTaskId;
+	}
+	public void setStartTaskId(Long startTaskId) {
+		this.startTaskId = startTaskId;
+	}
+
+
+	public Long getEndTaskId() {
+		return this.endTaskId;
+	}
+	public void setEndTaskId(Long endTaskId) {
+		this.endTaskId = endTaskId;
 	}
 
 
