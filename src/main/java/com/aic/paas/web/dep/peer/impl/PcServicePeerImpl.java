@@ -218,5 +218,17 @@ public class PcServicePeerImpl implements PcServicePeer {
 		return serviceSvc.queryParams(svcId, orders);
 	}
 	
+	@Override
+	public Page<PcServiceInfo> queryPage4Info(Integer pageNum,
+			Integer pageSize, ServiceType svcType, CPcService cdt, String orders) {
+		BinaryUtils.checkEmpty(svcType, "svcType");
+		if(cdt == null) cdt = new CPcService();
+		cdt.setSvcType(svcType.getValue());
+		if(svcType != ServiceType.PLATFORM) {
+			PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
+			cdt.setMntId(user.getMerchent().getId());
+		}
+		return serviceSvc.queryPage4Info(pageNum, pageSize, cdt, orders);	
+	}
 
 }
