@@ -10,6 +10,9 @@ var ParamPageNum = 1;
 
 var CurrentCheckMnt = null;
 
+var ParentLeftWidth = 0;
+var ParentHeaderHeight = 0;
+
 
 function init() {
 	initData(function() {
@@ -23,6 +26,10 @@ function init() {
 
 
 function initData(cb) {
+	var pb = CC.getParentLayoutBorder();
+	ParentLeftWidth = pb.width;
+	ParentHeaderHeight = pb.height;
+	
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 	
@@ -61,8 +68,8 @@ function initListener() {
 	
 	$("#forcenter").bind("focus",function(){
 		var sul = $('#sel_forcenter');
-		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height());
-		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()-90);
+		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height()+ParentHeaderHeight+10);
+		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()-90+ParentLeftWidth+5);
 		sul.show(); 
 	});
 	$("#forcenter").on("blur", function() {

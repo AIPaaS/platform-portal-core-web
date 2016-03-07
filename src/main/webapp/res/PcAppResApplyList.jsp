@@ -25,13 +25,13 @@ String ContextPath = request.getContextPath();
 								&nbsp;申请日期:
 							</div>
 							<div class="form-group pull-left">
-								<input type="text" name="cdtApplyTime" id="cdtApplyTime" class="form-control" style="width:160px;" >
+								<input type="text" name="cdtApplyTime" id="cdtApplyTime" class="form-control" style="width:120px;" >
 							</div>
 							<div class="form-group pull-left">
 								&nbsp;申请状态:
 							</div>
 							<div class="form-group pull-left">
-								<select type="text" name="cdtStatus" id="cdtStatus" class="form-control" style="width:160px;"></select>
+								<select type="text" name="cdtStatus" id="cdtStatus" class="form-control" style="width:120px;"></select>
 							</div>
 						</div>
 						<button class="btn btn-primary pull-left" id="btn_query"><i class="fa fa-search fa-lg"></i> 查询</button>

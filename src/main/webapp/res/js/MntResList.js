@@ -14,6 +14,9 @@ var bgcolors = ["emerald-bg","red-bg","yellow-bg","green-bg","purple-bg","gray-b
 
 var ParamApplyPageNum = 1;
 
+var ParentLeftWidth = 0;
+var ParentHeaderHeight = 0;
+
 
 function init() {
 	initData(function() {
@@ -34,6 +37,10 @@ function init() {
 
 
 function initData(cb) {
+	var pb = CC.getParentLayoutBorder();
+	ParentLeftWidth = pb.width;
+	ParentHeaderHeight = pb.height;
+	
 	ParamApplyPageNum = PRQ.get("pageNum");
 	
 	var statusselhtml = PU.getSelectOptionsHtml("V_PS_RES_APPLY_CHECK_STATUS");
@@ -98,8 +105,8 @@ function initListener() {
 	
 	$("#forcenter1").bind("focus",function(){
 		var sul = $('#sel_forcenter1');
-		sul.css("top", $("#forcenter1").offset().top-$("#forcenter1").height());
-		sul.css("left", $("#forcenter1").offset().left-$("#forcenter1").width()-50);
+		sul.css("top", $("#forcenter1").offset().top-$("#forcenter1").height()+ParentHeaderHeight+10);
+		sul.css("left", $("#forcenter1").offset().left-$("#forcenter1").width()-50+ParentLeftWidth+5);
 		sul.show(); 
 	});
 	$("#forcenter1").on("blur", function() {
@@ -114,8 +121,8 @@ function initListener() {
 	
 	$("#forcenter").bind("focus",function(){
 		var sul = $('#sel_forcenter');
-		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height());
-		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()-90);
+		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height()+ParentHeaderHeight+10);
+		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()-90+ParentLeftWidth+5);
 		sul.show(); 
 	});
 	$("#forcenter").on("blur", function() {
