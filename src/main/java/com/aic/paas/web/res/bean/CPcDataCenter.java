@@ -61,6 +61,42 @@ public class CPcDataCenter implements Condition {
 
 
 	/**
+	 * condition-field: 集群内部服务域名后缀[DOMAIN] operate-Like[like]
+	 */
+	private String domain;
+
+
+	/**
+	 * condition-field: 集群内部服务域名后缀[DOMAIN] operate-Equal[=]
+	 */
+	private String domainEqual;
+
+
+	/**
+	 * condition-field: 集群内部服务域名后缀[DOMAIN] operate-In[in]
+	 */
+	private String[] domains;
+
+
+	/**
+	 * condition-field: 非mesos集群管理域名[EXTERNAL_DOMAIN] operate-Like[like]
+	 */
+	private String externalDomain;
+
+
+	/**
+	 * condition-field: 非mesos集群管理域名[EXTERNAL_DOMAIN] operate-Equal[=]
+	 */
+	private String externalDomainEqual;
+
+
+	/**
+	 * condition-field: 非mesos集群管理域名[EXTERNAL_DOMAIN] operate-In[in]
+	 */
+	private String[] externalDomains;
+
+
+	/**
 	 * condition-field: 备注[REMARK] operate-Like[like]
 	 */
 	private String remark;
@@ -324,6 +360,54 @@ public class CPcDataCenter implements Condition {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public String getDomain() {
+		return this.domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
+
+	public String getDomainEqual() {
+		return this.domainEqual;
+	}
+	public void setDomainEqual(String domainEqual) {
+		this.domainEqual = domainEqual;
+	}
+
+
+	public String[] getDomains() {
+		return this.domains;
+	}
+	public void setDomains(String[] domains) {
+		this.domains = domains;
+	}
+
+
+	public String getExternalDomain() {
+		return this.externalDomain;
+	}
+	public void setExternalDomain(String externalDomain) {
+		this.externalDomain = externalDomain;
+	}
+
+
+	public String getExternalDomainEqual() {
+		return this.externalDomainEqual;
+	}
+	public void setExternalDomainEqual(String externalDomainEqual) {
+		this.externalDomainEqual = externalDomainEqual;
+	}
+
+
+	public String[] getExternalDomains() {
+		return this.externalDomains;
+	}
+	public void setExternalDomains(String[] externalDomains) {
+		this.externalDomains = externalDomains;
 	}
 
 
