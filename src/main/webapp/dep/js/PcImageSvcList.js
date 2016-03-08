@@ -219,7 +219,7 @@ function cancelSvc(obj){
 	var svcName = obj.svc.svcName;
 	if((!CU.isEmpty(obj)&&!CU.isEmpty(obj.consumerDes))){
 		//有引用者  不能删除
-		CC.showMsg({svcName:"有引用者，不能删除!"});
+		CC.showMsg({msg:svcName+" 有引用者，不能删除!"});
 	}else{
 		RS.ajax({url:"/image/service/removeById",ps:{id:svcId1},cb:function(rs) {
 			query();
