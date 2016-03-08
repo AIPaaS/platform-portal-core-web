@@ -220,8 +220,11 @@ public class PcServicePeerImpl implements PcServicePeer {
 		
 		iExternalServiceManager.add(JSON.toString(externalServiceReq));
 	}
+	/**
+	 * 删除consul服务
+	 * @param record
+	 */
 	private void deleteSrvFromConsul(PcService record) {
-		CloseableHttpClient httpclient = HttpClients.createDefault();
 		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
 		externalServiceReq.setClusterId(record.getResCenterId().toString());
 		externalServiceReq.setServiceId(record.getSvcCode());
