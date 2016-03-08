@@ -137,8 +137,8 @@ String ContextPath = request.getContextPath();
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.svc.resCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.svc.protocol,false)}}</td>
 			<td class="text-center">{{= row.svc.domainName}}</td>
-			<td class="text-left">{{= row.svc.provider}}</td>
-			<td class="text-left">{{= row.svc.consumerDes}}</td>
+			<td class="text-left">{{= row.provider}}</td>
+			<td class="text-left">{{= row.consumerDes}}</td>
 			<td class="text-center">
 				<a id="a_svc_params_{{=  row.svc.id}}" href="###" class="table-link" title="参数详情">
 					<span class="fa-stack">

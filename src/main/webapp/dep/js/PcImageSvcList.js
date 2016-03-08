@@ -163,6 +163,10 @@ function query(pageNum){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
 					showSvcParams(obj.svc.id);
 				});
+				$("#btn_cancel_"+data[i].svc.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					cancelSvc(obj);
+				});
 			}
 		}
 	}});
@@ -209,6 +213,18 @@ function addParamRow(obj) {
 function closeSvcPa(){
 	$('#div_compTags').modal('hide');
 
+}
+function cancelSvc(obj){
+	var svcId1 = CU.isEmpty(obj)||CU.isEmpty(obj.svc.id) ? -1 : obj.svc.id;
+	var svcName = obj.svc.svcName;
+	if((!CU.isEmpty(obj)&&!CU.isEmpty(obj.consumerDes))){
+		//有引用者  不能删除
+		CC.showMsg({svcName:"有引用者，不能删除!"});
+	}else{
+		RS.ajax({url:"/image/service/removeById",ps:{id:svcId1},cb:function(rs) {
+			query();
+		}});
+	}
 }
 function removeTag(elId){
 	$("#"+elId).remove();
