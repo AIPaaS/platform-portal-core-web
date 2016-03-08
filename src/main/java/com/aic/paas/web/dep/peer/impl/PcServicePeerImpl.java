@@ -221,7 +221,7 @@ public class PcServicePeerImpl implements PcServicePeer {
 		iExternalServiceManager.add(JSON.toString(externalServiceReq));
 	}
 	/**
-	 * 删除consul服务
+	 * 删除已注册到consul的服务
 	 * @param record
 	 */
 	private void deleteSrvFromConsul(PcService record) {
