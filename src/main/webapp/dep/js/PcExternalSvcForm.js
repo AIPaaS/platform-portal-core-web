@@ -131,11 +131,10 @@ function submitForm() {
 	var paramsStr =  getTableParams();
 	if(paramsStr === false) return;
 	
-	var ps = {svcCode:bean.svcCode,svcName:bean.svcName,dataCenterId:bean.dataCenterId,resCenterId:bean.resCenterId,protocol:bean.protocol,port:bean.port,svcUrl:bean.svcUrl,paramsStr:paramsStr};
+	var ps = {custom4:bean.custom4,svcCode:bean.svcCode,svcName:bean.svcName,dataCenterId:bean.dataCenterId,resCenterId:bean.resCenterId,protocol:bean.protocol,ip:bean.ip,port:bean.port,svcUrl:bean.svcUrl,paramsStr:paramsStr};
 	if(!CU.isEmpty(CurrentId)){
 		ps.id = CurrentId;
 	}
-	
 	RS.ajax({url:"/external/service/saveOrUpdate",ps:ps,cb:function(rs) {
 		CurrentId = rs;
 		window.location = ContextPath + "/dispatch/mc/10404";

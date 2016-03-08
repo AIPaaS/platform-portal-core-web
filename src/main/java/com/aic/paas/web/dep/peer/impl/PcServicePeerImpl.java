@@ -1,29 +1,41 @@
 package com.aic.paas.web.dep.peer.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aic.paas.comm.util.SystemUtil;
 import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.CPcService;
+import com.aic.paas.web.dep.bean.ExternalServiceReq;
+import com.aic.paas.web.dep.bean.ExternalServiceReq.Check;
 import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
+import com.aic.paas.web.res.bean.CPcDataCenter;
+import com.aic.paas.web.res.bean.PcDataCenter;
+import com.aic.paas.web.rest.IExternalServiceManager;
+import com.aic.paas.web.rest.PcDataCenterSvc;
 import com.aic.paas.web.rest.PcServiceSvc;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.exception.ServiceException;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 public class PcServicePeerImpl implements PcServicePeer {
 	
 	
 	@Autowired
 	PcServiceSvc serviceSvc;
-//	@Autowired
-//	IExternalServiceManager iExternalServiceManager;
+	@Autowired
+	PcDataCenterSvc pcDataCenterSvc;
+	@Autowired
+	IExternalServiceManager iExternalServiceManager;
 
 	
 	
@@ -129,8 +141,9 @@ public class PcServicePeerImpl implements PcServicePeer {
 		}
 		
 		boolean isadd = record.getId() == null;
+		String svcCode = record.getSvcCode();
 		if(isadd) {
-			BinaryUtils.checkEmpty(record.getSvcCode(), "record.svcCode");
+			BinaryUtils.checkEmpty(svcCode, "record.svcCode");
 			BinaryUtils.checkEmpty(record.getSvcName(), "record.svcName");
 			BinaryUtils.checkEmpty(record.getDataCenterId(), "record.dataCenterId");
 			BinaryUtils.checkEmpty(record.getResCenterId(), "record.resCenterId");
@@ -148,15 +161,19 @@ public class PcServicePeerImpl implements PcServicePeer {
 //					BinaryUtils.checkEmpty(record.getAppId(), "record.appId");
 					BinaryUtils.checkEmpty(record.getUserId(), "record.userId");
 					BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
+					PcDataCenter dc = queryExternalDomainByDataCenterId(record.getDataCenterId());
+					record.setDomainName(svcCode + "." + dc.getExternalDomain());
 					break;
 				}
 				case 3 : {
 					BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
+					PcDataCenter dc = queryExternalDomainByDataCenterId(record.getDataCenterId());
+					record.setDomainName(svcCode + "." + dc.getDomain());
 					break;
 				}
 			}
 		}else {
-			if(record.getSvcCode() != null) BinaryUtils.checkEmpty(record.getSvcCode(), "record.svcCode");
+			if(svcCode != null) BinaryUtils.checkEmpty(svcCode, "record.svcCode");
 			if(record.getSvcName() != null) BinaryUtils.checkEmpty(record.getSvcName(), "record.svcName");
 			if(record.getDataCenterId() != null) BinaryUtils.checkEmpty(record.getDataCenterId(), "record.dataCenterId");
 			if(record.getResCenterId() != null) BinaryUtils.checkEmpty(record.getResCenterId(), "record.resCenterId");
@@ -170,19 +187,46 @@ public class PcServicePeerImpl implements PcServicePeer {
 			if(record.getUserName() != null) BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
 			if(record.getAppImageId() != null) BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
 		}
-		//调用辅助后场begin
-//		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
-//		externalServiceReq.setClusterId(record.getResCenterId().toString());
-//		externalServiceReq.setServiceId(record.getSvcCode());
-//		externalServiceReq.setServiceName(record.getSvcName());
-//		externalServiceReq.setAddress(record.getSvcUrl());
-//		externalServiceReq.setPort(record.getPort());
-//		iExternalServiceManager.add(JSON.toString(externalServiceReq));
-		//调用辅助后场end
+		registerToConsul(record);
 		return serviceSvc.saveOrUpdate(record);
 	}
-
+	private PcDataCenter queryExternalDomainByDataCenterId(Long dataCenterId) {
+		CPcDataCenter cdt = new CPcDataCenter();
+		cdt.setId(dataCenterId);
+		List<PcDataCenter> ls = pcDataCenterSvc.queryList(cdt, null);
+		return ls.size()>0 ? ls.get(0) : null;
+	}
 	
+	/**
+	 * 调用辅助后场 将服务注册到consul
+	 * @param record
+	 */
+	private void registerToConsul(PcService record) {
+		
+		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
+		externalServiceReq.setClusterId(record.getResCenterId().toString());
+		externalServiceReq.setServiceId(record.getSvcCode());
+		externalServiceReq.setServiceName(record.getSvcName());
+		externalServiceReq.setAddress(record.getIp());
+		externalServiceReq.setPort(record.getPort());
+		
+		List<Check> checks = new ArrayList<Check>();
+		Check check = new Check();
+		check.setScript(record.getCustom4());
+		check.setInterval("30s");
+		check.setTtl("60s");
+		checks.add(check);
+		externalServiceReq.setCheck(checks);
+		
+		iExternalServiceManager.add(JSON.toString(externalServiceReq));
+	}
+	private void deleteSrvFromConsul(PcService record) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
+		externalServiceReq.setClusterId(record.getResCenterId().toString());
+		externalServiceReq.setServiceId(record.getSvcCode());
+		iExternalServiceManager.delete(JSON.toString(externalServiceReq));
+	}
 	
 	@Override
 	public int removeById(ServiceType svcType, Long id) {
@@ -191,6 +235,7 @@ public class PcServicePeerImpl implements PcServicePeer {
 		
 		PcService record = queryById(svcType, id);
 		if(record != null) {
+			deleteSrvFromConsul(record);
 			return serviceSvc.removeById(id);
 		}
 		return 0;

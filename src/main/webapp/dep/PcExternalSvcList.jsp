@@ -58,6 +58,7 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">开放端口</th>
 								<th class="text-left">开放URL</th>
 								<th class="text-center">参数</th>
+								<th class="text-center">操作</th>
 							</tr>
 						</thead>
 						<tbody id="externalSvcTable">
@@ -150,6 +151,14 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-asterisk fa-stack-1x fa-inverse"></i>
 					</span>
+				</a>
+			</td>
+			<td class="text-center">
+				<a id="btn_del_{{= row.id}}" href="###" class="table-link danger" title="删除">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+						</span>
 				</a>
 			</td>
 		</tr>

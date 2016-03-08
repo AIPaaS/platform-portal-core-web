@@ -32,6 +32,18 @@ public class PcDataCenter implements EntityBean {
 
 
 	/**
+	 * mapping-field: 集群内部服务域名后缀[DOMAIN]
+	 */
+	private String domain;
+
+
+	/**
+	 * mapping-field: 非mesos集群管理域名[EXTERNAL_DOMAIN]
+	 */
+	private String externalDomain;
+
+
+	/**
 	 * mapping-field: 备注[REMARK]
 	 */
 	private String remark;
@@ -124,6 +136,22 @@ public class PcDataCenter implements EntityBean {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	public String getDomain() {
+		return this.domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
+
+	public String getExternalDomain() {
+		return this.externalDomain;
+	}
+	public void setExternalDomain(String externalDomain) {
+		this.externalDomain = externalDomain;
 	}
 
 
