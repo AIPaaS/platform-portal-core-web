@@ -33,7 +33,14 @@
 	<import resource="classpath:spring/spring-paas-frame.xml" />
 	<import resource="classpath:spring/spring-paas-web-dep.xml" />
 	
-			
+	
+	<bean class="com.aic.paas.comm.util.PropertiesPool" >
+		<property name="locations">
+			<array>
+				<value>classpath:project.properties</value>
+			</array>
+		</property>
+	</bean>
 	
 	
 	

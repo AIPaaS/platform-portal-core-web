@@ -1,5 +1,6 @@
+<%@page import="com.binary.framework.Local"%>
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@page import="com.aic.paas.frame.util.MenuHtmlBuilder,com.binary.framework.web.SessionKey,com.aic.paas.frame.cross.integration.AuthorityPreview,com.aic.paas.frame.cross.bean.DropRecord,com.aic.paas.frame.cross.bean.SysModuRes,com.aic.paas.frame.cross.bean.SysModu,com.aic.paas.frame.util.RequestKey,com.aic.paas.frame.cross.bean.ModuInfo,com.binary.core.util.BinaryUtils,java.util.Enumeration,com.aic.paas.frame.cross.integration.PaasSsoLoginUser,java.util.List,java.util.ArrayList,java.util.Map,java.util.HashMap,com.binary.json.JSON,com.binary.framework.exception.ServiceException"%>
+<%@page import="com.aic.paas.comm.util.PropertiesPool,com.aic.paas.frame.util.MenuHtmlBuilder,com.binary.framework.web.SessionKey,com.aic.paas.frame.cross.integration.AuthorityPreview,com.aic.paas.frame.cross.bean.DropRecord,com.aic.paas.frame.cross.bean.SysModuRes,com.aic.paas.frame.cross.bean.SysModu,com.aic.paas.frame.util.RequestKey,com.aic.paas.frame.cross.bean.ModuInfo,com.binary.core.util.BinaryUtils,java.util.Enumeration,com.aic.paas.frame.cross.integration.PaasSsoLoginUser,java.util.List,java.util.ArrayList,java.util.Map,java.util.HashMap,com.binary.json.JSON,com.binary.framework.exception.ServiceException"%>
 
 
 <%
@@ -34,6 +35,8 @@ while(enumeration.hasMoreElements()) {
 
 AuthorityPreview preview = user.getAuthorityPreview();
 String breadLineHtml = MenuHtmlBuilder.buildBreadLineHtml(ContextPath, info.getModu(), preview);
+
+Map<String, String> properties = PropertiesPool.getProperties();
 %>
 
 
@@ -123,6 +126,7 @@ out.print("var MODU = "+JSON.toString(modu)+";");		//当前模块对象
 out.print("var SU = {id:"+user.getId()+",userCode:\""+user.getUserCode()+"\",userName:\""+user.getUserName()+"\"};");		//登录用户
 out.print("var DROP = "+JSON.toString(dropmap)+";");
 out.print("var PRQ = new PageRequest({params:"+(params==null?"{}":JSON.toString(params))+",attributes:"+(attributes==null?"{}":JSON.toString(attributes))+"});");
+out.print("var PP = "+JSON.toString(properties)+";");
 out.print("var BASEFLAG_ERRORMSG=\"\";");
 out.print("var BASEFLAG_COUNTER=1;");
 out.print("var BaseDefaultStyleColor='black';");
