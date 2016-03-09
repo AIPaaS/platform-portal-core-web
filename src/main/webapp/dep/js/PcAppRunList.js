@@ -4,6 +4,7 @@ var CurrDataMap = {};
 var TreeData = null;
 var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区域
 var SelForCenterId = null;
+var taskUrl = "";
 
 var mouseenter = false;
 
@@ -31,6 +32,8 @@ function initData(cb) {
 	
 	var selstatushtml = PU.getSelectOptionsHtml("V_PC_APP_STATUS");
 	$("#status").html(selstatushtml);
+	
+	taskUrl = PP["project.task.root"];
 	
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
@@ -176,18 +179,19 @@ function query(pageNum){
 			        value:"",
 					tpl:getSelectAppVnoTpl(data[i].app.id, 2)
 				});
-				$("#a_app_stop_"+data[i].app.id).editable({
-					display:false,
-					showbuttons: false,
-			        value:"",
-					tpl:getSelectAppVnoTpl(data[i].app.id, 3)
+				$("#a_app_open_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					openAppTask(obj);
 				});
 				
-				$("#a_app_pause_"+data[i].app.id).editable({
-					display:false,
-					showbuttons: false,
-			        value:"",
-					tpl:getSelectAppVnoTpl(data[i].app.id, 4)
+				$("#a_app_log_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					appLogTask(obj);
+				});
+				
+				$("#a_app_pause_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					pauseAppTask(obj);
 				});
 				
 				$("#a_app_destory_"+data[i].app.id).editable({
@@ -227,8 +231,7 @@ function getSelectAppVnoTpl(appId, type) {
 	return "<div style='height:"+height+"px;'>"+tpl.join("<br>")+"</div>";
 }
 
-
-
+	
 function selectAppVnoTplClick(rb, type) {
 	var id = rb.id;
 	var appVnoId = id.substring(id.lastIndexOf('_')+1);
@@ -237,35 +240,40 @@ function selectAppVnoTplClick(rb, type) {
 	if(type == 1) {
 		$("#a_app_start_"+appId).editable("hide");
 		
-		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
-			CC.showMsg({msg:"部署成功!"});
-			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-			$("#a_app_start_"+appId).html(im);
-			$("#a_app_start_"+appId).parent().parent().find(".deploy").html('<font color="#008800">部署中</font>');
-			$("#a_app_start_"+appId).unbind();
-		}});
+		$.getJSON(taskUrl+"/dep/appimage/startDeploy?cb=?",{appId:appId, appVnoId:appVnoId},function(json){
+			
+			if(json.resultCode == "000000"){
+				var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+				$("#a_app_start_"+appId).html(im);
+				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
+				$("#a_app_start_"+appId).unbind();
+				var reqId = json.reqId;
+				appLogTask(json.appId,json.reqId);
+			}
+			
+		});
+//		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+//			CC.showMsg({msg:"部署成功!"});
+//			
+//		}});
 	}
 	if(type == 2 ){
-		$("#a_app_update_"+appId).editable("hide");
 		RS.ajax({url:"/dep/app/updateDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
-			CC.showMsg({msg:"部署成功!"});
-		}});
-	}
-	if(type == 3 ){
-		$("#a_app_stop_"+appId).editable("hide");
-		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
-			CC.showMsg({msg:"停止成功!"});
-		}});
-	}
-	if(type == 4 ){
-		$("#a_app_stop_"+appId).editable("hide");
-		RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
-			CC.showMsg({msg:"停止成功!"});
+//			CC.showMsg({msg:"部署成功!"});
+			$("#a_app_update_"+appId).editable("hide");
+			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+			$("#a_app_update_"+appId).html(im);
+			$("#a_app_update_"+appId).parent().parent().find(".deploy").html("");
+			$("#a_app_destory_"+appId).hide();
+			$("#a_app_pause_"+appId).hide();
+			$("a_app_open_"+appId).hide();
+			$("#a_app_update_"+appId).unbind();
+			appLogTask(json.appId,json.reqId);
 		}});
 	}
 	if(type == 5 ){
 		
-		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
 			$("#a_app_destory_"+appId).editable("hide");
 			$("#a_app_start_"+appId).show();
 			$("#a_app_destory_"+appId).hide();
@@ -274,22 +282,64 @@ function selectAppVnoTplClick(rb, type) {
 			$("#a_app_update_"+appId).hide();
 			
 			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
-			CC.showMsg({msg:"销毁成功!"});
+			appLogTask(json.appId,json.reqId);
 		}});
 	}
 }
 
 
 
-function startTask(appinfo) {
-	alert("startTask["+appinfo.app.id+"] 待开发...");
-}
-function updateTask(appinfo) {
-	alert("updateTask["+appinfo.app.id+"] 待开发...");
-}
-function stopTask(appinfo) {
-	alert("stopTask["+appinfo.app.id+"] 待开发...");
+function pauseAppTask(appinfo) {
+	
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId}, cb:function(json) {
+		$("#a_app_pause_"+appId).editable("hide");
+		$("#a_app_open_"+appId).show();
+		$("#a_app_pause_"+appId).hide();
+		$("#a_app_pause_"+appId).parent().parent().find(".deploy").html('<font color="#ff0000">停止</font>');
+		appLogTask(json.appId,json.reqId);
+	}});
 }
 
+function openAppTask(appinfo){
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function() {
+		$("#a_app_open_"+appId).editable("hide");
+		$("#a_app_open_"+appId).hide();
+		$("#a_app_pause_"+appId).show();
+		$("#a_app_open_"+appId).parent().parent().find(".deploy").html('<font color="#008800">运行中</font>');
+		appLogTask(json.appId,json.reqId);
+	}});
+}
+
+
+appTimer ="";
+function appLogTask(appId,reqId) {
+	$("#div_app_log").modal("show"); 
+	$("#logWindow").html("");
+	
+//	var url=webPath +"/res/appres/test";
+//	
+//	$.get(url,function(){
+//		
+//		
+//	});
+	clearInterval(appTimer);
+	appTimer = setInterval(function(){ show(appId,reqId) ;},1000);
+	
+}
+function show(appId,reqId){
+	var time=new Date();
+	var hour=time.getHours();
+	var minu=time.getMinutes();
+	var sec=time.getSeconds();
+	var datetime=hour +":" +minu+ ":" +sec;
+	var ta = document.getElementById('logWindow');
+	$("#logWindow").append(datetime+"    appId:"+appId+"    reqId:"+reqId+'\n'  );
+	ta.scrollTop = ta.scrollHeight;
+	
+	
+	
+}
 
 
