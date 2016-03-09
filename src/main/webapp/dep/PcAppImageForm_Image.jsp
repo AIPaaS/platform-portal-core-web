@@ -51,7 +51,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="cpuCount" class="pull-left  control-label" style="width:100px;">CPU数<font color="red">*</font>:</label>
 				<div class="pull-left ">
-					<input type="text" name="cpuCount" class="form-control" required  style="width:400px;" id="cpuCount" pattern="\d+(\.\d{0,1})?" maxlength="8" placeholder="0.0">
+					<input type="text" name="cpuCount" class="form-control" required  style="width:400px;" id="cpuCount" pattern="\d+(\.\d{0,1})?" maxlength="8" placeholder="必填,格式：0.0">
 				</div>
 				<div class="pull-left ">
 					<span>&nbsp;&nbsp;<font color="red">剩余：<span id="div_residue_cpuCount"></span></font></span>
@@ -60,16 +60,16 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="memSize" class="pull-left  control-label" style="width:100px;">内存大小<font color="red">*</font>:</label>
 				<div class="pull-left ">
-					<input type="text" name="memSize" required class="form-control"  style="width:400px;" id="memSize" pattern="\d{1,8}" maxlength="8" placeholder="必填">
+					<input type="text" name="memSize" required class="form-control"  style="width:400px;" id="memSize" pattern="\d{1,8}" maxlength="8" placeholder="必填,格式：整数">
 				</div>
 				<div class="pull-left ">
 					<span>M&nbsp;&nbsp;<font color="red">剩余：<span id="div_residue_memSize"></span></font></span>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="diskSize" class="pull-left  control-label" style="width:100px;">存储大小<font color="red">*</font>:</label>
+				<label for="diskSize" class="pull-left  control-label" style="width:100px;">存储大小:</label>
 				<div class="pull-left ">
-					<input type="text" name="diskSize" class="form-control" required  style="width:400px;" id="diskSize" pattern="\d{1,8}" maxlength="8" placeholder="必填">
+					<input type="text" name="diskSize" class="form-control" required  style="width:400px;" id="diskSize" pattern="\d{0,8}" maxlength="8"  placeholder="格式：整数">
 				</div>
 				<div class="pull-left ">
 					<span>M&nbsp;&nbsp;<font color="red">剩余：<span id="div_residue_diskSize"></span></font></span>
