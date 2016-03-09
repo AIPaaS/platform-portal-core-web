@@ -1,5 +1,7 @@
 package com.aic.paas.web.dep.mvc;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import com.aic.paas.web.dep.peer.PcAppPeer;
 import com.binary.core.http.HttpClient;
 import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
+import com.binary.framework.exception.ControllerException;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
 
@@ -109,8 +112,17 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
 	}
 
 	@RequestMapping("/updateDeploy")
@@ -118,8 +130,17 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
 	}
 
 	
@@ -127,24 +148,68 @@ public class PcAppMvc {
 	public void stopDeploy(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/stopDeploy?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/stopDeploy?appId=" + appId);
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
 	}
 
 	@RequestMapping("/startApp")
 	public void startApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startApp?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/startApp?appId=" + appId);
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
 	}
 
 	@RequestMapping("/pauseApp")
 	public void pauseApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startApp?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/startApp?appId=" + appId);
+		
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
+	}
+	
+	@RequestMapping("/logApp")
+	public void logApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/logApp?appId=" + appId);
+		
+		response.setCharacterEncoding("utf-8");
+	    response.setContentType("text/json");
+	    try {
+	      PrintWriter pw = response.getWriter();
+	      pw.write(json);
+	      pw.flush();
+	    } catch (IOException e) {
+	      throw new ControllerException(e);
+	    }
 	}
 
 }
