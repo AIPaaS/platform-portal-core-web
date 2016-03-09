@@ -140,7 +140,9 @@ String ContextPath = request.getContextPath();
             <h4 class="modal-title" id="div_title"></h4>
          </div>
          <div class="modal-body" style=" min-height: 400px">
-           <textarea id="logWindow" cols="90%" rows="15%" value="" style="border-style: solid;background-color:black;color:white;font-size: 15px;">sadas</textarea>
+         	<div id="appLogTable" class="table-responsive">
+         	</div>
+           <div id="appLogInfoDiv" ></div>
          </div>
       </div>
 	</div>
