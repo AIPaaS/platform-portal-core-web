@@ -25,6 +25,7 @@ import com.binary.core.util.BinaryUtils;
 import com.binary.framework.exception.ControllerException;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 @Controller
 @RequestMapping("/dep/app")
@@ -113,16 +114,18 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
+//		String json = "{" +
+//				"\"clusterId\" : \"aic-south-biu\"," +
+//				"\"clusterName\" : \"aic-south-biu\", " +
+//				"\"dataCenterId\" :\"south-center\"," +
+//				"\"dataCenterName\" : \"south-center\"," +
+//				"\"appId\" : \"runner-custom\"," +
+//				"\"appName\" : \"runner-custom\"," +
+//				"\"reqId\":1234567," +
+//				"\"resultCode\":\"000000\", " +
+//				"\"resultMsg\":\"请求已经接收\"}";
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
 	}
 
 	@RequestMapping("/updateDeploy")
@@ -131,16 +134,7 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
-
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	
@@ -149,16 +143,7 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/stopDeploy?appId=" + appId);
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
-
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/startApp")
@@ -166,16 +151,7 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startApp?appId=" + appId);
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
-
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/pauseApp")
@@ -184,32 +160,53 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startApp?appId=" + appId);
 		
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 	
 	@RequestMapping("/logApp")
-	public void logApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
+	public void logApp(HttpServletRequest request, HttpServletResponse response, Long appId,Long reqId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/logApp?appId=" + appId);
-		
-		response.setCharacterEncoding("utf-8");
-	    response.setContentType("text/json");
-	    try {
-	      PrintWriter pw = response.getWriter();
-	      pw.write(json);
-	      pw.flush();
-	    } catch (IOException e) {
-	      throw new ControllerException(e);
-	    }
+//		String json = "{" +
+//				"\"clusterId\" : \"aic-south-biu\", " +
+//				"\"clusterName\" : \"aic-south-biu\", " +
+//				" \"dataCenterId\" : \"south-center\"," +
+//				"\"dataCenterName\" : \"south-center\"," +
+//				"\"appId\" : \"runner-custom\"," +
+//				"\"reqId\":1234567," +
+//				"\"actionType\":\" deploy/start/stop/scale /upgade\"," +
+//				"\"tasks\":[" +
+//					"{\"taskName\":\"crm-web\"," +
+//					"\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
+//					"\"startTime\":\"20160115205617\"," +
+//					"\"endTime\":\" 20160115231256\"," +
+//					"\"logs\":[" +
+//						"{\"logTime\":\" 20160115205617\"," +
+//							"\"logCnt\":\"crm-web container start to deploying!\"" +
+//						"}," +
+//						"{\"logTime\":\" 20160115205617\"," +
+//							"\"logCnt\":\"crm-web container deployed successfully!\"" +
+//						"}" +
+//					"]" +
+//					"}," +
+//					"{\"taskName\":\"crm-task\"," +
+//					"\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
+//					"\"startTime\":\"20160115205617\"," +
+//					"\"endTime\":\" 20160115231256\"," +
+//					"\"logs\":[" +
+//						"{\"logTime\":\" 20160115205617\"," +
+//							"\"logCnt\":\"crm-web container start to deploying!\"" +
+//						"}," +
+//						"{\"logTime\":\" 201601152056198023\"," +
+//							"\"logCnt\":\"crm-whashashdhas d successfully!\"" +
+//						"}" +
+//					"]" +
+//					"}" +
+//					
+//				"]" +
+//			"}";
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 }
