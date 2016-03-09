@@ -3,8 +3,6 @@ package com.aic.paas.web.dep.peer.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aic.paas.comm.util.SystemUtil;
@@ -17,8 +15,6 @@ import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
-import com.aic.paas.web.res.bean.CPcDataCenter;
-import com.aic.paas.web.res.bean.PcDataCenter;
 import com.aic.paas.web.rest.IExternalServiceManager;
 import com.aic.paas.web.rest.PcDataCenterSvc;
 import com.aic.paas.web.rest.PcServiceSvc;
@@ -161,14 +157,10 @@ public class PcServicePeerImpl implements PcServicePeer {
 //					BinaryUtils.checkEmpty(record.getAppId(), "record.appId");
 					BinaryUtils.checkEmpty(record.getUserId(), "record.userId");
 					BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
-					PcDataCenter dc = queryExternalDomainByDataCenterId(record.getDataCenterId());
-					record.setDomainName(svcCode + "." + dc.getExternalDomain());
 					break;
 				}
 				case 3 : {
 					BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
-					PcDataCenter dc = queryExternalDomainByDataCenterId(record.getDataCenterId());
-					record.setDomainName(svcCode + "." + dc.getDomain());
 					break;
 				}
 			}
@@ -189,12 +181,6 @@ public class PcServicePeerImpl implements PcServicePeer {
 		}
 		registerToConsul(record);
 		return serviceSvc.saveOrUpdate(record);
-	}
-	private PcDataCenter queryExternalDomainByDataCenterId(Long dataCenterId) {
-		CPcDataCenter cdt = new CPcDataCenter();
-		cdt.setId(dataCenterId);
-		List<PcDataCenter> ls = pcDataCenterSvc.queryList(cdt, null);
-		return ls.size()>0 ? ls.get(0) : null;
 	}
 	
 	/**
