@@ -44,4 +44,12 @@ public class PcAppLogMvc {
 		Page<PcAppTask> page = pcAppTaskPeer.queryInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
+	
+	@RequestMapping("/log/status")
+	public void getStatus(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String resp = client.request("/dep/log/status?appId=" + appId);
+		String newResp = ControllerUtils.toRemoteJsonObject(resp, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(newResp));
+	}
 }
