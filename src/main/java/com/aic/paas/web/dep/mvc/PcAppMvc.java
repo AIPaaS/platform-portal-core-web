@@ -113,7 +113,6 @@ public class PcAppMvc {
 		String json = client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
 		ControllerUtils.returnJson(request, response, json);
-
 	}
 
 	@RequestMapping("/updateDeploy")
