@@ -147,7 +147,7 @@ public class PcAppMvc {
 	public void pauseApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		String json = client.request("/dep/appimage/startApp?appId=" + appId);
+		String json = client.request("/dep/appimage/pauseApp?appId=" + appId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
 		ControllerUtils.returnJson(request, response, json);
 	}
