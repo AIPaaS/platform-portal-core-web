@@ -1,7 +1,5 @@
 package com.aic.paas.web.dep.mvc;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +20,6 @@ import com.aic.paas.web.dep.peer.PcAppPeer;
 import com.binary.core.http.HttpClient;
 import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
-import com.binary.framework.exception.ControllerException;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
 import com.binary.json.JSON;
@@ -125,7 +122,8 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, json);
 	}
 
 	@RequestMapping("/stopDeploy")
@@ -133,7 +131,8 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/stopDeploy?appId=" + appId);
-		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, json);
 	}
 
 	@RequestMapping("/startApp")
@@ -141,7 +140,8 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startApp?appId=" + appId);
-		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, json);
 	}
 
 	@RequestMapping("/pauseApp")
@@ -149,8 +149,8 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startApp?appId=" + appId);
-
-		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, json);
 	}
 
 	@RequestMapping("/logApp")
