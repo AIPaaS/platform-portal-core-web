@@ -15,6 +15,7 @@ import com.binary.core.http.HttpClient;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 @Controller
 @RequestMapping("/dep/applog")
@@ -35,7 +36,7 @@ public class PcAppLogMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String resp = client.request("/dep/log/query?appId=" + appId + "&reqId=" + reqId + "&lastTime=" + lastTime);
 		String newResp = ControllerUtils.toRemoteJsonObject(resp, String.class);
-		ControllerUtils.returnJson(request, response, newResp);
+		ControllerUtils.returnJson(request, response, JSON.toObject(newResp));
 	}
 
 	@RequestMapping("/log/task")

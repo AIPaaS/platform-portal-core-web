@@ -112,7 +112,7 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, json);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/updateDeploy")
@@ -122,7 +122,7 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, json);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/stopDeploy")
@@ -131,7 +131,7 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/stopDeploy?appId=" + appId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, json);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/startApp")
@@ -140,7 +140,7 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/startApp?appId=" + appId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, json);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/pauseApp")
@@ -149,7 +149,7 @@ public class PcAppMvc {
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/dep/appimage/pauseApp?appId=" + appId);
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, json);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/logApp")
