@@ -138,6 +138,22 @@ String ContextPath = request.getContextPath();
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="div_title"></h4>
+            <input type="hidden" id="lastTime" value = "0">
+         </div>
+         <div class="modal-body" style=" min-height: 400px">
+           <textarea id="logWindow" cols="90%" rows="15%" value="" style="width:768px;border-style: solid;background-color:black;color:white;font-size: 15px;">sadas</textarea>
+         </div>
+      </div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="div_app_all_log" tabindex="-1" role="dialog" aria-hidden="true">
+   <div class="modal-dialog" style="width:800px; min-height: 600px">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="div_title"></h4>
          </div>
          <div class="modal-body" style=" min-height: 400px">
          	<div id="appLogTable" class="table-responsive">
@@ -258,7 +274,19 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>
-
+				{{else row.app.status == 5  }}
+				<a id="a_app_destory_{{= row.app.id}}" href="###" class="table-link danger" title="销毁">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				<a id="a_app_start_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" data-placement="left" title="启动">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>	
 				
 				{{/if}}
 				<a id="a_app_log_{{= row.app.id}}" href="###" class="table-link" title="查看日志">

@@ -186,7 +186,7 @@ function query(pageNum){
 				
 				$("#a_app_log_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					appLogTask(obj);
+					window.location = ContextPath + "/dispatch/mc/104060103?appId="+obj.app.id;
 				});
 				
 				$("#a_app_pause_"+data[i].app.id).bind("click",function(){
@@ -246,8 +246,8 @@ function selectAppVnoTplClick(rb, type) {
 				$("#a_app_start_"+appId).html(im);
 				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
 				$("#a_app_start_"+appId).unbind();
-//				var reqId = json.reqId;
-//				appLogTask(appId,json.reqId);
+				var reqId = json.reqId;
+				appLogTask(appId,json.reqId);
 		}});
 		
 //		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
@@ -272,7 +272,13 @@ function selectAppVnoTplClick(rb, type) {
 	if(type == 5 ){
 		
 		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
+			
 			$("#a_app_destory_"+appId).editable("hide");
+			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+			$("#a_app_destory_"+appId).html(im);
+			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html("");
+			$("#a_app_destory_"+appId).unbind();
+			
 			$("#a_app_start_"+appId).show();
 			$("#a_app_destory_"+appId).hide();
 			$("#a_app_pause_"+appId).hide();
@@ -292,9 +298,14 @@ function pauseAppTask(appinfo) {
 	var appId = appinfo.app.id ;
 	RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_pause_"+appId).editable("hide");
-		$("#a_app_open_"+appId).show();
-		$("#a_app_pause_"+appId).hide();
-		$("#a_app_pause_"+appId).parent().parent().find(".deploy").html('<font color="#ff0000">停止</font>');
+		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+		$("#a_app_pause_"+appId).html(im);
+		$("#a_app_pause_"+appId).parent().parent().find(".deploy").html("");
+		$("#a_app_pause_"+appId).unbind();
+		
+		
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
 		appLogTask(json.appId,json.reqId);
 	}});
 }
@@ -303,9 +314,13 @@ function openAppTask(appinfo){
 	var appId = appinfo.app.id ;
 	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function() {
 		$("#a_app_open_"+appId).editable("hide");
-		$("#a_app_open_"+appId).hide();
-		$("#a_app_pause_"+appId).show();
-		$("#a_app_open_"+appId).parent().parent().find(".deploy").html('<font color="#008800">运行中</font>');
+		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+		$("#a_app_open_"+appId).html(im);
+		$("#a_app_open_"+appId).parent().parent().find(".deploy").html("");
+		$("#a_app_open_"+appId).unbind();
+		
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
 		appLogTask(json.appId,json.reqId);
 	}});
 }
@@ -314,15 +329,48 @@ function openAppTask(appinfo){
 appTimer ="";
 
 function appLogTask(appId,reqId){
-//	RS.ajax({url:"/dep/app/logApp", ps:{appId:appId,reqId:reqId}, cb:function(json) {
-//		
-//	}
-	
+	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
+		var tasks = json.tasks;
+		var lastTime = json.lastTime;
+		$("#lastTime").val(lastTime);
+		var taskLog = "";
+		for(var i = 0 ;i<tasks.length;i++){
+			var task = tasks[i];
+			for(var j = 0 ;j<task.logs.length;j++){
+				var logs = task.logs[j];
+				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
+			}
+		}
+		$("#div_app_log").modal("show"); 
+		$("#logWindow").html("");
+		$("#logWindow").html(taskLog);
+	}});
+	clearInterval(appTimer);
+	appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
 }
 
+function logTimer(appId,reqId){
+	var lastTime =$("#lastTime").val();
+	RS.ajax({url:"/dep/app/logApp", ps:{appId:appId,reqId:reqId,lastTime:lastTime}, cb:function(json) {
+		var tasks = json.tasks;
+		var lastTime = json.lastTime;
+		$("#lastTime").val(lastTime);
+		var taskLog = "";
+		for(var i = 0 ;i<tasks.length;i++){
+			var task = tasks[i];
+			for(var j = 0 ;j<task.logs.length;j++){
+				var logs = task.logs[j];
+				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
+			}
+		}
+		$("#logWindow").append(taskLog);
+		var ta = document.getElementById('logWindow');
+		ta.scrollTop = ta.scrollHeight;
+	}});
+}
 
 function appAllLogTask(appId,reqId) {
-	$("#div_app_log").modal("show"); 
+	$("#div_app_all_log").modal("show"); 
 	$("#logWindow").html("");
 	
 	
