@@ -329,24 +329,24 @@ function openAppTask(appinfo){
 appTimer ="";
 
 function appLogTask(appId,reqId){
-	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
-		var tasks = json.tasks;
-		var lastTime = json.lastTime;
-		$("#lastTime").val(lastTime);
-		var taskLog = "";
-		for(var i = 0 ;i<tasks.length;i++){
-			var task = tasks[i];
-			for(var j = 0 ;j<task.logs.length;j++){
-				var logs = task.logs[j];
-				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
-			}
-		}
-		$("#div_app_log").modal("show"); 
-		$("#logWindow").html("");
-		$("#logWindow").html(taskLog);
-	}});
-	clearInterval(appTimer);
-	appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
+//	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
+//		var tasks = json.tasks;
+//		var lastTime = json.lastTime;
+//		$("#lastTime").val(lastTime);
+//		var taskLog = "";
+//		for(var i = 0 ;i<tasks.length;i++){
+//			var task = tasks[i];
+//			for(var j = 0 ;j<task.logs.length;j++){
+//				var logs = task.logs[j];
+//				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
+//			}
+//		}
+//		$("#div_app_log").modal("show"); 
+//		$("#logWindow").html("");
+//		$("#logWindow").html(taskLog);
+//	}});
+//	clearInterval(appTimer);
+//	appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
 }
 
 function logTimer(appId,reqId){
