@@ -158,13 +158,15 @@ function appLogTask(appId,reqId){
 		var tasks = json.tasks;
 		var lastTime = json.lastFetchTime;
 		$("#lastTime").val(lastTime);
-		var taskLog = json.actionType+"    开始…… \n";
+		var actionType =  CU.getDropItemRecord("V_PC_APP_RUN_STATUS", json.actionType).name;
+		var taskLog = actionType+"    开始…… \n";
 		
 		for(var i = 0 ;i<tasks.length;i++){
 			var task = tasks[i];
 			for(var j = 0 ;j<task.logs.length;j++){
 				var logs = task.logs[j];
-				taskLog += logs.logTime+": " +task.taskName+"   执行"+logs.taskState+"\n";
+				var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
+				taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
 			}
 		}
 		$("#div_app_log").modal("show"); 
@@ -188,7 +190,8 @@ function logTimer(appId,reqId){
 				var task = tasks[i];
 				for(var j = 0 ;j<task.logs.length;j++){
 					var logs = task.logs[j];
-					taskLog += logs.logTime+": " +task.taskName+"执行"+logs.taskState+"\n";
+					var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
+					taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
 				}
 			}
 			$("#logWindow").append(taskLog);

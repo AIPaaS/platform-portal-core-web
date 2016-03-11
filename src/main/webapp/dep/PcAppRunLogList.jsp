@@ -101,7 +101,10 @@ String ContextPath = request.getContextPath();
 <script id="appImageTable-tmpl" type="text/x-jquery-tmpl">
 	{{each(i,row) data}}
 		<tr>
-			<td class="text-center">{{= row.pcAppTask.taskUserName}}</td>
+			<td class="text-center">
+				{{html PU.getDropValue("V_PC_APP_RUN_STATUS",row.pcAppTask.taskUserName,true)}}
+
+			</td>
 			<td class="text-center">{{= row.versionNo}}</td>
 			<td class="text-center">
 					{{= CU.toStringDateTime(row.pcAppTask.taskStartTime)}}
