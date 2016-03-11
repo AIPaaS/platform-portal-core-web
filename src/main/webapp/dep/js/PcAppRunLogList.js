@@ -103,7 +103,7 @@ function getNetZoneName(netZoneId) {
 
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
-	$("#appImageTable").html("");
+	$("#appTaskTable").html("");
 	$("#ul_pagination").remove();
 	$("#pagination_box").html('<ul id="ul_pagination" class="pagination-sm"></ul>');
 	var pageSize = $("#grid_pageSize").val();
