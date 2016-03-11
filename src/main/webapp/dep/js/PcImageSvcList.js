@@ -10,7 +10,8 @@ var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区�
 var SelForCenterId = null;
 
 var mouseenter = false;
-
+var ParentLeftWidth = 0;
+var ParentHeaderHeight = 0;
 
 function init() {
 	initData(function() {
@@ -24,6 +25,9 @@ function init() {
 
 
 function initData(cb) {
+	var pb = CC.getParentLayoutBorder();
+	ParentLeftWidth = pb.width;
+	ParentHeaderHeight = pb.height;
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true ,opts:"dc|rc"},cb:function(result) {
@@ -60,8 +64,8 @@ function initListener() {
 	
 	$("#forcenter").bind("focus",function(){
 		var sul = $('#sel_forcenter');
-		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height());
-		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()*2-40);
+		sul.css("top", $("#forcenter").offset().top-$("#forcenter").height()+ParentHeaderHeight+10);
+		sul.css("left", $("#forcenter").offset().left-$("#forcenter").width()-130+ParentLeftWidth+5);
 		sul.show(); 
 	});
 	$("#forcenter").on("blur", function() {
