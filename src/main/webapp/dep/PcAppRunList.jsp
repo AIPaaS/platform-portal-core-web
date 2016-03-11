@@ -375,7 +375,13 @@ String ContextPath = request.getContextPath();
 						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>		
-
+				
+				<a id="a_app_status_{{= row.app.id}}" href="###" class="table-link" title="查看">
+					<span class="fa-stack">
+						<i class="fa fa-building fa-stack-2x"></i>
+						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
 
 			</td>
 		</tr>
