@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.aic.paas.web.dep.bean.CPcAppTask;
-import com.aic.paas.web.dep.bean.PcAppTask;
 import com.aic.paas.web.dep.peer.PcAppTaskPeer;
+import com.aic.paas.web.dep.peer.bean.PcAppTaskInfo;
 import com.binary.core.http.HttpClient;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
@@ -41,7 +41,7 @@ public class PcAppLogMvc {
 
 	@RequestMapping("/log/task")
 	public void getLog(HttpServletRequest request, HttpServletResponse response, Integer pageNum, Integer pageSize, CPcAppTask cdt, String orders) {
-		Page<PcAppTask> page = pcAppTaskPeer.queryInfoPage(pageNum, pageSize, cdt, orders);
+		Page<PcAppTaskInfo> page = pcAppTaskPeer.queryInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
 	
