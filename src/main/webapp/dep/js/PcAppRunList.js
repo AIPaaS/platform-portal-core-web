@@ -8,16 +8,20 @@ var taskUrl = "";
 
 var mouseenter = false;
 
+var pageTimer = null;
+
 var ParentLeftWidth = 0;
 var ParentHeaderHeight = 0;
 
 
 function init() {
 	initData(function() {
+		
 		initComponent();
 		initListener();
 		initFace();
 		query(ParamPageNum);
+		refreshPage();
 	});
 	
 }
@@ -124,6 +128,88 @@ function getNetZoneName(netZoneId) {
 	if(CU.isEmpty(item)) return "";
 	return "["+item.attributes.zoneCode+"] "+item.name;
 }
+
+
+function refreshPage(){
+	
+	if(pageTimer){
+		
+		clearInterval(pageTimer);
+	}
+	pageTimer = setInterval(function(){refreshQuery();},1000*10);
+}
+
+function refreshQuery(){
+	var pageNum = $("#pagination_box").find("li.active").text();
+	var pageSize = $("#grid_pageSize").val();
+	var appCode = $("#appCode").val();
+	var appName = $("#appName").val();
+	var status = $("#status").val();
+	var orders = "APP_CODE , ID";
+	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders};
+	
+	if(!CU.isEmpty(SelForCenterType) && !CU.isEmpty(SelForCenterId)) {
+		switch (SelForCenterType) {		//1=数据中心    2=资源中心 
+			case "1": ps.dataCenterId = SelForCenterId; break;
+			case "2": ps.resCenterId = SelForCenterId; break;
+		}
+	}
+	RS.ajax({url:"/dep/app/queryRunAppPage",ps:ps,cb:function(r) {
+		if(!CU.isEmpty(r)){
+			var data = r.data;
+			for(var i=0;i<data.length;i++){
+				if(data[i].app.status  ==1){
+					$("#a_app_start_"+data[i].app.id).show();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).hide();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
+				}else if (data[i].app.status  ==2){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).show();
+					$("#a_app_destory_"+data[i].app.id).hide();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#008800">执行中</font>');
+					
+				}else if (data[i].app.status  ==3){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).show();
+					$("#a_app_update_"+data[i].app.id).show();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#008800">运行中</font>');
+				}else if (data[i].app.status  ==4){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).show();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).show();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#ff0000">停止</font>');
+				}else if (data[i].app.status  ==5){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="red">部署失败</font>');
+				}
+			}
+		}
+		
+		
+		
+	}});
+	
+	
+}
+
 
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
@@ -312,7 +398,7 @@ function pauseAppTask(appinfo) {
 
 function openAppTask(appinfo){
 	var appId = appinfo.app.id ;
-	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function() {
+	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_open_"+appId).editable("hide");
 		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
 		$("#a_app_open_"+appId).html(im);
@@ -333,13 +419,13 @@ function appLogTask(appId,reqId){
 		var tasks = json.tasks;
 		var lastTime = json.lastFetchTime;
 		$("#lastTime").val(lastTime);
-		var taskLog = "";
+		var taskLog = json.actionType+"    开始…… \n";
+		
 		for(var i = 0 ;i<tasks.length;i++){
-			
 			var task = tasks[i];
 			for(var j = 0 ;j<task.logs.length;j++){
 				var logs = task.logs[j];
-				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
+				taskLog += task.startTime+": " +task.taskName+"   执行"+logs.taskState+"\n";
 			}
 		}
 		$("#div_app_log").modal("show"); 
@@ -352,88 +438,24 @@ function appLogTask(appId,reqId){
 
 function logTimer(appId,reqId){
 	var lastTime =$("#lastTime").val();
+	
 	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:lastTime}, cb:function(json) {
 		var tasks = json.tasks;
 		var lastTime = json.lastFetchTime;
-		$("#lastTime").val(lastTime);
-		var taskLog = "";
-		for(var i = 0 ;i<tasks.length;i++){
-			var task = tasks[i];
-			for(var j = 0 ;j<task.logs.length;j++){
-				var logs = task.logs[j];
-				taskLog +=logs.logTime+":"+logs.logCnt +"\n";
-			}
-		}
-		$("#logWindow").append(taskLog);
-		var ta = document.getElementById('logWindow');
-		ta.scrollTop = ta.scrollHeight;
-	}});
-}
-
-function appAllLogTask(appId,reqId) {
-	$("#div_app_all_log").modal("show"); 
-	$("#logWindow").html("");
-	
-	
-	RS.ajax({url:"/dep/app/logApp", ps:{appId:appId,reqId:reqId}, cb:function(json) {
-		var tm = '<table class="table">';
-		tm +="<td><tr>集群名称</tr><tr>"+json.clusterName+"</tr></td>";
-		tm +="<td><tr>数据中心</tr><tr>"+json.dataCenterName+"</tr></td></table>";
-		$("#appLogTable").html(tm);
-		var tasks = json.tasks;
-		var um = '<ul class="nav nav-tabs" id="myTab">';
-		for(var i = 0 ;i<tasks.length;i++){
-			var task = tasks[i];
-			if(i==0){
-				um += '<li class="active"><a href="#'+task.taskName+'">'+task.taskName+'</a></li> ';
-			}else{
-				um += '<li><a href="#'+task.taskName+'">'+task.taskName+'</a></li> ';
-			}
-		}
-		um +='</ul><div class="tab-content"> ';
-		for(var i = 0 ;i<tasks.length;i++){
-			var task = tasks[i];
-			var logs = task.logs;
+		if(lastTime != 0 ){
+			$("#lastTime").val(lastTime);
 			var taskLog = "";
-			for(var j = 0;j<logs.length;j++){
-				taskLog +=logs[j].logTime+":"+logs[j].logCnt +"\n";
+			for(var i = 0 ;i<tasks.length;i++){
+				var task = tasks[i];
+				for(var j = 0 ;j<task.logs.length;j++){
+					var logs = task.logs[j];
+					taskLog += task.startTime+": " +task.taskName+"执行"+logs.taskState+"\n";
+				}
 			}
-			if(i==0){
-				um += '<div class="tab-pane active" id="'+task.taskName+'">'+
-				'<textarea id="logWindow_'+task.taskName+'" cols="90%" rows="15%" value="" style="width:768px;border-style: solid;background-color:black;color:white;font-size: 15px;">'+taskLog+'</textarea></div>  ';
-			}else{
-				um += '<div class="tab-pane" id="'+task.taskName+'">'+
-				'<textarea id="logWindow_'+task.taskName+'" cols="90%" rows="15%" value="" style="width:768px;border-style: solid;background-color:black;color:white;font-size: 15px;">'+taskLog+'</textarea></div>  ';
-			}
+			$("#logWindow").append(taskLog);
+			var ta = document.getElementById('logWindow');
+			ta.scrollTop = ta.scrollHeight;
 		}
-		um += '</div>';
-		$("#appLogInfoDiv").html(um);
-		tabInit();
-		
-		
 	}});
-//	clearInterval(appTimer);
-//	appTimer = setInterval(function(){ show(appId,reqId) ;},1000);
-	
-}
-function show(appId,reqId){
-	var time=new Date();
-	var hour=time.getHours();
-	var minu=time.getMinutes();
-	var sec=time.getSeconds();
-	var datetime=hour +":" +minu+ ":" +sec;
-	var ta = document.getElementById('logWindow');
-	$("#logWindow").append(datetime+"    appId:"+appId+"    reqId:"+reqId+'\n'  );
-	ta.scrollTop = ta.scrollHeight;
-	
-}
-
-
-function tabInit(){
-//	$('#myTab a:last').tab('show');//初始化显示哪个tab 
-    $('#myTab a').click(function (e) { 
-      e.preventDefault();//阻止a链接的跳转行为 
-      $(this).tab('show');//显示当前选中的链接及关联的content 
-    }) 
 }
 
