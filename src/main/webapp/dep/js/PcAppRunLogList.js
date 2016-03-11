@@ -124,7 +124,7 @@ function query(pageNum){
 		if(!CU.isEmpty(r)){
 			var data = r.data;
 			for(var i=0;i<data.length;i++){
-				CurrDataMap["key_"+data[i].id] = data[i];
+				CurrDataMap["key_"+data[i].pcAppTask.id] = data[i];
 			}
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
@@ -142,9 +142,9 @@ function query(pageNum){
 		    });
 			$("#appImageTable-tmpl").tmpl(r).appendTo("#appTaskTable");
 			for(var i=0;i<data.length;i++){
-				$("#a_app_log_"+data[i].id).bind("click",function(){
+				$("#a_app_log_"+data[i].pcAppTask.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					appLogTask(obj.appId,obj.id);
+					appLogTask(obj.pcAppTask.appId,obj.pcAppTask.id);
 				});
 			}
 		}

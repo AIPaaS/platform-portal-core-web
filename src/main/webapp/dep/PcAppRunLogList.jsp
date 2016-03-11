@@ -101,23 +101,23 @@ String ContextPath = request.getContextPath();
 <script id="appImageTable-tmpl" type="text/x-jquery-tmpl">
 	{{each(i,row) data}}
 		<tr>
-			<td class="text-center">{{= row.taskUserName}}</td>
-			<td class="text-center">{{= row.appVnoId}}</td>
+			<td class="text-center">{{= row.pcAppTask.taskUserName}}</td>
+			<td class="text-center">{{= row.versionNo}}</td>
 			<td class="text-center">
-					{{= CU.toStringDateTime(row.taskStartTime)}}
+					{{= CU.toStringDateTime(row.pcAppTask.taskStartTime)}}
 			<td class="text-center">
-					{{= CU.toStringDateTime(row.taskEndTime)}}
+					{{= CU.toStringDateTime(row.pcAppTask.taskEndTime)}}
 			</td>
 			
 
 			<td class="text-center deploy">
-				{{html PU.getDropValue("V_PC_APP_TASK_STATUS",row.status,true)}}
+				{{html PU.getDropValue("V_PC_APP_TASK_STATUS",row.pcAppTask.status,true)}}
 			</td>
 
 
 
 			<td class="text-center">
-				<a id="a_app_log_{{= row.id}}" href="###" class="table-link" title="查看日志">
+				<a id="a_app_log_{{= row.pcAppTask.id}}" href="###" class="table-link" title="查看日志">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
