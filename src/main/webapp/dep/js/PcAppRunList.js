@@ -328,10 +328,9 @@ function selectAppVnoTplClick(rb, type) {
 		
 		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
 			
-				var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-				$("#a_app_start_"+appId).html(im);
 				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
-				$("#a_app_start_"+appId).unbind();
+				$("#a_app_start_"+appId).hide();
+				$("#a_app_loading_"+appId).show();
 				var reqId = json.reqId;
 				appLogTask(appId,json.reqId);
 		}});
@@ -345,13 +344,12 @@ function selectAppVnoTplClick(rb, type) {
 		RS.ajax({url:"/dep/app/updateDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
 //			CC.showMsg({msg:"部署成功!"});
 			$("#a_app_update_"+appId).editable("hide");
-			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-			$("#a_app_update_"+appId).html(im);
+			$("#a_app_update_"+appId).hide();
+			$("#a_app_loading_"+appId).show();
 			$("#a_app_update_"+appId).parent().parent().find(".deploy").html("");
 			$("#a_app_destory_"+appId).hide();
 			$("#a_app_pause_"+appId).hide();
 			$("a_app_open_"+appId).hide();
-			$("#a_app_update_"+appId).unbind();
 			appLogTask(json.appId,json.reqId);
 		}});
 	}
@@ -360,13 +358,9 @@ function selectAppVnoTplClick(rb, type) {
 		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
 			
 			$("#a_app_destory_"+appId).editable("hide");
-			var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-			$("#a_app_destory_"+appId).html(im);
-			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html("");
-			$("#a_app_destory_"+appId).unbind();
-			
-			$("#a_app_start_"+appId).show();
 			$("#a_app_destory_"+appId).hide();
+			$("#a_app_loading_"+appId).show();
+			$("#a_app_start_"+appId).hide();
 			$("#a_app_pause_"+appId).hide();
 			$("#a_app_open_"+appId).hide();
 			$("#a_app_update_"+appId).hide();
@@ -385,11 +379,8 @@ function pauseAppTask(appinfo) {
 	RS.ajax({url:"/dep/app/pauseApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_pause_"+appId).editable("hide");
 		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-		$("#a_app_pause_"+appId).html(im);
-		$("#a_app_pause_"+appId).parent().parent().find(".deploy").html("");
-		$("#a_app_pause_"+appId).unbind();
-		
-		
+		$("#a_app_pause_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
 		$("#a_app_destory_"+appId).hide();
 		$("#a_app_update_"+appId).hide();
 		appLogTask(json.appId,json.reqId);
@@ -400,10 +391,8 @@ function openAppTask(appinfo){
 	var appId = appinfo.app.id ;
 	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_open_"+appId).editable("hide");
-		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
-		$("#a_app_open_"+appId).html(im);
-		$("#a_app_open_"+appId).parent().parent().find(".deploy").html("");
-		$("#a_app_open_"+appId).unbind();
+		$("#a_app_open_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
 		
 		$("#a_app_destory_"+appId).hide();
 		$("#a_app_update_"+appId).hide();
