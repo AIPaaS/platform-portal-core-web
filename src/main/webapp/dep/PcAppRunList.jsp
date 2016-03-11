@@ -270,7 +270,7 @@ String ContextPath = request.getContextPath();
 							<i class="fa fa-play fa-stack-1x fa-inverse"></i>
 						</span>
 					</a>	
-					<a id="a_app_destory_{{= row.app.id}}" href="###" style="display:none;" class="table-link danger" title="销毁">
+					<a id="a_app_destory_{{= row.app.id}}" href="###"  class="table-link danger" title="销毁">
 						<span class="fa-stack">
 							<i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
