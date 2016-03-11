@@ -425,7 +425,7 @@ function appLogTask(appId,reqId){
 			var task = tasks[i];
 			for(var j = 0 ;j<task.logs.length;j++){
 				var logs = task.logs[j];
-				taskLog += task.startTime+": " +task.taskName+"   执行"+logs.taskState+"\n";
+				taskLog +=logs.logTime+": " +task.taskName+"   执行"+logs.taskState+"\n";
 			}
 		}
 		$("#div_app_log").modal("show"); 
@@ -449,7 +449,7 @@ function logTimer(appId,reqId){
 				var task = tasks[i];
 				for(var j = 0 ;j<task.logs.length;j++){
 					var logs = task.logs[j];
-					taskLog += task.startTime+": " +task.taskName+"执行"+logs.taskState+"\n";
+					taskLog += logs.logTime+": " +task.taskName+"执行"+logs.taskState+"\n";
 				}
 			}
 			$("#logWindow").append(taskLog);
