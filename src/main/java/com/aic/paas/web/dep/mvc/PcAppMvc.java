@@ -22,6 +22,7 @@ import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 @Controller
 @RequestMapping("/dep/app")
@@ -109,8 +110,9 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/updateDeploy")
@@ -118,33 +120,82 @@ public class PcAppMvc {
 		BinaryUtils.checkEmpty(appId, "appId");
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
-	
 	@RequestMapping("/stopDeploy")
 	public void stopDeploy(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/stopDeploy?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/stopDeploy?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/startApp")
 	public void startApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startApp?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/startApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/pauseApp")
 	public void pauseApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
 		BinaryUtils.checkEmpty(appId, "appId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		client.request("/dep/appimage/startApp?appId=" + appId);
-		ControllerUtils.returnJson(request, response, true);
+		String json = client.request("/dep/appimage/pauseApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+	}
+
+	@RequestMapping("/logApp")
+	public void logApp(HttpServletRequest request, HttpServletResponse response, Long appId, Long reqId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/logApp?appId=" + appId);
+		// String json = "{" +
+		// "\"clusterId\" : \"aic-south-biu\", " +
+		// "\"clusterName\" : \"aic-south-biu\", " +
+		// " \"dataCenterId\" : \"south-center\"," +
+		// "\"dataCenterName\" : \"south-center\"," +
+		// "\"appId\" : \"runner-custom\"," +
+		// "\"reqId\":1234567," +
+		// "\"actionType\":\" deploy/start/stop/scale /upgade\"," +
+		// "\"tasks\":[" +
+		// "{\"taskName\":\"crm-web\"," +
+		// "\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
+		// "\"startTime\":\"20160115205617\"," +
+		// "\"endTime\":\" 20160115231256\"," +
+		// "\"logs\":[" +
+		// "{\"logTime\":\" 20160115205617\"," +
+		// "\"logCnt\":\"crm-web container start to deploying!\"" +
+		// "}," +
+		// "{\"logTime\":\" 20160115205617\"," +
+		// "\"logCnt\":\"crm-web container deployed successfully!\"" +
+		// "}" +
+		// "]" +
+		// "}," +
+		// "{\"taskName\":\"crm-task\"," +
+		// "\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
+		// "\"startTime\":\"20160115205617\"," +
+		// "\"endTime\":\" 20160115231256\"," +
+		// "\"logs\":[" +
+		// "{\"logTime\":\" 20160115205617\"," +
+		// "\"logCnt\":\"crm-web container start to deploying!\"" +
+		// "}," +
+		// "{\"logTime\":\" 201601152056198023\"," +
+		// "\"logCnt\":\"crm-whashashdhas d successfully!\"" +
+		// "}" +
+		// "]" +
+		// "}" +
+		//
+		// "]" +
+		// "}";
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 }
