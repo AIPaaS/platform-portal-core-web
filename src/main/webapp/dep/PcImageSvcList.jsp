@@ -33,7 +33,6 @@ String ContextPath = request.getContextPath();
 					</div>
 				</div>
 				<button class="btn btn-primary pull-left" id="btn_query"><i class="fa fa-search fa-lg"></i> 查询</button>
-				<button id="btn_add" href="###" class="btn btn-primary pull-left"> <i class="fa fa-plus-circle fa-lg"></i> 添加</button>
 			</div>
 		</div>
 	</div>
@@ -62,7 +61,7 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">操作</th>
 							</tr>
 						</thead>
-						<tbody id="externalSvcTable">
+						<tbody id="imgSvcTable">
 							
 						</tbody>
 					</table>
@@ -113,14 +112,7 @@ String ContextPath = request.getContextPath();
 					<tr>
 						<th class="text-center">参数名</th>
 						<th class="text-center">参数描述</th>
-						<th class="text-center">
-							<a id="a_add_param" href="###" class="table-link" title="添加参数">
-								<span class="fa-stack">
-									<i class="fa fa-square fa-stack-2x"></i>
-									<i class="fa fa-plus fa-stack-1x fa-inverse"></i>
-								</span>
-							</a>
-						</th>
+						<th class="text-center">值</th>
 					</tr>
 				</thead>
 				<tbody id="SvcParamsTable">
@@ -129,29 +121,38 @@ String ContextPath = request.getContextPath();
 				
 			</table>
 			<div class="modal-footer" >
-	        <button id="btn_Ok" type="button" class="btn btn-success ok" data-toggle="tooltip-hide" data-placement="left"><i class="fa fa-save fa-lg"></i> 保存</button>
+	        <button id="btn_Ok" type="button" class="btn btn-success ok" data-toggle="tooltip-hide" data-placement="left"><i class="fa fa-save fa-lg"></i> 关闭</button>
       	</div>
          </div>
       </div>
 	</div>
 </div>
 
-<script id="externalSvcTable-tmpl" type="text/x-jquery-tmpl">
+<script id="imgSvcTable-tmpl" type="text/x-jquery-tmpl">
 	{{each(i,row) data}}
 		<tr>
-			<td class="text-center"><a href="<%=ContextPath%>/dispatch/mc/1040401?id={{= row.id}}&pageNum={{= pageNum}}">{{= row.svcCode}}</a></td>
-			<td class="text-center">{{= row.svcName}}</td>
-			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.dataCenterId,false)}}</td>
-			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.resCenterId,false)}}</td>
-			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.protocol,false)}}</td>
-			<td class="text-center">{{= row.port}}</td>
-			<td class="text-left">{{= row.svcUrl}}</td>
+			<td class="text-center">{{= row.svc.svcCode}}</td>
+			<td class="text-center">{{= row.svc.svcName}}</td>
+			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.svc.dataCenterId,false)}}</td>
+			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.svc.resCenterId,false)}}</td>
+			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.svc.protocol,false)}}</td>
+			<td class="text-center">{{= row.svc.domainName}}</td>
+			<td class="text-left">{{= row.provider}}</td>
+			<td class="text-left">{{= row.consumerDes}}</td>
 			<td class="text-center">
-				<a id="a_svc_params_{{= row.id}}" href="###" class="table-link" title="参数详情">
+				<a id="a_svc_params_{{=  row.svc.id}}" href="###" class="table-link" title="参数详情">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-asterisk fa-stack-1x fa-inverse"></i>
 					</span>
+				</a>
+			</td>
+			<td class="text-center">
+				<a id="btn_cancel_{{= row.svc.id}}" href="###" class="table-link danger" title="删除">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+						</span>
 				</a>
 			</td>
 		</tr>

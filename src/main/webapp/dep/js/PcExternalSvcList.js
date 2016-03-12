@@ -152,6 +152,7 @@ function query(pageNum){
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
 		        totalPages: r.totalPages?r.totalPages:1,
+		        		totalPages: r.totalPages?r.totalPages:1,
 		        visiblePages: 7,
 		        startPage: r.pageNum,
 		        first:"首页",
@@ -169,10 +170,22 @@ function query(pageNum){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
 					showSvcParams(obj.id);
 				});
+				$("#btn_del_"+data[i].id).bind("click", function() {
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					delSrv(obj);
+				});
 			}
 		}
 	}});
 	
+}
+function delSrv(obj) {
+	CC.showMsg({msg:"您确定要删除[<font color='blue'>"+obj.svcName+"</font>]吗?",option:2,callback:function(r) {
+		if(r != "ok") return ;
+		RS.ajax({url:"/external/service/removeById",ps:{id:obj.id},cb:function() {
+			query(ParamPageNum);
+		}});
+	}});
 }
 function showSvcParams(id){
 	CurrSvcId = id;

@@ -60,9 +60,27 @@ String ContextPath = request.getContextPath();
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="ip" class="col-lg-2 control-label">IP<font color="red">*</font>:</label>
+				<div class="col-lg-5">
+					<input type="text" name="ip" class="form-control" id="ip" required maxlength="15"  pattern="(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])" placeholder="必填">
+				</div>
+				<div class="col-lg-5">
+					<span></span>
+				</div>
+			</div>
+			<div class="form-group">
 				<label for="port" class="col-lg-2 control-label">开放端口<font color="red">*</font>:</label>
 				<div class="col-lg-5">
 					<input type="text" name="port" class="form-control" id="port" required maxlength="8"  pattern="([0-9]){1,8}" placeholder="必填">
+				</div>
+				<div class="col-lg-5">
+					<span></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="custom4" class="col-lg-2 control-label">健康检查脚本<font color="red">*</font>:</label>
+				<div class="col-lg-5">
+					<input type="text" name="custom4" class="form-control" id="custom4" required maxlength="100"  pattern="(.{1,100}" placeholder="必填">
 				</div>
 				<div class="col-lg-5">
 					<span></span>

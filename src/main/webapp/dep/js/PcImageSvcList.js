@@ -76,11 +76,12 @@ function initListener() {
 	
 	$("#btn_query").bind("click",function(){query();});
 	$("#grid_pageSize").bind("change",function(){query();});
-	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040401?pageNum="+ParamPageNum;});
-	$("#a_add_param").bind("click",function(){addParamRow();});
-	$("#btn_Ok").bind("click",function(){saveSvcParams();});
+//	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040401?pageNum="+ParamPageNum;});
+//	$("#a_add_param").bind("click",function(){addParamRow();});
+//	$("#btn_Ok").bind("click",function(){saveSvcParams();});
+	$("#btn_Ok").bind("click",function(){closeSvcPa();});
 	
-	RS.setAjaxLodingButton("btn_Ok");
+//	RS.setAjaxLodingButton("btn_Ok");
 }
 function initFace() {
 }
@@ -119,7 +120,7 @@ function toTreeData(dropList) {
 
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
-	$("#externalSvcTable").html("");
+	$("#imgSvcTable").html("");
 	$("#ul_pagination").remove();
 	$("#pagination_box").html('<ul id="ul_pagination" class="pagination-sm"></ul>');
 	var pageSize = $("#grid_pageSize").val();
@@ -140,7 +141,7 @@ function query(pageNum){
 		if(!CU.isEmpty(r)){
 			var data = r.data;
 			for(var i=0;i<data.length;i++){
-				CurrDataMap["key_"+data[i].id] = data[i];
+				CurrDataMap["key_"+data[i].svc.id] = data[i];
 			}
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
@@ -156,11 +157,15 @@ function query(pageNum){
 		        }
 		    	
 		    });
-			$('#externalSvcTable-tmpl').tmpl(r).appendTo("#externalSvcTable");
+			$('#imgSvcTable-tmpl').tmpl(r).appendTo("#imgSvcTable");
 			for(var i=0;i<data.length;i++){
-				$("#a_svc_params_"+data[i].id).bind("click",function(){
+				$("#a_svc_params_"+data[i].svc.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					showSvcParams(obj.id);
+					showSvcParams(obj.svc.id);
+				});
+				$("#btn_cancel_"+data[i].svc.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					cancelSvc(obj);
 				});
 			}
 		}
@@ -170,9 +175,10 @@ function query(pageNum){
 function showSvcParams(id){
 	CurrSvcId = id;
 	var obj =  CurrDataMap["key_"+id];
-	$("#div_SvcParamsTitle").html("服务[<font color='blue'>"+obj.svcName+"</font>]参数列表");
+	
+	$("#div_SvcParamsTitle").html("服务[<font color='blue'>"+obj.svc.svcName+"</font>]参数列表");
 	$("#SvcParamsTable").html("");
-	RS.ajax({url:"/external/service/queryParams",ps:{svcId:obj.id, orders:"ID"},cb:function(rs) {
+	RS.ajax({url:"/image/service/queryParams",ps:{svcId:obj.svc.id, orders:"ID"},cb:function(rs) {
 		for(var i=0;i<rs.length;i++){
 			addParamRow(rs[i]);
 		}
@@ -186,6 +192,7 @@ function showSvcParams(id){
 function addParamRow(obj) {
 	var key = CU.isEmpty(obj)||CU.isEmpty(obj.kvKey) ? "" : obj.kvKey;
 	var desc = CU.isEmpty(obj)||CU.isEmpty(obj.keyDesc) ? "" : obj.keyDesc;
+	var val = CU.isEmpty(obj)||CU.isEmpty(obj.kvVal) ? "" : obj.kvVal;
 	
 	GridAddId ++ ;
 	var trid = "tr_add_" + GridAddId;
@@ -198,47 +205,26 @@ function addParamRow(obj) {
 			+ "</a>");
 	tr.append($("<td class=\"text-center\"><input type=\"text\" class=\"form-control\" name=\"param_key\" value=\""+key+"\" maxlength=\"50\" /></td>"));
 	tr.append($("<td class=\"text-center\"><input type=\"text\" class=\"form-control\" name=\"param_desc\" value=\""+desc+"\" maxlength=\"200\"  /></td>"));
-	tr.append($("<td class=\"text-center\"></td>").append(a));
-	a.bind("click", function() {removeTag(trid);});
+	tr.append($("<td class=\"text-center\"><input type=\"text\" class=\"form-control\" name=\"param_val\" value=\""+val+"\" maxlength=\"200\"  /></td>"));
+//	tr.append($("<td class=\"text-center\"></td>").append(a));
+//	a.bind("click", function() {removeTag(trid);});
 	$("#SvcParamsTable").append(tr);
 }
-function saveSvcParams(){
-	var params = [];
-	var keys = [];
-	
-	var param_keys = $("input[name='param_key']");
-	var param_descs = $("input[name='param_desc']");
-	for(var i=0;i<param_keys.length;i++){
-		var v = $.trim($(param_keys[i]).val());
-		var desc = $.trim($(param_descs[i]).val());
-		if(v.length == 0) {
-			CC.showMsg({msg:"第["+(i+1)+"]行，参数名不可以为空!"});
-			return false;
-		}
-		if(keys.indexOf(v) > -1) {
- 			CC.showMsg({msg:"参数名<font color='blue'>["+v+"]</font>不可以重复!"});
-    		return;
- 		}
- 		keys.push(v);
- 		
- 		var param = {};
-		param.kvKey = v;
-		param.keyDesc = desc;
-		params.push(param);
- 		
+function closeSvcPa(){
+	$('#div_compTags').modal('hide');
+
+}
+function cancelSvc(obj){
+	var svcId1 = CU.isEmpty(obj)||CU.isEmpty(obj.svc.id) ? -1 : obj.svc.id;
+	var svcName = obj.svc.svcName;
+	if((!CU.isEmpty(obj)&&!CU.isEmpty(obj.consumerDes))){
+		//有引用者  不能删除
+		CC.showMsg({msg:svcName+" 有引用者，不能删除!"});
+	}else{
+		RS.ajax({url:"/image/service/removeById",ps:{id:svcId1},cb:function(rs) {
+			query();
+		}});
 	}
-	var paramsStr = "";
-	if(params.length>0){
-		paramsStr = CU.toString(params);
-	}
-	RS.ajax({url:"/external/service/resetParams",ps:{svcId:CurrSvcId, paramsStr:paramsStr},cb:function(r) {
-		$("#btn_Ok").prop("title", "保存成功");
-		$("#btn_Ok").tooltip("show");
-		setTimeout(function(){
-			$("#btn_Ok").prop("title", "");
-			$("#btn_Ok").tooltip("destroy");
-		}, 2000);
-	}});
 }
 function removeTag(elId){
 	$("#"+elId).remove();

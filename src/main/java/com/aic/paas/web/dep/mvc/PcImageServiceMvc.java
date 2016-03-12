@@ -15,6 +15,7 @@ import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.CPcService;
 import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
+import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
 import com.binary.core.util.BinaryUtils;
@@ -33,7 +34,7 @@ public class PcImageServiceMvc {
 	
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response, Integer pageNum, Integer pageSize, CPcService cdt, String orders) {
-		Page<PcService> page = servicePeer.queryPage(pageNum, pageSize, ServiceType.APP_IMAGE, cdt, orders);
+		Page<PcServiceInfo> page = servicePeer.queryPage4Info(pageNum, pageSize, ServiceType.APP_IMAGE, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
 	

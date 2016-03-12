@@ -51,7 +51,11 @@
 	<dubbox:rest id="DubboxRest_PcAppSvc" interface="com.aic.paas.web.rest.PcAppSvc" client="DubboRestClient_DEP" />
 	<dubbox:rest id="DubboxRest_PcServiceSvc" interface="com.aic.paas.web.rest.PcServiceSvc" client="DubboRestClient_DEP" />
 	<dubbox:rest id="DubboxRest_PcAppDeploySvc" interface="com.aic.paas.web.rest.PcAppDeploySvc" client="DubboRestClient_DEP" />
+	<dubbox:rest id="DubboxRest_PcAppTaskSvc" interface="com.aic.paas.web.rest.PcAppTaskSvc" client="DubboRestClient_DEP" />
 		
+		
+	<dubbo:application name="paas_dubbo_service"/>
+	<dubbo:reference id="iExternalServiceManager" interface="com.aic.paas.web.rest.IExternalServiceManager" url="${dubbox.rest.root.besrv}"/>
 	
 	
 </beans>
