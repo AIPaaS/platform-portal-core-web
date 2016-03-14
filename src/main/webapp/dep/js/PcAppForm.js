@@ -123,11 +123,16 @@ function submitForm(){
 	if(!CU.isEmpty(CurrentId)) bean.id = CurrentId;
 	
 	RS.ajax({url:"/dep/app/saveOrUpdate",ps:bean,cb:function(rs) {
+		var code = $("#appCode").val();
+		if(!rs){
+			CC.showMsg({msg:"代码为"+code+"的应用已存在，请修改!"});
+		}
+		else{
 		CurrentId = rs;
 		var url = ContextPath+"/dispatch/mc/10401";
 		if(!CU.isEmpty(PageNum)) url += "?pageNum="+PageNum;
 		window.location = url;
-	}});
+		}}});
 }
 
 
