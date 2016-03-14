@@ -151,7 +151,7 @@ public class PcAppMvc {
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
 		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
-	
+
 	@RequestMapping("/timer/deploy")
 	public void startTimerDeploy(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
 		BinaryUtils.checkEmpty(appId, "appId");
@@ -164,26 +164,46 @@ public class PcAppMvc {
 
 	@RequestMapping("/timer/destory")
 	public void destoryTimerDeploy(HttpServletRequest request, HttpServletResponse response, Long appId) {
-
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/stopDeploy?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/timer/run")
 	public void runTimer(HttpServletRequest request, HttpServletResponse response, Long appId) {
-
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/startApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/timer/pause")
 	public void pauseTimer(HttpServletRequest request, HttpServletResponse response, Long appId) {
-
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/pauseApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/timer/upgrade")
 	public void upgradeTimer(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
-
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
 	@RequestMapping("/timer/status")
 	public void timerStatus(HttpServletRequest request, HttpServletResponse response, Long appId) {
-
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String resp = client.request("/dep/log/timer/status?appId=" + appId);
+		String newResp = ControllerUtils.toRemoteJsonObject(resp, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(newResp));
 	}
 }
