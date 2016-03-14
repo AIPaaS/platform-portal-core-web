@@ -180,15 +180,6 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
-	@RequestMapping("/timer/pause")
-	public void pauseTimer(HttpServletRequest request, HttpServletResponse response, Long appId) {
-		BinaryUtils.checkEmpty(appId, "appId");
-		HttpClient client = HttpClient.getInstance(taskRoot);
-		String json = client.request("/dep/appimage/timer/pauseApp?appId=" + appId);
-		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		ControllerUtils.returnJson(request, response, JSON.toObject(json));
-	}
-
 	@RequestMapping("/timer/upgrade")
 	public void upgradeTimer(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
 		BinaryUtils.checkEmpty(appId, "appId");
