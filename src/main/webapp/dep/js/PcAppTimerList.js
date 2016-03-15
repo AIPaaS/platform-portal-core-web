@@ -336,11 +336,8 @@ function selectAppVnoTplClick(rb, type) {
 			$("#a_app_update_"+appId).editable("hide");
 			$("#a_app_update_"+appId).hide();
 			$("#a_app_loading_"+appId).show();
-			$("#a_app_update_"+appId).parent().parent().find(".deploy").html("");
 			$("#a_app_destory_"+appId).hide();
-			$("#a_app_pause_"+appId).hide();
 			$("a_app_open_"+appId).hide();
-			appLogTask(json.appId,json.reqId);
 		}});
 	}
 	if(type == 5 ){
@@ -351,12 +348,10 @@ function selectAppVnoTplClick(rb, type) {
 			$("#a_app_destory_"+appId).hide();
 			$("#a_app_loading_"+appId).show();
 			$("#a_app_start_"+appId).hide();
-			$("#a_app_pause_"+appId).hide();
 			$("#a_app_open_"+appId).hide();
 			$("#a_app_update_"+appId).hide();
 			
 			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
-			appLogTask(json.appId,json.reqId);
 		}});
 	}
 }
@@ -389,7 +384,6 @@ function pauseAppTask(appinfo) {
 		$("#a_app_loading_"+appId).show();
 		$("#a_app_destory_"+appId).hide();
 		$("#a_app_update_"+appId).hide();
-		appLogTask(json.appId,json.reqId);
 	}});
 }
 
@@ -402,7 +396,6 @@ function openAppTask(appinfo){
 		
 		$("#a_app_destory_"+appId).hide();
 		$("#a_app_update_"+appId).hide();
-		appLogTask(json.appId,json.reqId);
 	}});
 }
 
