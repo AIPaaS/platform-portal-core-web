@@ -162,7 +162,7 @@ String ContextPath = request.getContextPath();
 				</a>
 			</td>
 		</tr>
-{{/each}}
+	{{/each}}
 </script>
 
 <jsp:include page="/layout/jsp/footer.jsp"></jsp:include>

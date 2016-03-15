@@ -37,7 +37,7 @@
     
     <bean class="com.aic.paas.web.dep.peer.impl.PcAppMonitorPeerImpl" />
     
-   	
+   	<bean class="com.aic.paas.web.dep.peer.impl.PcAppAccessPeerImpl" />
 	
 	
 	

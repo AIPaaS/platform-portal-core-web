@@ -20,11 +20,13 @@ function initData(cb) {
 	var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
 	$("#protocol").html(selhtml);
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true ,opts:"dc|rc"},cb:function(result) {
-		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
-		DROP["DV_RES_CENTER_CODE"] = result["rc"];
-		var dcselhtml = PU.getSelectOptionsHtml("DV_DATA_CENTER_CODE");
-		$("#dataCenterId").html(dcselhtml);
-		if(CU.isFunction(cb)) cb();
+		
+		
+//		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
+//		DROP["DV_RES_CENTER_CODE"] = result["rc"];
+//		var dcselhtml = PU.getSelectOptionsHtml("DV_DATA_CENTER_CODE");
+//		$("#dataCenterId").html(dcselhtml);
+//		if(CU.isFunction(cb)) cb();
 	}});
 }
 function initComponent() {
