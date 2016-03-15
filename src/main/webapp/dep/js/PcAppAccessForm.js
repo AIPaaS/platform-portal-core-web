@@ -1,5 +1,4 @@
 var CurrentId = "";
-
 var GridAddId = 1;
 
 
@@ -19,19 +18,13 @@ function initData(cb) {
 	CurrentId = PRQ.get("id");
 	var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
 	$("#protocol").html(selhtml);
-	
+	if(CU.isFunction(cb))cb();
 	
 }
 function initComponent() {
 }
 function initListener() {
-//	$("#a_add_param").bind("click",function(){addParamRow();});
-	$("#dataCenterId").bind("change",function() {
-		var dcId = $("#dataCenterId").val();
-		reloadResCenterId(dcId);
-	});
-	
-	$("#form_appAccessSvc").submit(function(e){
+	$("#form_appAccess").submit(function(e){
 	    e.preventDefault();
 	    submitForm();
 	});
@@ -40,30 +33,6 @@ function initListener() {
 function initFace() {
 }
 
-function reloadResCenterId(dcId,cb){
-	$("#resCenterId").html("");
-	if(!CU.isEmpty(dcId)) {
-		var rs = DROP["DV_RES_CENTER_CODE"];
-		var ls = [rs[0]];
-		for(var i=1; i<rs.length; i++) {
-			if(rs[i].attributes.dataCenterId == dcId) {
-				ls.push(rs[i]);
-			}
-		}
-		$("#resCenterId").html(getSelOpHtml(ls));
-		if(CU.isFunction(cb)) cb();
-	}
-}
-
-function getSelOpHtml(ls){
-	var html = [];
-	if(!CU.isEmpty(ls)){
-		for(var i=0;i<ls.length;i++){
-			html.push("<option value=\""+ls[i].code+"\">"+ls[i].name+"</option>");
-		}
-	}
-	return html.join("");
-}
 
 function queryInfo(callback) {
 	RS.ajax({url:"/app/access/queryById",ps:{id:CurrentId},cb:function(rs) {
@@ -71,18 +40,23 @@ function queryInfo(callback) {
 			alert("没有找到应用["+CurrentId+"]");
 			window.location = ContextPath + "/dispatch/mc/10411";
 		}else {
-			PU.setFormData(rs, "form_appAccessSvc");
+			PU.setFormData(rs, "form_appAccess");
 			$("#accessCode").val(rs.access.accessCode);
 			$("#protocol").val(rs.access.protocol);
 			$("#accessUrl").val(rs.access.accessUrl);
 			$("#remark").val(rs.access.remark);
 			
-			RS.ajax({url:"/dep/appimage/queryAppImageInfoList",ps:{appId:rs.access.appId},cb:function(result) {
-//				$("#imgName").val(result.appImage.image);
-				var dcselhtml = PU.getSelectOptionsHtml("DV_DATA_CENTER_CODE");
-				$("#imgName").html(dcselhtml);
-				if(CU.isFunction(cb)) cb();
+			RS.ajax({url:"/app/access/queryAppImageInfoList",ps:{appId:rs.access.appId,appImgId:rs.access.appImageId},cb:function(result) {
+				var html = [];
+				if(!CU.isEmpty(result)){
+					for(var i=0;i<result.length;i++){
+						html.push("<option value=\""+result[i].appImage.id+"\">"+result[i].appImage.containerName+"</option>");
+					}
+				}
+				$("#appImgId").html(html.join(""));
+				$("#appImgId").val(rs.access.appImageId);
 			}});
+			
 		}
 	}});
 }
@@ -90,13 +64,10 @@ function queryInfo(callback) {
 
 
 function submitForm() {	
-	var bean = PU.getFormData("form_appAccessSvc");
+	var bean = PU.getFormData("form_appAccess");
 	if(!CU.isEmpty(CurrentId)) bean.id = CurrentId;
 	
-	var paramsStr =  getTableParams();
-	if(paramsStr === false) return;
-	
-	var ps = {custom4:bean.custom4,appName:bean.appName,accessCode:bean.accessCode,dataCenterId:bean.dataCenterId,resCenterId:bean.resCenterId,protocol:bean.protocol,accessUrl:bean.accessUrl,port:bean.port,remark:bean.remark};
+	var ps = {accessCode:bean.accessCode,appImageId:bean.appImgId,remark:bean.remark};
 	if(!CU.isEmpty(CurrentId)){
 		ps.id = CurrentId;
 	}

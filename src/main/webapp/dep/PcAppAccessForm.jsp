@@ -11,26 +11,26 @@ String ContextPath = request.getContextPath();
 <div class="main-box">
 	<header class="main-box-header clearfix"> </header>
 	<div class="main-box-body clearfix">
-		<form class="form-horizontal" role="form" id="form_appAccessSvc" name="form_appAccessSvc">
+		<form class="form-horizontal" role="form" id="form_appAccess" name="form_appAccess">
 			<div class="form-group">
-				<label for="appName" class="col-lg-2 control-label">应用名<font color="red">*</font>:</label>
+				<label for="appName" class="col-lg-2 control-label">应用名:</label>
 				<div class="col-lg-5">
-					<input type="text" name="appName" class="form-control" id="appName" required pattern="([0-9]|[a-zA-Z]|[_]){1,40}" placeholder="必填">
+					<input type="text" name="appName" class="form-control" id="appName" required pattern="([0-9]|[a-zA-Z]|[_]){1,40}" readonly>
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="accessCode" class="col-lg-2 control-label">访问名<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<input type="text" name="accessCode" class="form-control" id="accessCode" required pattern=".{1,20}" placeholder="必填">
+					<input type="text" name="accessCode" class="form-control" id="accessCode" required  pattern="([0-9]|[a-zA-Z]|[_]|[-]){1,40}" placeholder="必填">
 				</div>
 				<div class="col-lg-5">
 					<span>1-20位</span>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="imgName" class="col-lg-2 control-label">所属应用镜像<font color="red">*</font>:</label>
+				<label for="appImgId" class="col-lg-2 control-label">所属应用镜像<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<select id="imgName" name="imgName" required="required" class="form-control">
+					<select id="appImgId" name="appImgId" required="required" class="form-control">
 					</select>
 				</div>
 				<div class="col-lg-5">
@@ -48,9 +48,9 @@ String ContextPath = request.getContextPath();
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="accessUrl" class="col-lg-2 control-label">访问地址<font color="red">*</font>:</label>
+				<label for="accessUrl" class="col-lg-2 control-label">访问地址:</label>
 				<div class="col-lg-5">
-					<input type="text" name="accessUrl" class="form-control" id="accessUrl" required maxlength="15"  pattern="(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])" placeholder="必填">
+					<input type="text" name="accessUrl" class="form-control" id="accessUrl" required maxlength="200"  readonly />
 				</div>
 				<div class="col-lg-5">
 					<span></span>

@@ -38,6 +38,18 @@ public class PcAppAccess implements EntityBean {
 
 
 	/**
+	 * mapping-field: 所属数据中心[DATA_CENTER_ID]
+	 */
+	private Long dataCenterId;
+
+
+	/**
+	 * mapping-field: 所属资源中心[RES_CENTER_ID]
+	 */
+	private Long resCenterId;
+
+
+	/**
 	 * mapping-field: 协议[PROTOCOL]
 	 */
 	private Integer protocol;
@@ -99,27 +111,39 @@ public class PcAppAccess implements EntityBean {
 
 
 	/**
-	 * mapping-field: 备用字段1[BAK_1]
+	 * mapping-field: 备用字段_1[CUSTOM_1]
 	 */
-	private Long bak1;
+	private Long custom1;
 
 
 	/**
-	 * mapping-field: 备用字段2[BAK_2]
+	 * mapping-field: 备用字段_2[CUSTOM_2]
 	 */
-	private Long bak2;
+	private Long custom2;
 
 
 	/**
-	 * mapping-field: 备用字段3[BAK_3]
+	 * mapping-field: 备用字段_3[CUSTOM_3]
 	 */
-	private String bak3;
+	private Long custom3;
 
 
 	/**
-	 * mapping-field: 备用字段4[BAK_4]
+	 * mapping-field: 备用字段_4[CUSTOM_4]
 	 */
-	private String bak4;
+	private String custom4;
+
+
+	/**
+	 * mapping-field: 备用字段_5[CUSTOM_5]
+	 */
+	private String custom5;
+
+
+	/**
+	 * mapping-field: 备用字段_6[CUSTOM_6]
+	 */
+	private String custom6;
 
 
 
@@ -153,6 +177,22 @@ public class PcAppAccess implements EntityBean {
 	}
 	public void setAppImageId(Long appImageId) {
 		this.appImageId = appImageId;
+	}
+
+
+	public Long getDataCenterId() {
+		return this.dataCenterId;
+	}
+	public void setDataCenterId(Long dataCenterId) {
+		this.dataCenterId = dataCenterId;
+	}
+
+
+	public Long getResCenterId() {
+		return this.resCenterId;
+	}
+	public void setResCenterId(Long resCenterId) {
+		this.resCenterId = resCenterId;
 	}
 
 
@@ -236,35 +276,51 @@ public class PcAppAccess implements EntityBean {
 	}
 
 
-	public Long getBak1() {
-		return this.bak1;
+	public Long getCustom1() {
+		return this.custom1;
 	}
-	public void setBak1(Long bak1) {
-		this.bak1 = bak1;
-	}
-
-
-	public Long getBak2() {
-		return this.bak2;
-	}
-	public void setBak2(Long bak2) {
-		this.bak2 = bak2;
+	public void setCustom1(Long custom1) {
+		this.custom1 = custom1;
 	}
 
 
-	public String getBak3() {
-		return this.bak3;
+	public Long getCustom2() {
+		return this.custom2;
 	}
-	public void setBak3(String bak3) {
-		this.bak3 = bak3;
+	public void setCustom2(Long custom2) {
+		this.custom2 = custom2;
 	}
 
 
-	public String getBak4() {
-		return this.bak4;
+	public Long getCustom3() {
+		return this.custom3;
 	}
-	public void setBak4(String bak4) {
-		this.bak4 = bak4;
+	public void setCustom3(Long custom3) {
+		this.custom3 = custom3;
+	}
+
+
+	public String getCustom4() {
+		return this.custom4;
+	}
+	public void setCustom4(String custom4) {
+		this.custom4 = custom4;
+	}
+
+
+	public String getCustom5() {
+		return this.custom5;
+	}
+	public void setCustom5(String custom5) {
+		this.custom5 = custom5;
+	}
+
+
+	public String getCustom6() {
+		return this.custom6;
+	}
+	public void setCustom6(String custom6) {
+		this.custom6 = custom6;
 	}
 
 

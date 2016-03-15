@@ -76,6 +76,11 @@ function initData(cb) {
 			$("#div_time").show();
 		}
 		
+		$("#custom2").html("");
+		$("#div_isAccess_yes").hide();
+		var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
+		$("#custom2").html(selhtml);
+		
 		if(CU.isFunction(cb))cb();
 	}});
 }
@@ -93,6 +98,14 @@ function initComponent() {
 
 /** 对组件设置监听 **/
 function initListener() {
+	$("#custom1").bind("change",function(){
+		if($("#custom1").prop("checked")){
+			$("#div_isAccess_yes").show();
+		}else{
+			$("#div_isAccess_yes").hide();
+		}
+	});
+	
 	$('#maskedDate').datetimepicker({
 //		minView: "month",
 		format: "yyyy-mm-dd hh:ii:ss", 
@@ -262,6 +275,14 @@ function queryInfo(cb){
 			$("#div_isSupportFlex_yes").hide();
 			$("#isSupportFlex").prop("checked",false);
 		}
+		if(rs.custom1==1){
+			$("#div_isAccess_yes").show();
+			$("#custom1").prop("checked",true);
+		}else{
+			$("#div_isAccess_yes").hide();
+			$("#custom1").prop("checked",false);
+		}
+		
 		refreshCompTagsSource(function() {
 			if(CU.isFunction(cb))cb(rs);
 		});

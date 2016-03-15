@@ -45,7 +45,8 @@ public class PcAppAccessPeerImpl implements PcAppAccessPeer {
 	@Override
 	public Long saveOrUpdate(PcAppAccess record) {
 		BinaryUtils.checkEmpty(record, "record");
-			
+		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
+		record.setMntId(user.getMerchent().getId());
 		boolean isadd = record.getId() == null;
 		if(isadd) {
 			BinaryUtils.checkEmpty(record.getAppId(), "record.appId");

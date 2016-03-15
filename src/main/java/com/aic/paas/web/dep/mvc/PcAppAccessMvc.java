@@ -1,5 +1,7 @@
 package com.aic.paas.web.dep.mvc;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.aic.paas.comm.util.SystemUtil;
 import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.CPcAppAccess;
+import com.aic.paas.web.dep.bean.CPcAppImage;
 import com.aic.paas.web.dep.bean.PcAppAccess;
 import com.aic.paas.web.dep.bean.PcAppAccessInfo;
+import com.aic.paas.web.dep.bean.PcAppImageInfo;
 import com.aic.paas.web.dep.peer.PcAppAccessPeer;
+import com.aic.paas.web.dep.peer.PcAppImagePeer;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
 
@@ -23,6 +28,9 @@ public class PcAppAccessMvc {
 	
 	@Autowired
 	PcAppAccessPeer appAccessPeer;
+	
+	@Autowired
+	PcAppImagePeer appImagePeer;
 	
 	//分页查
 	@RequestMapping("/queryPage")
@@ -40,11 +48,7 @@ public class PcAppAccessMvc {
 	//保存
 	@RequestMapping("/saveOrUpdate")
 	public void saveOrUpdate(HttpServletRequest request,HttpServletResponse response, PcAppAccess record) {
-		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
-		record.setBak2(user.getId());
-		record.setBak3(user.getUserName());
 		Long id = appAccessPeer.saveOrUpdate(record);
-		
 		ControllerUtils.returnJson(request, response, id);
 	}
 	//删除
@@ -52,6 +56,13 @@ public class PcAppAccessMvc {
 	public void removeById(HttpServletRequest request,HttpServletResponse response, Long id) {
 		int c = appAccessPeer.removeById(id);
 		ControllerUtils.returnJson(request, response, c);
+	}
+	
+	@RequestMapping("/queryAppImageInfoList")
+	public void queryAppImageInfoList(HttpServletRequest request,HttpServletResponse response, Long appId, Long appImgId, CPcAppImage cdt, String orders){
+		long	 appVnoId =  appImagePeer.queryAppImageById(appImgId).getAppVnoId();
+		List<PcAppImageInfo> list = appImagePeer.queryAppImageInfoList(appId, appVnoId, cdt, orders);
+		ControllerUtils.returnJson(request, response, list);
 	}
 	
 }

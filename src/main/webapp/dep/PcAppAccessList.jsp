@@ -13,14 +13,14 @@ String ContextPath = request.getContextPath();
 		<div class="main-box clearfix">
 			<div class="filter-block pull-left">
 				<div class="pull-left">
-					<div class="form-group pull-left">
+					<!-- <div class="form-group pull-left">
 						&nbsp;&nbsp;&nbsp;&nbsp;应用代码:
 					</div>
 					<div class="form-group pull-left">
 						<input type="text" name="appId" id="appId" class="form-control" style="width:120px;">
-					</div>
+					</div> -->
 					<div class="form-group pull-left">
-						访问名称:
+						&nbsp;&nbsp;&nbsp;&nbsp;访问名称:
 					</div>
 					<div class="form-group pull-left">
 						<input type="text" name="accessCode" id="accessCode" class="form-control" style="width:120px;">
@@ -50,12 +50,13 @@ String ContextPath = request.getContextPath();
 						<thead>
 							<tr>
 								<th class="text-center">应用</th>
-								<th class="text-center">访问名</th>
+								<th class="text-center">访问名称</th>
+								<th class="text-center">资源中心</th>
 								<th class="text-center">所属应用镜像</th>
 								<th class="text-center">协议</th>
 								<th class="text-center">访问地址</th>
-								<th class="text-center">创建人</th>
-								<th class="text-center">修改人</th>
+<!-- 								<th class="text-center">创建人</th>
+ -->								<th class="text-center">修改人</th>
 								<th class="text-center">操作</th>
 							</tr>
 						</thead>
@@ -101,10 +102,10 @@ String ContextPath = request.getContextPath();
 		<tr>
 			<td class="text-center"><a href="<%=ContextPath%>/dispatch/mc/1041101?id={{= row.access.id}}&pageNum={{= pageNum}}">{{= row.appName}}</a></td>
 			<td class="text-center">{{= row.access.accessCode}}</td>
+			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.access.resCenterId,false)}}</td>
 			<td class="text-center">{{= row.imgName}}</td>
 			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.access.protocol,false)}}</td>
 			<td class="text-center">{{= row.access.accessUrl}}</td>
-			<td class="text-center">{{= row.access.creator}}</td>
 			<td class="text-center">{{= row.access.modifier}}</td>
 			<td class="text-center">
 				<a id="btn_del_{{= row.access.id}}" href="###" class="table-link danger" title="删除">

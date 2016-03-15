@@ -15,10 +15,12 @@ import com.aic.paas.web.dep.bean.AppImageDepends;
 import com.aic.paas.web.dep.bean.AppImageSettings;
 import com.aic.paas.web.dep.bean.AppImageSvcInfo;
 import com.aic.paas.web.dep.bean.CPcApp;
+import com.aic.paas.web.dep.bean.CPcAppAccess;
 import com.aic.paas.web.dep.bean.CPcAppImage;
 import com.aic.paas.web.dep.bean.CPcImage;
 import com.aic.paas.web.dep.bean.CPcService;
 import com.aic.paas.web.dep.bean.PcApp;
+import com.aic.paas.web.dep.bean.PcAppAccess;
 import com.aic.paas.web.dep.bean.PcAppImage;
 import com.aic.paas.web.dep.bean.PcAppImageInfo;
 import com.aic.paas.web.dep.bean.PcImage;
@@ -27,6 +29,7 @@ import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.peer.PcAppImagePeer;
 import com.aic.paas.web.integration.UserAuthentication;
+import com.aic.paas.web.rest.PcAppAccessSvc;
 import com.aic.paas.web.rest.PcAppImageSvc;
 import com.aic.paas.web.rest.PcAppSvc;
 import com.aic.paas.web.rest.PcImageSvc;
@@ -54,7 +57,8 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	@Autowired
 	UserAuthentication userAuth;
 	
-		
+	@Autowired
+	PcAppAccessSvc appAccessSvc;
 	
 
 	@Override
@@ -240,6 +244,11 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 //			if(record.getDataMpPath() != null) BinaryUtils.checkEmpty(record.getDataMpPath(), "record.dataMpPath");
 			if(record.getIsUniform() != null) BinaryUtils.checkEmpty(record.getIsUniform(), "record.isUniform");
 		}
+
+		//liwx3 add 该容器作为应用的访问入口
+		if(record.getCustom1()==1){
+			saveOrUpdateAppAccess(user,app,record,cn,isadd);
+		}
 		
 		return appImageSvc.saveOrUpdate(record);
 	}
@@ -247,6 +256,35 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	
 	
 	
+	private void saveOrUpdateAppAccess(PaasWebSsoLoginUser user, PcApp app,
+			PcAppImage record, String cn, boolean isadd) {
+		PcAppAccess access = new PcAppAccess();
+		access.setAppId(record.getAppId());
+		access.setAccessCode(user.getMerchent().getMntCode()+"-"+app.getAppCode()+"-"+cn);
+		access.setAppImageId(record.getId());
+		access.setMntId(user.getMerchent().getId());
+		access.setDataCenterId(app.getDataCenterId());
+		access.setResCenterId(app.getResCenterId());
+		access.setProtocol(record.getCustom2().intValue());
+		if(isadd){
+			appAccessSvc.saveOrUpdate(access);
+		}else{
+			CPcAppAccess cdt = new CPcAppAccess();
+			cdt.setAppId(record.getAppId());
+			cdt.setAppImageId(record.getId());
+			List<PcAppAccess> pcaa = appAccessSvc.queryList(cdt, null);	
+			if(pcaa!=null&&pcaa.size()>0){
+				PcAppAccess appaccess = pcaa.get(0);
+				appaccess.setAccessCode(user.getMerchent().getMntCode()+"-"+app.getAppCode()+"-"+cn);
+				appaccess.setProtocol(record.getCustom2().intValue());
+				appAccessSvc.saveOrUpdate(appaccess);
+			}
+		}
+		
+	}
+
+
+
 	@Override
 	public Integer removeAppImage(Long appImageId) {
 		PcAppImage appImg = queryAppImageById(appImageId);

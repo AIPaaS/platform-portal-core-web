@@ -89,6 +89,52 @@ public class CPcAppAccess implements Condition {
 
 
 	/**
+	 * condition-field: 所属数据中心[DATA_CENTER_ID] operate-Equal[=]
+	 */
+	private Long dataCenterId;
+
+
+	/**
+	 * condition-field: 所属数据中心[DATA_CENTER_ID] operate-In[in]
+	 */
+	private Long[] dataCenterIds;
+
+
+	/**
+	 * condition-field: 所属数据中心[DATA_CENTER_ID] operate-GTEqual[>=]
+	 */
+	private Long startDataCenterId;
+
+	/**
+	 * condition-field: 所属数据中心[DATA_CENTER_ID] operate-LTEqual[<=]
+	 */
+	private Long endDataCenterId;
+
+
+	/**
+	 * condition-field: 所属资源中心[RES_CENTER_ID] operate-Equal[=]
+	 */
+	private Long resCenterId;
+
+
+	/**
+	 * condition-field: 所属资源中心[RES_CENTER_ID] operate-In[in]
+	 */
+	private Long[] resCenterIds;
+
+
+	/**
+	 * condition-field: 所属资源中心[RES_CENTER_ID] operate-GTEqual[>=]
+	 */
+	private Long startResCenterId;
+
+	/**
+	 * condition-field: 所属资源中心[RES_CENTER_ID] operate-LTEqual[<=]
+	 */
+	private Long endResCenterId;
+
+
+	/**
 	 * condition-field: 协议[PROTOCOL] operate-Equal[=]
 	 */
 	private Integer protocol;
@@ -255,61 +301,90 @@ public class CPcAppAccess implements Condition {
 
 
 	/**
-	 * condition-field: 备用字段1[BAK_1] operate-Equal[=]
+	 * condition-field: 备用字段_1[CUSTOM_1] operate-Equal[=]
 	 */
-	private Long bak1;
+	private Long custom1;
 
 
 	/**
-	 * condition-field: 备用字段1[BAK_1] operate-In[in]
+	 * condition-field: 备用字段_1[CUSTOM_1] operate-In[in]
 	 */
-	private Long[] bak1s;
+	private Long[] custom1s;
 
 
 	/**
-	 * condition-field: 备用字段1[BAK_1] operate-GTEqual[>=]
+	 * condition-field: 备用字段_1[CUSTOM_1] operate-GTEqual[>=]
 	 */
-	private Long startBak1;
+	private Long startCustom1;
 
 	/**
-	 * condition-field: 备用字段1[BAK_1] operate-LTEqual[<=]
+	 * condition-field: 备用字段_1[CUSTOM_1] operate-LTEqual[<=]
 	 */
-	private Long endBak1;
-
-
-	/**
-	 * condition-field: 备用字段2[BAK_2] operate-Equal[=]
-	 */
-	private Long bak2;
+	private Long endCustom1;
 
 
 	/**
-	 * condition-field: 备用字段2[BAK_2] operate-In[in]
+	 * condition-field: 备用字段_2[CUSTOM_2] operate-Equal[=]
 	 */
-	private Long[] bak2s;
+	private Long custom2;
 
 
 	/**
-	 * condition-field: 备用字段2[BAK_2] operate-GTEqual[>=]
+	 * condition-field: 备用字段_2[CUSTOM_2] operate-In[in]
 	 */
-	private Long startBak2;
-
-	/**
-	 * condition-field: 备用字段2[BAK_2] operate-LTEqual[<=]
-	 */
-	private Long endBak2;
+	private Long[] custom2s;
 
 
 	/**
-	 * condition-field: 备用字段3[BAK_3] operate-Like[like]
+	 * condition-field: 备用字段_2[CUSTOM_2] operate-GTEqual[>=]
 	 */
-	private String bak3;
+	private Long startCustom2;
+
+	/**
+	 * condition-field: 备用字段_2[CUSTOM_2] operate-LTEqual[<=]
+	 */
+	private Long endCustom2;
 
 
 	/**
-	 * condition-field: 备用字段4[BAK_4] operate-Like[like]
+	 * condition-field: 备用字段_3[CUSTOM_3] operate-Equal[=]
 	 */
-	private String bak4;
+	private Long custom3;
+
+
+	/**
+	 * condition-field: 备用字段_3[CUSTOM_3] operate-In[in]
+	 */
+	private Long[] custom3s;
+
+
+	/**
+	 * condition-field: 备用字段_3[CUSTOM_3] operate-GTEqual[>=]
+	 */
+	private Long startCustom3;
+
+	/**
+	 * condition-field: 备用字段_3[CUSTOM_3] operate-LTEqual[<=]
+	 */
+	private Long endCustom3;
+
+
+	/**
+	 * condition-field: 备用字段_4[CUSTOM_4] operate-Like[like]
+	 */
+	private String custom4;
+
+
+	/**
+	 * condition-field: 备用字段_5[CUSTOM_5] operate-Like[like]
+	 */
+	private String custom5;
+
+
+	/**
+	 * condition-field: 备用字段_6[CUSTOM_6] operate-Like[like]
+	 */
+	private String custom6;
 
 
 
@@ -415,6 +490,70 @@ public class CPcAppAccess implements Condition {
 	}
 	public void setEndAppImageId(Long endAppImageId) {
 		this.endAppImageId = endAppImageId;
+	}
+
+
+	public Long getDataCenterId() {
+		return this.dataCenterId;
+	}
+	public void setDataCenterId(Long dataCenterId) {
+		this.dataCenterId = dataCenterId;
+	}
+
+
+	public Long[] getDataCenterIds() {
+		return this.dataCenterIds;
+	}
+	public void setDataCenterIds(Long[] dataCenterIds) {
+		this.dataCenterIds = dataCenterIds;
+	}
+
+
+	public Long getStartDataCenterId() {
+		return this.startDataCenterId;
+	}
+	public void setStartDataCenterId(Long startDataCenterId) {
+		this.startDataCenterId = startDataCenterId;
+	}
+
+
+	public Long getEndDataCenterId() {
+		return this.endDataCenterId;
+	}
+	public void setEndDataCenterId(Long endDataCenterId) {
+		this.endDataCenterId = endDataCenterId;
+	}
+
+
+	public Long getResCenterId() {
+		return this.resCenterId;
+	}
+	public void setResCenterId(Long resCenterId) {
+		this.resCenterId = resCenterId;
+	}
+
+
+	public Long[] getResCenterIds() {
+		return this.resCenterIds;
+	}
+	public void setResCenterIds(Long[] resCenterIds) {
+		this.resCenterIds = resCenterIds;
+	}
+
+
+	public Long getStartResCenterId() {
+		return this.startResCenterId;
+	}
+	public void setStartResCenterId(Long startResCenterId) {
+		this.startResCenterId = startResCenterId;
+	}
+
+
+	public Long getEndResCenterId() {
+		return this.endResCenterId;
+	}
+	public void setEndResCenterId(Long endResCenterId) {
+		this.endResCenterId = endResCenterId;
 	}
 
 
@@ -642,83 +781,123 @@ public class CPcAppAccess implements Condition {
 	}
 
 
-	public Long getBak1() {
-		return this.bak1;
+	public Long getCustom1() {
+		return this.custom1;
 	}
-	public void setBak1(Long bak1) {
-		this.bak1 = bak1;
-	}
-
-
-	public Long[] getBak1s() {
-		return this.bak1s;
-	}
-	public void setBak1s(Long[] bak1s) {
-		this.bak1s = bak1s;
+	public void setCustom1(Long custom1) {
+		this.custom1 = custom1;
 	}
 
 
-	public Long getStartBak1() {
-		return this.startBak1;
+	public Long[] getCustom1s() {
+		return this.custom1s;
 	}
-	public void setStartBak1(Long startBak1) {
-		this.startBak1 = startBak1;
-	}
-
-
-	public Long getEndBak1() {
-		return this.endBak1;
-	}
-	public void setEndBak1(Long endBak1) {
-		this.endBak1 = endBak1;
+	public void setCustom1s(Long[] custom1s) {
+		this.custom1s = custom1s;
 	}
 
 
-	public Long getBak2() {
-		return this.bak2;
+	public Long getStartCustom1() {
+		return this.startCustom1;
 	}
-	public void setBak2(Long bak2) {
-		this.bak2 = bak2;
-	}
-
-
-	public Long[] getBak2s() {
-		return this.bak2s;
-	}
-	public void setBak2s(Long[] bak2s) {
-		this.bak2s = bak2s;
+	public void setStartCustom1(Long startCustom1) {
+		this.startCustom1 = startCustom1;
 	}
 
 
-	public Long getStartBak2() {
-		return this.startBak2;
+	public Long getEndCustom1() {
+		return this.endCustom1;
 	}
-	public void setStartBak2(Long startBak2) {
-		this.startBak2 = startBak2;
-	}
-
-
-	public Long getEndBak2() {
-		return this.endBak2;
-	}
-	public void setEndBak2(Long endBak2) {
-		this.endBak2 = endBak2;
+	public void setEndCustom1(Long endCustom1) {
+		this.endCustom1 = endCustom1;
 	}
 
 
-	public String getBak3() {
-		return this.bak3;
+	public Long getCustom2() {
+		return this.custom2;
 	}
-	public void setBak3(String bak3) {
-		this.bak3 = bak3;
+	public void setCustom2(Long custom2) {
+		this.custom2 = custom2;
 	}
 
 
-	public String getBak4() {
-		return this.bak4;
+	public Long[] getCustom2s() {
+		return this.custom2s;
 	}
-	public void setBak4(String bak4) {
-		this.bak4 = bak4;
+	public void setCustom2s(Long[] custom2s) {
+		this.custom2s = custom2s;
+	}
+
+
+	public Long getStartCustom2() {
+		return this.startCustom2;
+	}
+	public void setStartCustom2(Long startCustom2) {
+		this.startCustom2 = startCustom2;
+	}
+
+
+	public Long getEndCustom2() {
+		return this.endCustom2;
+	}
+	public void setEndCustom2(Long endCustom2) {
+		this.endCustom2 = endCustom2;
+	}
+
+
+	public Long getCustom3() {
+		return this.custom3;
+	}
+	public void setCustom3(Long custom3) {
+		this.custom3 = custom3;
+	}
+
+
+	public Long[] getCustom3s() {
+		return this.custom3s;
+	}
+	public void setCustom3s(Long[] custom3s) {
+		this.custom3s = custom3s;
+	}
+
+
+	public Long getStartCustom3() {
+		return this.startCustom3;
+	}
+	public void setStartCustom3(Long startCustom3) {
+		this.startCustom3 = startCustom3;
+	}
+
+
+	public Long getEndCustom3() {
+		return this.endCustom3;
+	}
+	public void setEndCustom3(Long endCustom3) {
+		this.endCustom3 = endCustom3;
+	}
+
+
+	public String getCustom4() {
+		return this.custom4;
+	}
+	public void setCustom4(String custom4) {
+		this.custom4 = custom4;
+	}
+
+
+	public String getCustom5() {
+		return this.custom5;
+	}
+	public void setCustom5(String custom5) {
+		this.custom5 = custom5;
+	}
+
+
+	public String getCustom6() {
+		return this.custom6;
+	}
+	public void setCustom6(String custom6) {
+		this.custom6 = custom6;
 	}
 
 
