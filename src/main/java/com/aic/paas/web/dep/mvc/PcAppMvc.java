@@ -91,7 +91,7 @@ public class PcAppMvc {
 	public void queryRunAppPage(HttpServletRequest request, HttpServletResponse response, Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
 		if (cdt == null)
 			cdt = new CPcApp();
-		// cdt.setSetupStatus(1);
+		cdt.setAppType(1);
 		Page<AppResInfo> page = appPeer.queryMgrResInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
@@ -100,6 +100,7 @@ public class PcAppMvc {
 	public void queryAppTimerPage(HttpServletRequest request, HttpServletResponse response, Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
 		if (cdt == null)
 			cdt = new CPcApp();
+		cdt.setAppType(2);
 		// cdt.setSetupStatus(1);
 		Page<AppTimerInfo> page = appPeer.queryMgrAppTimerInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
