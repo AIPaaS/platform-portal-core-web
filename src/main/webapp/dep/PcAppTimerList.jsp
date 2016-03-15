@@ -152,18 +152,159 @@ String ContextPath = request.getContextPath();
 				{{/if}}
 			</td>
 			<td class="text-center">
-				<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" data-placement="left"  title="启动">
+				{{if  row.app.status ==1 }}
+					<a id="a_app_start_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_destory_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger" title="销毁">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+					<a id="a_app_loading_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger loader" data-placement="left" title="启动">
+						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+					</a>	
+					<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_update_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" title="升级">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+				{{else row.app.status == 2 }}
+						<a id="a_app_start_{{= row.app.id}}" style="display:none;" href="###" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_destory_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger" title="销毁">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+					<a id="a_app_loading_{{= row.app.id}}"  href="###" class="table-link danger loader" data-placement="left" title="启动">
+						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+					</a>	
+					<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_update_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" title="升级">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+
+				{{else row.app.status == 3  }}
+
+					<a id="a_app_start_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_destory_{{= row.app.id}}" href="###"  class="table-link danger" title="销毁">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+					<a id="a_app_loading_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger loader" data-placement="left" title="启动">
+						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+					</a>	
+					<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_update_{{= row.app.id}}"   href="###" class="table-link" title="升级">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+
+				{{else row.app.status == 4  }}
+	
+				<a id="a_app_destory_{{= row.app.id}}" href="###" class="table-link danger" title="销毁">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				<a id="a_app_start_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" data-placement="left" title="开始部署">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-play fa-stack-1x fa-inverse"></i>
 					</span>
 				</a>	
-				<a id="a_app_stop_{{= row.app.id}}" href="###" class="table-link danger" title="停止">
+					<a id="a_app_loading_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger loader" data-placement="left" title="启动">
+						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+					</a>	
+				<a id="a_app_open_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动应用">
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
 					</span>
-				</a>			
+				</a>	
+				<a id="a_app_update_{{= row.app.id}}" href="###" class="table-link" title="升级">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+				{{else row.app.status == 5  }}
+					<a id="a_app_start_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_destory_{{= row.app.id}}"  href="###" class="table-link danger" title="销毁">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-stop fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+					<a id="a_app_loading_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger loader" data-placement="left" title="启动">
+						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
+					</a>	
+					<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>	
+					<a id="a_app_update_{{= row.app.id}}"  style="display:none;" href="###" class="table-link" title="升级">
+						<span class="fa-stack">
+							<i class="fa fa-square fa-stack-2x"></i>
+							<i class="fa fa-refresh fa-stack-1x fa-inverse"></i>
+						</span>
+					</a>
+				
+				{{/if}}
+				
+				<a id="a_app_status_{{= row.app.id}}" href="###" class="table-link" title="查看">
+					<span class="fa-stack">
+						<i class="fa fa-building fa-stack-2x"></i>
+						<i class="fa fa-file-text fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>		
 			</td>
 		</tr>
 {{/each}}
