@@ -20,6 +20,7 @@ import com.aic.paas.web.dep.peer.PcAppPeer;
 import com.binary.core.http.HttpClient;
 import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
+import com.binary.framework.exception.ServiceException;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
 import com.binary.json.JSON;
@@ -78,6 +79,7 @@ public class PcAppMvc {
 
 	@RequestMapping("/saveOrUpdate")
 	public void saveOrUpdate(HttpServletRequest request, HttpServletResponse response, PcApp record, String strMgrIds) {
+		try{
 		Long appId = appPeer.saveOrUpdate(record);
 		Long[] mgrIds = null;
 		if (!BinaryUtils.isEmpty(strMgrIds)) {
@@ -85,6 +87,9 @@ public class PcAppMvc {
 		}
 		appPeer.setAppMgrs(appId, mgrIds);
 		ControllerUtils.returnJson(request, response, appId);
+		}catch(Exception e){
+			ControllerUtils.returnJson(request, response, false);
+		}
 	}
 
 	@RequestMapping("/queryRunAppPage")
