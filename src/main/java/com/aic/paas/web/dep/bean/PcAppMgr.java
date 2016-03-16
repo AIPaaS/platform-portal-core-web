@@ -43,6 +43,12 @@ public class PcAppMgr implements EntityBean {
 	private Long modifyTime;
 
 
+	/**
+	 * mapping-field: 数据状态[DATA_STATUS]
+	 */
+	private Integer dataStatus;
+
+
 
 
 	public Long getId() {
@@ -82,6 +88,14 @@ public class PcAppMgr implements EntityBean {
 	}
 	public void setModifyTime(Long modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+
+	public Integer getDataStatus() {
+		return this.dataStatus;
+	}
+	public void setDataStatus(Integer dataStatus) {
+		this.dataStatus = dataStatus;
 	}
 
 

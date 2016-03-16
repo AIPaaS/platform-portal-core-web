@@ -332,14 +332,13 @@ function submitForm(cb){
 	if(ResidueRes.cpuCount < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>CPU</font>资源<font color='red'>不充足</font>，请调整CPU大小!"}); return;}
 	if(ResidueRes.memSize < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>内存</font>资源<font color='red'>不充足</font>，请调整内存大小!"}); return;}
 	if(ResidueRes.diskSize < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>存储</font>资源<font color='red'>不充足</font>，请调整存储大小!"}); return;}
-	
+	if(CU.isEmpty(ResidueRes.diskSize)) ResidueRes.diskSize = 0;
 	bean.appId = AppId;
 	bean.appVnoId = AppVnoId;
 	if(!CU.isEmpty(AppImageId)) bean.id = AppImageId;
 	
 	RS.ajax({url:"/dep/appimage/saveAppImage",ps:bean,cb:function(rs) {
 		AppImageId = rs;
-		
 		$("#btn_save").prop("title", "保存成功");
 		$("#btn_save").tooltip("show");
 		setTimeout(function(){

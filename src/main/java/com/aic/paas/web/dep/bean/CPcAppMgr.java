@@ -128,6 +128,29 @@ public class CPcAppMgr implements Condition {
 	private Long endModifyTime;
 
 
+	/**
+	 * condition-field: 数据状态[DATA_STATUS] operate-Equal[=]
+	 */
+	private Integer dataStatus;
+
+
+	/**
+	 * condition-field: 数据状态[DATA_STATUS] operate-In[in]
+	 */
+	private Integer[] dataStatuss;
+
+
+	/**
+	 * condition-field: 数据状态[DATA_STATUS] operate-GTEqual[>=]
+	 */
+	private Integer startDataStatus;
+
+	/**
+	 * condition-field: 数据状态[DATA_STATUS] operate-LTEqual[<=]
+	 */
+	private Integer endDataStatus;
+
+
 
 
 	public Long getId() {
@@ -287,6 +310,38 @@ public class CPcAppMgr implements Condition {
 	}
 	public void setEndModifyTime(Long endModifyTime) {
 		this.endModifyTime = endModifyTime;
+	}
+
+
+	public Integer getDataStatus() {
+		return this.dataStatus;
+	}
+	public void setDataStatus(Integer dataStatus) {
+		this.dataStatus = dataStatus;
+	}
+
+
+	public Integer[] getDataStatuss() {
+		return this.dataStatuss;
+	}
+	public void setDataStatuss(Integer[] dataStatuss) {
+		this.dataStatuss = dataStatuss;
+	}
+
+
+	public Integer getStartDataStatus() {
+		return this.startDataStatus;
+	}
+	public void setStartDataStatus(Integer startDataStatus) {
+		this.startDataStatus = startDataStatus;
+	}
+
+
+	public Integer getEndDataStatus() {
+		return this.endDataStatus;
+	}
+	public void setEndDataStatus(Integer endDataStatus) {
+		this.endDataStatus = endDataStatus;
 	}
 
 

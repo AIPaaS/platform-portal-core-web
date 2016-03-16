@@ -28,7 +28,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="cpuCount" class="col-lg-2 control-label">CPU个数<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<input type="text" name="cpuCount" required maxLength=8 class="form-control" id="cpuCount" pattern="[0-9\\.]{1,8}" placeholder="必填">
+					<input type="text" name="cpuCount" required maxLength=8 class="form-control" id="cpuCount" pattern="\d+(\.\d{0,1})?" placeholder="必填">
 				</div>
 				<div class="col-lg-5">
 					<span></span>
