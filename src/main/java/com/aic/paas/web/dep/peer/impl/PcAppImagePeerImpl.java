@@ -278,17 +278,29 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 				appaccess.setAccessCode(user.getMerchent().getMntCode()+"-"+app.getAppCode()+"-"+cn);
 				appaccess.setProtocol(record.getCustom2().intValue());
 				appAccessSvc.saveOrUpdate(appaccess);
+			}else{
+				appAccessSvc.saveOrUpdate(access);
 			}
 		}
 		
 	}
 
 
+	private void removeAppAccess(PcAppImage record){
+		CPcAppAccess cdt = new CPcAppAccess();
+		cdt.setAppId(record.getAppId());
+		cdt.setAppImageId(record.getId());
+		List<PcAppAccess> pcaa = appAccessSvc.queryList(cdt, null);	
+		Long id = pcaa.get(0).getId();
+		appAccessSvc.removeById(id);
+	}
 
 	@Override
 	public Integer removeAppImage(Long appImageId) {
 		PcAppImage appImg = queryAppImageById(appImageId);
 		if(appImg != null) {
+			//liwx3 add 删除容器时删除对应的应用访问入口
+			removeAppAccess(appImg);
 			return appImageSvc.removeById(appImageId);
 		}
 		return 0;
