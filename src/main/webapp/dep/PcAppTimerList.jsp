@@ -226,7 +226,7 @@ String ContextPath = request.getContextPath();
 					<a id="a_app_loading_{{= row.app.id}}" style="display:none;" href="###" class="table-link danger loader" data-placement="left" title="启动">
 						<image src="<%= ContextPath%>/layout/img/ajax-loader.gif" />
 					</a>	
-					<a id="a_app_open_{{= row.app.id}}" href="###" style="display:none;" class="table-link" data-placement="left" title="启动">
+					<a id="a_app_open_{{= row.app.id}}" href="###" class="table-link" data-placement="left" title="启动">
 						<span class="fa-stack">
 							<i class="fa fa-square fa-stack-2x"></i>
 							<i class="fa fa-play-circle fa-stack-1x fa-inverse"></i>
