@@ -444,7 +444,7 @@ function logTimer(appId,reqId){
 				var task = tasks[i];
 				for(var j = 0 ;j<task.logs.length;j++){
 					var logs = task.logs[j];
-					var logState =   CU.getDropItemRecord("V_PC_APP_RUN_STATUS", logs.taskState).name;
+					var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
 					taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
 				}
 			}

@@ -172,18 +172,9 @@ function refreshQuery(){
 					$("#a_app_start_"+data[i].app.id).hide();
 					$("#a_app_loading_"+data[i].app.id).hide();
 					$("#a_app_destory_"+data[i].app.id).show();
-					$("#a_app_open_"+data[i].app.id).hide();
-					$("#a_app_pause_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).show();
 					$("#a_app_update_"+data[i].app.id).show();
 					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#008800">运行中</font>');
-				}else if (data[i].app.status  ==4){
-					$("#a_app_start_"+data[i].app.id).hide();
-					$("#a_app_loading_"+data[i].app.id).hide();
-					$("#a_app_destory_"+data[i].app.id).show();
-					$("#a_app_open_"+data[i].app.id).show();
-					$("#a_app_pause_"+data[i].app.id).hide();
-					$("#a_app_update_"+data[i].app.id).show();
-					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#ff0000">停止</font>');
 				}else if (data[i].app.status  ==5){
 					$("#a_app_start_"+data[i].app.id).hide();
 					$("#a_app_loading_"+data[i].app.id).hide();
