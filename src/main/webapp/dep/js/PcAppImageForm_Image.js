@@ -318,7 +318,9 @@ function submitForm(cb){
 		if(CU.isEmpty(cpuFlexLowerLimit)){CC.showMsg({msg:"容器伸缩CPU下限不能为空"}); return;}
 		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
 		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
-		
+		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){
+			CC.showMsg({msg:"容器伸缩CPU上限不能小于下限"}); return;
+		}
 		bean.cpuFlexUpperLimit = parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10);
 		bean.cpuFlexLowerLimit = parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10);
 	}
