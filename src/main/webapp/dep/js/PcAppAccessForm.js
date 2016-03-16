@@ -67,7 +67,7 @@ function submitForm() {
 	var bean = PU.getFormData("form_appAccess");
 	if(!CU.isEmpty(CurrentId)) bean.id = CurrentId;
 	
-	var ps = {accessCode:bean.accessCode,appImageId:bean.appImgId,remark:bean.remark};
+	var ps = {accessCode:bean.accessCode,appImageId:bean.appImgId,protocol:bean.protocol,remark:bean.remark};
 	if(!CU.isEmpty(CurrentId)){
 		ps.id = CurrentId;
 	}
