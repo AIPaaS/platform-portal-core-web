@@ -280,11 +280,9 @@ function query(pageNum){
 					pauseAppTask(obj);
 				});
 				
-				$("#a_app_destory_"+data[i].app.id).editable({
-					display:false,
-					showbuttons: false,
-			        value:"",
-					tpl:getSelectAppVnoTpl(data[i].app.id, 5)
+				$("#a_app_destory_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					destoryAppTask(obj);
 				});
 				
 				$("#a_app_status_"+data[i].app.id).bind("click",function(){
@@ -357,25 +355,24 @@ function selectAppVnoTplClick(rb, type) {
 			appLogTask(json.appId,json.reqId);
 		}});
 	}
-	if(type == 5 ){
-		
-		RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
-			
-			$("#a_app_destory_"+appId).editable("hide");
-			$("#a_app_destory_"+appId).hide();
-			$("#a_app_loading_"+appId).show();
-			$("#a_app_start_"+appId).hide();
-			$("#a_app_pause_"+appId).hide();
-			$("#a_app_open_"+appId).hide();
-			$("#a_app_update_"+appId).hide();
-			
-			$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
-			appLogTask(json.appId,json.reqId);
-		}});
-	}
 }
 
-
+function destoryAppTask(appinfo){
+	
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId}, cb:function(json) {
+		$("#a_app_destory_"+appId).editable("hide");
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
+		$("#a_app_start_"+appId).hide();
+		$("#a_app_pause_"+appId).hide();
+		$("#a_app_open_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
+		$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
+		appLogTask(json.appId,json.reqId);
+	}});
+	
+}
 
 function pauseAppTask(appinfo) {
 	
@@ -444,7 +441,7 @@ function logTimer(appId,reqId){
 				var task = tasks[i];
 				for(var j = 0 ;j<task.logs.length;j++){
 					var logs = task.logs[j];
-					var logState =   CU.getDropItemRecord("V_PC_APP_RUN_STATUS", logs.taskState).name;
+					var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
 					taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
 				}
 			}

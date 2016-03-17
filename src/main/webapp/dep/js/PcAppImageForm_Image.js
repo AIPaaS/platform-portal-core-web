@@ -123,6 +123,8 @@ function initListener() {
 	$("#cpuCount").bind("keyup", refreshResidueRes);
 	$("#memSize").bind("keyup", refreshResidueRes);
 	$("#diskSize").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
+	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
 	
 	RS.setAjaxLodingButton("btn_save");
 }
@@ -131,6 +133,19 @@ function initListener() {
 function initFace() {
 }
 
+
+function checkBalance(){
+	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
+	var cpuFlexLowerLimit = $("#cpuFlexLowerLimit").val();
+	if(cpuFlexUpperLimit != "" &&cpuFlexLowerLimit != ""){
+		
+		if(cpuFlexLowerLimit>= cpuFlexUpperLimit){
+			var ht = '<font color="red">CPU下限不得大于CPU上限</font>';
+			$("#cpuFlexLowerLimit").parent().next("div span").append(ht);
+		}
+	}
+	
+}
 
 function setTargsEditable(targs) {
 	$("#btn_select_targs").editable({
@@ -281,7 +296,6 @@ function mo(f) {
 /**提交表单**/
 function submitForm(cb){
 	
-	
 	var bean = PU.getFormData("form_appImage");
 	
 	if(AppType == 2){
@@ -316,6 +330,9 @@ function submitForm(cb){
 		var minInstanceCount = $("#minInstanceCount").val();
 		if(CU.isEmpty(cpuFlexUpperLimit)){CC.showMsg({msg:"容器伸缩CPU上限不能为空"}); return;}
 		if(CU.isEmpty(cpuFlexLowerLimit)){CC.showMsg({msg:"容器伸缩CPU下限不能为空"}); return;}
+		if(parseFloat(cpuFlexLowerLimit) >= parseFloat(cpuFlexUpperLimit)){
+			CC.showMsg({msg:"CPU下限不得大于CPU上限"}); return;
+		}
 		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
 		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
 		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){

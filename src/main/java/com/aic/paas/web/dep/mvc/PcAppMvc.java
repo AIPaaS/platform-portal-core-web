@@ -96,7 +96,7 @@ public class PcAppMvc {
 	public void queryRunAppPage(HttpServletRequest request, HttpServletResponse response, Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
 		if (cdt == null)
 			cdt = new CPcApp();
-		// cdt.setSetupStatus(1);
+		cdt.setAppType(1);
 		Page<AppResInfo> page = appPeer.queryMgrResInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
 	}
@@ -105,6 +105,7 @@ public class PcAppMvc {
 	public void queryAppTimerPage(HttpServletRequest request, HttpServletResponse response, Integer pageNum, Integer pageSize, CPcApp cdt, String orders) {
 		if (cdt == null)
 			cdt = new CPcApp();
+		cdt.setAppType(2);
 		// cdt.setSetupStatus(1);
 		Page<AppTimerInfo> page = appPeer.queryMgrAppTimerInfoPage(pageNum, pageSize, cdt, orders);
 		ControllerUtils.returnJson(request, response, page);
@@ -157,50 +158,49 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
-	@RequestMapping("/logApp")
-	public void logApp(HttpServletRequest request, HttpServletResponse response, Long appId, Long reqId) {
+	@RequestMapping("/timer/deploy")
+	public void startTimerDeploy(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
 		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		HttpClient client = HttpClient.getInstance(taskRoot);
-		String json = client.request("/dep/appimage/logApp?appId=" + appId);
-		// String json = "{" +
-		// "\"clusterId\" : \"aic-south-biu\", " +
-		// "\"clusterName\" : \"aic-south-biu\", " +
-		// " \"dataCenterId\" : \"south-center\"," +
-		// "\"dataCenterName\" : \"south-center\"," +
-		// "\"appId\" : \"runner-custom\"," +
-		// "\"reqId\":1234567," +
-		// "\"actionType\":\" deploy/start/stop/scale /upgade\"," +
-		// "\"tasks\":[" +
-		// "{\"taskName\":\"crm-web\"," +
-		// "\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
-		// "\"startTime\":\"20160115205617\"," +
-		// "\"endTime\":\" 20160115231256\"," +
-		// "\"logs\":[" +
-		// "{\"logTime\":\" 20160115205617\"," +
-		// "\"logCnt\":\"crm-web container start to deploying!\"" +
-		// "}," +
-		// "{\"logTime\":\" 20160115205617\"," +
-		// "\"logCnt\":\"crm-web container deployed successfully!\"" +
-		// "}" +
-		// "]" +
-		// "}," +
-		// "{\"taskName\":\"crm-task\"," +
-		// "\"taskState\":\"STAGING/SUCCESS/FAIL\", " +
-		// "\"startTime\":\"20160115205617\"," +
-		// "\"endTime\":\" 20160115231256\"," +
-		// "\"logs\":[" +
-		// "{\"logTime\":\" 20160115205617\"," +
-		// "\"logCnt\":\"crm-web container start to deploying!\"" +
-		// "}," +
-		// "{\"logTime\":\" 201601152056198023\"," +
-		// "\"logCnt\":\"crm-whashashdhas d successfully!\"" +
-		// "}" +
-		// "]" +
-		// "}" +
-		//
-		// "]" +
-		// "}";
+		String json = client.request("/dep/appimage/timer/startDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
 		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
+	@RequestMapping("/timer/destory")
+	public void destoryTimerDeploy(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/stopDeploy?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+	}
+
+	@RequestMapping("/timer/run")
+	public void runTimer(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/startApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+	}
+
+	@RequestMapping("/timer/upgrade")
+	public void upgradeTimer(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/timer/reDeploy?appId=" + appId + "&appVnoId=" + appVnoId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+	}
+
+	@RequestMapping("/timer/status")
+	public void timerStatus(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String resp = client.request("/dep/log/timer/status?appId=" + appId);
+		String newResp = ControllerUtils.toRemoteJsonObject(resp, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(newResp));
+	}
 }
