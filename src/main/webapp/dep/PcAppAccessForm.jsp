@@ -16,6 +16,11 @@ String ContextPath = request.getContextPath();
 				<label for="appName" class="col-lg-2 control-label">应用名:</label>
 				<div class="col-lg-5">
 					<input type="text" name="appName" class="form-control" id="appName" required pattern="([0-9]|[a-zA-Z]|[_]){1,40}" readonly>
+					<input type="hidden" name="resCenterId" id="resCenterId">
+					<input type="hidden" name="mntId" id="mntId">
+					<input type="hidden" name="status" id="status">
+					<input type="hidden" name="dataStatus" id="dataStatus">
+					<input type="hidden" name="dataCenterId" id="dataCenterId">
 				</div>
 			</div>
 			<div class="form-group">

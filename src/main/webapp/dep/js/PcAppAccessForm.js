@@ -45,6 +45,12 @@ function queryInfo(callback) {
 			$("#protocol").val(rs.access.protocol);
 			$("#accessUrl").val(rs.access.accessUrl);
 			$("#remark").val(rs.access.remark);
+			$("#resCenterId").val(rs.access.resCenterId);
+			$("#mntId").val(rs.access.mntId);
+			$("#status").val(rs.access.status);
+			$("#dataStatus").val(rs.access.dataStatus);
+			$("#dataCenterId").val(rs.access.dataCenterId);
+			
 			
 			RS.ajax({url:"/app/access/queryAppImageInfoList",ps:{appId:rs.access.appId,appImgId:rs.access.appImageId},cb:function(result) {
 				var html = [];
@@ -67,7 +73,7 @@ function submitForm() {
 	var bean = PU.getFormData("form_appAccess");
 	if(!CU.isEmpty(CurrentId)) bean.id = CurrentId;
 	
-	var ps = {accessCode:bean.accessCode,appImageId:bean.appImgId,protocol:bean.protocol,remark:bean.remark};
+	var ps = {accessCode:bean.accessCode,appImageId:bean.appImgId,dataCenterId:bean.dataCenterId,protocol:bean.protocol,dataStatus:bean.dataStatus,status:bean.status,mntId:bean.mntId,resCenterId:bean.resCenterId,remark:bean.remark};
 	if(!CU.isEmpty(CurrentId)){
 		ps.id = CurrentId;
 	}
