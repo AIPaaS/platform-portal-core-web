@@ -287,7 +287,7 @@ function query(pageNum){
 				
 				$("#a_app_status_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					appStatus(obj);
+					window.location = ContextPath + "/dispatch/mc/104060104?appId="+obj.app.id;
 				});
 			}
 		}
@@ -457,6 +457,9 @@ function logTimer(appId,reqId){
 function appStatus(appinfo) {
 	
 	var appId = appinfo.app.id ;
+	
+	
+	
 	RS.ajax({url:"/dep/applog/log/status",
 		ps:{appId:appId},
 		cb:function(json) {
