@@ -360,7 +360,7 @@ function selectAppVnoTplClick(rb, type) {
 function destoryAppTask(appinfo){
 	
 	var appId = appinfo.app.id ;
-	RS.ajax({url:"/dep/app/stopDepl oy", ps:{appId:appId}, cb:function(json) {
+	RS.ajax({url:"/dep/app/stopDeploy", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_destory_"+appId).editable("hide");
 		$("#a_app_destory_"+appId).hide();
 		$("#a_app_loading_"+appId).show();
