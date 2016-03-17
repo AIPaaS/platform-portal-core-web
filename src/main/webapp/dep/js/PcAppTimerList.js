@@ -334,7 +334,7 @@ function selectAppVnoTplClick(rb, type) {
 
 function destoryApp(obj ){
 	
-	var appId = appinfo.app.id ;
+	var appId = obj.app.id ;
 	RS.ajax({url:"/dep/app/timer/destory", ps:{appId:appId}, cb:function(json) {
 		
 		$("#a_app_destory_"+appId).editable("hide");
