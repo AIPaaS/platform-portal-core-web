@@ -207,6 +207,10 @@ function showDepInstance(id){
 	var obj =  CurrDataMap["key_"+id];
 	$("#div_depInstanceTitle").html("容器[<font color='blue'>"+obj.containerName+"</font>]运行实例信息");
 	queryDepInstance(id,1);
+	
+	var empurl = ContextPath + "/dep/PcAppMonitorEmpty.jsp?d="+new Date().getTime();
+	$("#if_montior_dockerinstance").prop("src", empurl);
+	$("#if_montior_dockerinstancelog").prop("src", empurl);
 	$('#div_dep_instance').modal('show');
 }
 
