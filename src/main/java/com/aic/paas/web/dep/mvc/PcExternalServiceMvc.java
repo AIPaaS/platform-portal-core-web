@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,6 +18,7 @@ import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
+import com.binary.core.http.HttpClient;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
@@ -30,6 +32,8 @@ public class PcExternalServiceMvc {
 	@Autowired
 	PcServicePeer servicePeer;
 	
+	@Value("${project.task.root}")
+	String taskRoot;
 	
 	@RequestMapping("/queryPage")
 	public void queryPage(HttpServletRequest request,HttpServletResponse response, Integer pageNum, Integer pageSize, CPcService cdt, String orders) {
@@ -63,12 +67,21 @@ public class PcExternalServiceMvc {
 		}
 		servicePeer.resetParams(ServiceType.EXTERNAL, id, params);
 		
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/interface/dep/service/register?record=" + JSON.toString(record));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
 		ControllerUtils.returnJson(request, response, id);
 	}
 	
 	@RequestMapping("/removeById")
 	public void removeById(HttpServletRequest request,HttpServletResponse response, Long id) {
 		int c = servicePeer.removeById(ServiceType.EXTERNAL, id);
+		
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/interface/dep/service/deregister?record=" + id);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
 		ControllerUtils.returnJson(request, response, c);
 	}
 	

@@ -1,6 +1,5 @@
 package com.aic.paas.web.dep.peer.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.aic.paas.comm.util.SystemUtil;
 import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
 import com.aic.paas.web.dep.bean.CPcService;
-import com.aic.paas.web.dep.bean.ExternalServiceReq;
-import com.aic.paas.web.dep.bean.ExternalServiceReq.Check;
 import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.bean.ServiceType;
 import com.aic.paas.web.dep.peer.PcServicePeer;
-import com.aic.paas.web.rest.IExternalServiceManager;
 import com.aic.paas.web.rest.PcDataCenterSvc;
 import com.aic.paas.web.rest.PcServiceSvc;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.exception.ServiceException;
 import com.binary.jdbc.Page;
-import com.binary.json.JSON;
 
 public class PcServicePeerImpl implements PcServicePeer {
 	
@@ -30,8 +25,6 @@ public class PcServicePeerImpl implements PcServicePeer {
 	PcServiceSvc serviceSvc;
 	@Autowired
 	PcDataCenterSvc pcDataCenterSvc;
-	@Autowired
-	IExternalServiceManager iExternalServiceManager;
 
 	
 	
@@ -179,43 +172,10 @@ public class PcServicePeerImpl implements PcServicePeer {
 			if(record.getUserName() != null) BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
 			if(record.getAppImageId() != null) BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
 		}
-	    registerToConsul(record);
 		return serviceSvc.saveOrUpdate(record);
 	}
 	
-	/**
-	 * 调用辅助后场 将服务注册到consul
-	 * @param record
-	 */
-	private void registerToConsul(PcService record) {
-		
-		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
-		externalServiceReq.setClusterId(record.getResCenterId().toString());
-		externalServiceReq.setServiceId(record.getSvcCode());
-		externalServiceReq.setServiceName(record.getSvcName());
-		externalServiceReq.setAddress(record.getIp());
-		externalServiceReq.setPort(record.getPort());
-		
-		List<Check> checks = new ArrayList<Check>();
-		Check check = new Check();
-		check.setScript(record.getCustom4());
-		check.setInterval("30s");
-		check.setTtl("60s");
-		checks.add(check);
-		externalServiceReq.setCheck(checks);
-		
-		iExternalServiceManager.add(JSON.toString(externalServiceReq));
-	}
-	/**
-	 * 删除已注册到consul的服务
-	 * @param record
-	 */
-	private void deleteSrvFromConsul(PcService record) {
-		ExternalServiceReq externalServiceReq = new ExternalServiceReq();
-		externalServiceReq.setClusterId(record.getResCenterId().toString());
-		externalServiceReq.setServiceId(record.getSvcCode());
-		iExternalServiceManager.delete(JSON.toString(externalServiceReq));
-	}
+	
 	
 	@Override
 	public int removeById(ServiceType svcType, Long id) {
@@ -224,7 +184,6 @@ public class PcServicePeerImpl implements PcServicePeer {
 		
 		PcService record = queryById(svcType, id);
 		if(record != null) {
-			deleteSrvFromConsul(record);
 			return serviceSvc.removeById(id);
 		}
 		return 0;

@@ -54,9 +54,6 @@
 	<dubbox:rest id="DubboxRest_PcAppTaskSvc" interface="com.aic.paas.web.rest.PcAppTaskSvc" client="DubboRestClient_DEP" />
 	<dubbox:rest id="DubboxRest_PcAppAccessSvc" interface="com.aic.paas.web.rest.PcAppAccessSvc" client="DubboRestClient_DEP" />
 		
-		
-	<dubbo:application name="paas_dubbo_service"/>
-	<dubbo:reference id="iExternalServiceManager" interface="com.aic.paas.web.rest.IExternalServiceManager" url="${dubbox.rest.root.besrv}"/>
 	
 	
 </beans>
