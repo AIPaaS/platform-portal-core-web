@@ -32,6 +32,10 @@ public class PcAppMonitorMvc {
 	@Value("${integration.monitor.docker.instance.url}")
 	String monitorDockerInstanceUrl;
 	
+	@Value("${integration.monitor.docker.instance.logurl}")
+	String monitorDockerInstanceLogurl;
+	
+	
 	
 	
 	@RequestMapping("/queryDepHistoryPage")
@@ -61,6 +65,13 @@ public class PcAppMonitorMvc {
 		return "redirect:"+url;
 	}
 	
+	
+	@RequestMapping("/forward2MonitorDockerInstanceLog")
+	public String forward2MonitorDockerInstanceLog(HttpServletRequest request,HttpServletResponse response, String dockerName) {
+		BinaryUtils.checkEmpty(dockerName, "dockerName");
+		String url = monitorDockerInstanceLogurl + dockerName;
+		return "redirect:"+url;
+	}
 	
 	
 }
