@@ -90,6 +90,7 @@ function queryInfo(cb){
 		if(!CU.isEmpty(rs)) {
 			rs.Param_AppId = AppId;
 			rs.Param_AppImageId = AppImageId;
+			rs.Param_AppVnoId = AppVnoId;
 			rs.Param_PageNum = ParamPageNum;
 			$("#div_settings-tmpl").tmpl({data:rs}).appendTo("#div_settings");
 		}

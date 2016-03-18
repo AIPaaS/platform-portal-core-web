@@ -179,7 +179,7 @@ public class PcServicePeerImpl implements PcServicePeer {
 			if(record.getUserName() != null) BinaryUtils.checkEmpty(record.getUserName(), "record.userName");
 			if(record.getAppImageId() != null) BinaryUtils.checkEmpty(record.getAppImageId(), "record.appImageId");
 		}
-		registerToConsul(record);
+	    registerToConsul(record);
 		return serviceSvc.saveOrUpdate(record);
 	}
 	

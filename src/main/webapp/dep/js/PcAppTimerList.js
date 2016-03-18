@@ -5,6 +5,7 @@ var TreeData = null;
 var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区域
 var SelForCenterId = null;
 
+var pageTimer = null;
 var mouseenter = false;
 
 var ParentLeftWidth = 0;
@@ -17,6 +18,7 @@ function init() {
 		initListener();
 		initFace();
 		query(ParamPageNum);
+		refreshPage();
 	});
 	
 }
@@ -122,6 +124,71 @@ function getNetZoneName(netZoneId) {
 	return "["+item.attributes.zoneCode+"] "+item.name;
 }
 
+
+function refreshPage(){
+	if(pageTimer){
+		clearInterval(pageTimer);
+	}
+	pageTimer = setInterval(function(){refreshQuery();},1000*10);
+}
+
+function refreshQuery(){
+	var pageNum = $("#pagination_box").find("li.active").text();
+	var pageSize = $("#grid_pageSize").val();
+	var appCode = $("#appCode").val();
+	var appName = $("#appName").val();
+	var status = $("#status").val();
+	var orders = "APP_CODE , ID";
+	var ps = {pageNum:pageNum,pageSize:pageSize,appCode:appCode,appName:appName,status:status,orders:orders};
+	
+	if(!CU.isEmpty(SelForCenterType) && !CU.isEmpty(SelForCenterId)) {
+		switch (SelForCenterType) {		//1=数据中心    2=资源中心 
+			case "1": ps.dataCenterId = SelForCenterId; break;
+			case "2": ps.resCenterId = SelForCenterId; break;
+		}
+	}
+	RS.ajax({url:"/dep/app/queryAppTimerPage",ps:ps,cb:function(r) {
+		if(!CU.isEmpty(r)){
+			var data = r.data;
+			for(var i=0;i<data.length;i++){
+				if(data[i].app.status  ==1){
+					$("#a_app_start_"+data[i].app.id).show();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).hide();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
+				}else if (data[i].app.status  ==2){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).show();
+					$("#a_app_destory_"+data[i].app.id).hide();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#008800">执行中</font>');
+					
+				}else if (data[i].app.status  ==3){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).show();
+					$("#a_app_update_"+data[i].app.id).show();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="#008800">运行中</font>');
+				}else if (data[i].app.status  ==5){
+					$("#a_app_start_"+data[i].app.id).hide();
+					$("#a_app_loading_"+data[i].app.id).hide();
+					$("#a_app_destory_"+data[i].app.id).show();
+					$("#a_app_open_"+data[i].app.id).hide();
+					$("#a_app_pause_"+data[i].app.id).hide();
+					$("#a_app_update_"+data[i].app.id).hide();
+					$("#a_app_start_"+data[i].app.id).parent().parent().find(".deploy").html('<font color="red">部署失败</font>');
+				}
+			}
+		}
+	}});
+}
+
 function query(pageNum){
 	if(CU.isEmpty(pageNum)) pageNum = 1;
 	$("#appImageTable").html("");
@@ -170,13 +237,35 @@ function query(pageNum){
 					tpl:getSelectAppVnoTpl(data[i].app.id, 1)
 				});
 				
-				$("#a_app_update_"+data[i].app.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					updateTask(obj);
+				$("#a_app_update_"+data[i].app.id).editable({
+					display:false,
+					showbuttons: false,
+			        value:"",
+					tpl:getSelectAppVnoTpl(data[i].app.id, 2)
 				});
-				$("#a_app_stop_"+data[i].app.id).bind("click",function(){
+				$("#a_app_open_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					stopTask(obj);
+					openAppTask(obj);
+				});
+				
+				$("#a_app_log_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					window.location = ContextPath + "/dispatch/mc/104060103?appId="+obj.app.id;
+				});
+				
+				$("#a_app_pause_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					pauseAppTask(obj);
+				});
+				
+				$("#a_app_destory_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					destoryApp(obj);
+				});
+				
+				$("#a_app_status_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					appStatus(obj);
 				});
 			}
 		}
@@ -218,14 +307,46 @@ function selectAppVnoTplClick(rb, type) {
 	if(type == 1) {
 		$("#a_app_start_"+appId).editable("hide");
 		
-		alert("定时部署");
+		RS.ajax({url:"/dep/app/timer/deploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
+			
+				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
+				$("#a_app_start_"+appId).hide();
+				$("#a_app_loading_"+appId).show();
+		}});
+		
 //		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
 //			CC.showMsg({msg:"部署成功!"});
+//			
 //		}});
+	}
+	if(type == 2 ){
+		RS.ajax({url:"/dep/app/timer/upgrade", ps:{appId:appId, appVnoId:appVnoId}, cb:function() {
+//			CC.showMsg({msg:"部署成功!"});
+			$("#a_app_update_"+appId).editable("hide");
+			$("#a_app_update_"+appId).hide();
+			$("#a_app_loading_"+appId).show();
+			$("#a_app_destory_"+appId).hide();
+			$("a_app_open_"+appId).hide();
+		}});
 	}
 }
 
 
+function destoryApp(obj ){
+	
+	var appId = obj.app.id ;
+	RS.ajax({url:"/dep/app/timer/destory", ps:{appId:appId}, cb:function(json) {
+		
+		$("#a_app_destory_"+appId).editable("hide");
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
+		$("#a_app_start_"+appId).hide();
+		$("#a_app_open_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
+		
+	}});
+	
+}
 
 function toPoideTime(time) {
 	if(CU.isEmpty(time)) return "";
@@ -243,14 +364,118 @@ function mo(f) {
 
 
 
-function startTask(appinfo) {
-	alert("startTask["+appinfo.app.id+"] 待开发...");
+function pauseAppTask(appinfo) {
+	
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/timer/pause", ps:{appId:appId}, cb:function(json) {
+		$("#a_app_pause_"+appId).editable("hide");
+		var im = '<image src="'+ContextPath+'/layout/img/ajax-loader.gif" />';
+		$("#a_app_pause_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
+	}});
 }
-function updateTask(appinfo) {
-	alert("updateTask["+appinfo.app.id+"] 待开发...");
+
+function openAppTask(appinfo){
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/timer/run", ps:{appId:appId}, cb:function(json) {
+		$("#a_app_open_"+appId).editable("hide");
+		$("#a_app_open_"+appId).hide();
+		$("#a_app_loading_"+appId).show();
+		
+		$("#a_app_destory_"+appId).hide();
+		$("#a_app_update_"+appId).hide();
+	}});
 }
-function stopTask(appinfo) {
-	alert("stopTask["+appinfo.app.id+"] 待开发...");
+
+
+appTimer ="";
+
+function appLogTask(appId,reqId){
+	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
+		var tasks = json.tasks;
+		var lastTime = json.lastFetchTime;
+		$("#lastTime").val(lastTime);
+		var actionType =  CU.getDropItemRecord("V_PC_APP_RUN_STATUS", json.actionType).name;
+		var taskLog = actionType+"    开始…… \n";
+		
+		for(var i = 0 ;i<tasks.length;i++){
+			var task = tasks[i];
+			for(var j = 0 ;j<task.logs.length;j++){
+				var logs = task.logs[j];
+				var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
+				taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
+			}
+		}
+		$("#div_app_log").modal("show"); 
+		$("#logWindow").html("");
+		$("#logWindow").html(taskLog);
+	}});
+	clearInterval(appTimer);
+	appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
+}
+
+function logTimer(appId,reqId){
+	var lastTime =$("#lastTime").val();
+	
+	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:lastTime}, cb:function(json) {
+		var tasks = json.tasks;
+		var lastTime = json.lastFetchTime;
+		if(lastTime != 0 ){
+			$("#lastTime").val(lastTime);
+			var taskLog = "";
+			for(var i = 0 ;i<tasks.length;i++){
+				var task = tasks[i];
+				for(var j = 0 ;j<task.logs.length;j++){
+					var logs = task.logs[j];
+					var logState =   CU.getDropItemRecord("V_PC_APP_RUN_STATUS", logs.taskState).name;
+					taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
+				}
+			}
+			$("#logWindow").append(taskLog);
+			var ta = document.getElementById('logWindow');
+			ta.scrollTop = ta.scrollHeight;
+		}
+	}});
+}
+
+
+
+function appStatus(appinfo) {
+	var appId = appinfo.app.id ;
+	RS.ajax({url:"/dep/app/timer/status",
+		ps:{appId:appId},
+		cb:function(json) {
+			$("#div_app_all_log").modal("show");
+			var statusResultMsg = '<div class="table-responsive">';
+			statusResultMsg += '<table class="table"><thead><tr>'
+				+ '<th><a href="#"><span>结果信息</span></a></th>'
+				+ '<th><a href="#"><span>'+json.resultMsg+'</span></a></th>';
+			$("#appLogTable").html(statusResultMsg);
+			var statusApp = '<div class="table-responsive">';
+			statusApp += '<table class="table"><thead><tr><th><a href="#"><span>应用状态</span></a></th></tr></thead>';
+			statusApp += '<tbody><tr>'
+					+ '<td><a href="#">应用名称</a></td><td>'
+					+ json.appName
+					+ '</td></tr>'
+					+ '<tr><td><a href="#">进度表</a></td><td>'
+					+ json.schedule
+					+ '</td></tr>'
+					+ '<tr><td><a href="#">最后成功时间</a></td><td>'
+					+ json.lastSuccess
+					+ '</td></tr>'
+					+ '<tr><td><a href="#">错误统计</a></td><td>'
+					+ json.errorCount
+					+ '</td></tr>'
+					+ '<tr><td><a href="#">成功统计</a></td><td>'
+					+ json.successCount
+					+ '</td></tr>'
+					+ '<tr><td><a href="#">最终失败</a></td><td>'
+					+ json.lastError
+					+ '</td></tr></tbody></thead></table></div>';
+			$("#appLogTable").append(statusApp);
+	}});
 }
 
 

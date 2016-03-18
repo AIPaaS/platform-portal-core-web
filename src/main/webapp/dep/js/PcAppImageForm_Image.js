@@ -136,6 +136,8 @@ function initListener() {
 	$("#cpuCount").bind("keyup", refreshResidueRes);
 	$("#memSize").bind("keyup", refreshResidueRes);
 	$("#diskSize").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
+	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
 	
 	RS.setAjaxLodingButton("btn_save");
 }
@@ -144,6 +146,19 @@ function initListener() {
 function initFace() {
 }
 
+
+function checkBalance(){
+	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
+	var cpuFlexLowerLimit = $("#cpuFlexLowerLimit").val();
+	if(cpuFlexUpperLimit != "" &&cpuFlexLowerLimit != ""){
+		
+		if(cpuFlexLowerLimit>= cpuFlexUpperLimit){
+			var ht = '<font color="red">CPU下限不得大于CPU上限</font>';
+			$("#cpuFlexLowerLimit").parent().next("div span").append(ht);
+		}
+	}
+	
+}
 
 function setTargsEditable(targs) {
 	$("#btn_select_targs").editable({
@@ -302,7 +317,6 @@ function mo(f) {
 /**提交表单**/
 function submitForm(cb){
 	
-	
 	var bean = PU.getFormData("form_appImage");
 	
 	if(AppType == 2){
@@ -337,9 +351,14 @@ function submitForm(cb){
 		var minInstanceCount = $("#minInstanceCount").val();
 		if(CU.isEmpty(cpuFlexUpperLimit)){CC.showMsg({msg:"容器伸缩CPU上限不能为空"}); return;}
 		if(CU.isEmpty(cpuFlexLowerLimit)){CC.showMsg({msg:"容器伸缩CPU下限不能为空"}); return;}
+		if(parseFloat(cpuFlexLowerLimit) >= parseFloat(cpuFlexUpperLimit)){
+			CC.showMsg({msg:"CPU下限不得大于CPU上限"}); return;
+		}
 		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
 		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
-		
+		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){
+			CC.showMsg({msg:"容器伸缩CPU上限不能小于下限"}); return;
+		}
 		bean.cpuFlexUpperLimit = parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10);
 		bean.cpuFlexLowerLimit = parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10);
 	}
@@ -351,14 +370,13 @@ function submitForm(cb){
 	if(ResidueRes.cpuCount < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>CPU</font>资源<font color='red'>不充足</font>，请调整CPU大小!"}); return;}
 	if(ResidueRes.memSize < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>内存</font>资源<font color='red'>不充足</font>，请调整内存大小!"}); return;}
 	if(ResidueRes.diskSize < 0) {CC.showMsg({msg:"当前网络区域<font color='red'>存储</font>资源<font color='red'>不充足</font>，请调整存储大小!"}); return;}
-	
+	if(CU.isEmpty(ResidueRes.diskSize)) ResidueRes.diskSize = 0;
 	bean.appId = AppId;
 	bean.appVnoId = AppVnoId;
 	if(!CU.isEmpty(AppImageId)) bean.id = AppImageId;
 	
 	RS.ajax({url:"/dep/appimage/saveAppImage",ps:bean,cb:function(rs) {
 		AppImageId = rs;
-		
 		$("#btn_save").prop("title", "保存成功");
 		$("#btn_save").tooltip("show");
 		setTimeout(function(){

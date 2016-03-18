@@ -24,7 +24,7 @@
    	<bean class="com.aic.paas.web.dep.peer.impl.PcAppPeerImpl" />
    	<bean class="com.aic.paas.web.dep.peer.impl.PcImagePeerImpl" />
    	<bean class="com.aic.paas.web.dep.peer.impl.PcServicePeerImpl" />
-    
+    <bean class="com.aic.paas.web.dep.peer.impl.PcAppTaskPeerImpl" />
     
     <bean class="com.aic.paas.web.res.peer.impl.MntResPeerImpl" />
     <bean class="com.aic.paas.web.res.peer.impl.PcAppResPeerImpl" />

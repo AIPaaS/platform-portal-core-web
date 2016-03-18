@@ -184,8 +184,13 @@ public class PcAppImageMvc {
 		if(!BinaryUtils.isEmpty(strParams)){
 			params = JSON.toList(strParams, PcKvPair.class);
 		}
+		try{
 		appImagePeer.saveAppImageParams(appImageId, params);
 		ControllerUtils.returnJson(request, response, null);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	

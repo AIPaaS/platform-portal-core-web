@@ -212,8 +212,11 @@ function showDepInstance(id){
 
 
 function forward2MonitorDockerInstance(dockerName) {
-	var url = ContextPath + "/dep/appmonitor/forward2MonitorDockerInstance?dockerName=" + dockerName;
-	$("#if_montior_dockerinstance").prop("src", url);
+	var charturl = ContextPath + "/dep/appmonitor/forward2MonitorDockerInstance?dockerName=" + dockerName;
+	var logurl = ContextPath + "/dep/appmonitor/forward2MonitorDockerInstanceLog?dockerName=" + dockerName;
+	
+	$("#if_montior_dockerinstance").prop("src", charturl);
+	$("#if_montior_dockerinstancelog").prop("src", logurl);
 }
 
 

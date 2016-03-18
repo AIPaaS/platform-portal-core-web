@@ -55,7 +55,7 @@ function initData(cb) {
 function initComponent() {
 }
 function initListener() {
-	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/104050102?pageNum="+ParamPageNum+"&appId="+AppId;});
+	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/104050102?pageNum="+ParamPageNum+"&appId="+AppId+"&appVnoId="+AppVnoId;});
 }
 function initFace() {
 }

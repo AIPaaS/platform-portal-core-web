@@ -131,12 +131,12 @@ String ContextPath = request.getContextPath();
 <script id="imgSvcTable-tmpl" type="text/x-jquery-tmpl">
 	{{each(i,row) data}}
 		<tr>
-			<td class="text-center">{{= row.svc.svcCode}}</td>
-			<td class="text-center">{{= row.svc.svcName}}</td>
+			<td class="text-center"><div title="{{= row.svc.svcCode}}">{{= row.svc.svcCode.substring(0,10)}}</div></td>
+			<td class="text-center"><div title="{{= row.svc.svcName}}">{{= row.svc.svcName.substring(0,10)}}</div></td>
 			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.svc.dataCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.svc.resCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.svc.protocol,false)}}</td>
-			<td class="text-center">{{= row.svc.domainName}}</td>
+			<td class="text-center"><div title="{{= row.svc.domainName}}">{{= row.svc.domainName.substring(0,10)}}</div></td>
 			<td class="text-left">{{= row.provider}}</td>
 			<td class="text-left">{{= row.consumerDes}}</td>
 			<td class="text-center">

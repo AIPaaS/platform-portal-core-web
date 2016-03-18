@@ -117,8 +117,7 @@ String ContextPath = request.getContextPath();
 				</tbody>
 				
 			</table>
-         </div>
-         <div class="row-fluid">
+			<div class="row-fluid">
 					<div class="col-lg-6">
 						
 					</div>
@@ -128,7 +127,29 @@ String ContextPath = request.getContextPath();
 						</div>
 					</div>
 				</div>
-         <iframe id="if_montior_dockerinstance" frameborder="0" width="795" height="400" src="<%=ContextPath%>/dep/PcAppMonitorEmpty.jsp"></iframe>
+         </div>
+         	
+			
+			<br>
+			<br>
+			
+			
+			
+			<div class="tabs-wrapper tabs-no-header">
+				<ul class="nav nav-tabs" id="tabs">
+					<li id="tab_1" class="active"><a href="#tab-monitor-chart" data-toggle="tab">性能监测数据</a></li>
+					<li id="tab_2"><a href="#tab-monitor-log" data-toggle="tab">性能监测图</a></li>
+				</ul>
+				<div class="tab-content" style="padding:0px 0px 0px 0px;">
+					<div class="tab-pane fade in active" id="tab-monitor-chart" style="padding:0px 0px 0px 0px;">
+						<iframe id="if_montior_dockerinstance" frameborder="0" width="795" height="400" src="<%=ContextPath%>/dep/PcAppMonitorEmpty.jsp"></iframe>
+					</div>
+					<div class="tab-pane fade" id="tab-monitor-log" style="padding:0px 0px 0px 0px;">
+						 <iframe id="if_montior_dockerinstancelog" frameborder="0" width="795" height="400" src="<%=ContextPath%>/dep/PcAppMonitorEmpty.jsp"></iframe>
+					</div>
+					
+				</div>
+			</div>
       </div>
 	</div>
 </div>

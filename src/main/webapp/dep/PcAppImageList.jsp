@@ -153,7 +153,7 @@ String ContextPath = request.getContextPath();
 				{{/if}}
 			</td>
 			<td class="text-center">
-				<a id="a_app_image_setup_{{= row.app.id}}" href="###" class="table-link" data-placement="left" data-title="选择应用版本" >
+				<a id="a_app_image_setup_{{= row.app.id}}" href="###" class="table-link" data-placement="left" data-title="选择应用版本" title="镜像容器配置" >
 					<span class="fa-stack">
 						<i class="fa fa-square fa-stack-2x"></i>
 						<i class="fa fa-life-saver fa-stack-1x fa-inverse"></i>
