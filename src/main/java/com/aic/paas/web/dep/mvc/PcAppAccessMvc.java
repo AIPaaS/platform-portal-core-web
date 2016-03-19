@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,8 +19,10 @@ import com.aic.paas.web.dep.bean.PcAppAccessInfo;
 import com.aic.paas.web.dep.bean.PcAppImageInfo;
 import com.aic.paas.web.dep.peer.PcAppAccessPeer;
 import com.aic.paas.web.dep.peer.PcAppImagePeer;
+import com.binary.core.http.HttpClient;
 import com.binary.framework.util.ControllerUtils;
 import com.binary.jdbc.Page;
+import com.binary.json.JSON;
 
 @Controller
 @RequestMapping("/app/access")
@@ -31,6 +34,9 @@ public class PcAppAccessMvc {
 	
 	@Autowired
 	PcAppImagePeer appImagePeer;
+	
+	@Value("${project.task.root}")
+	String taskRoot;
 	
 	//分页查
 	@RequestMapping("/queryPage")
@@ -49,6 +55,11 @@ public class PcAppAccessMvc {
 	@RequestMapping("/saveOrUpdate")
 	public void saveOrUpdate(HttpServletRequest request,HttpServletResponse response, PcAppAccess record) {
 		Long id = appAccessPeer.saveOrUpdate(record);
+		
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/interface/dep/appaccess/add?record=" + JSON.toString(record));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
 		ControllerUtils.returnJson(request, response, id);
 	}
 	//删除
