@@ -171,9 +171,9 @@ String ContextPath = request.getContextPath();
 					{{= row.code}}
 				{{/if}}
 			</td>
-			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.dataCenterId,false)}}</td>
-			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.resCenterId,false)}}</td>
-			<td class="text-center">{{= PU.getDropValue("DV_NET_ZONE_CODE",row.netZoneId,false)}}</td>
+			<td class="text-center">{{= PU.getDropValue("ALL_DV_DATA_CENTER_CODE",row.dataCenterId,false)}}</td>
+			<td class="text-center">{{= PU.getDropValue("ALL_DV_RES_CENTER_CODE",row.resCenterId,false)}}</td>
+			<td class="text-center">{{= PU.getDropValue("ALL_DV_NET_ZONE_CODE",row.netZoneId,false)}}</td>
 			<td class="text-center">
 					C: {{= row.cpuCount/100}}，M: {{= CU.toMegaByteUnit(row.memSize)}}，D: {{= CU.toMegaByteUnit(row.diskSize)}}
 			</td>

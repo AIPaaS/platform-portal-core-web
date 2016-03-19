@@ -135,6 +135,16 @@ public class PsResMvc {
 				r.setParentCode("0");
 			}
 			map.put("dc", dcDropList);
+			
+			CPcDataCenter dccdts = new CPcDataCenter();
+			List<PcDataCenter> dclists = resPeer.queryDataCenterList(dccdts, "CODE, ID");
+			List<DropRecord> dcDropLists = ComponentUtil.toDropList(dclists, "ID", "name", addAttr, addEmpty);
+			for(int i=fori; i<dcDropLists.size(); i++) {
+				DropRecord r = dcDropLists.get(i);
+				r.setParam1("1");
+				r.setParentCode("0");
+			}
+			map.put("alldc", dcDropLists);
 		}
 
 		if(opts==null || opts.indexOf("rc")>-1) {
@@ -150,6 +160,18 @@ public class PsResMvc {
 				if(!adda) r.setAttributes(null);
 			}
 			map.put("rc", rcDropList);
+			
+			CPcResCenter rccdts = new CPcResCenter();
+			List<PcResCenter> rclists = resPeer.queryResCenterList(rccdts, "RES_CODE, ID");
+			List<DropRecord> rcDropLists = ComponentUtil.toDropList(rclists, "ID", "resName", true, addEmpty);
+			for(int i=fori; i<rcDropLists.size(); i++) {
+				DropRecord r = rcDropLists.get(i);
+				r.setParam1("2");
+				PcResCenter att = (PcResCenter)r.getAttributes();
+				r.setParentCode(String.valueOf(att.getDataCenterId()));
+				if(!adda) r.setAttributes(null);
+			}
+			map.put("allrc", rcDropLists);
 		}
 		
 		if(opts==null || opts.indexOf("nc")>-1) {
@@ -165,6 +187,18 @@ public class PsResMvc {
 				if(!adda) r.setAttributes(null);
 			}
 			map.put("nc", ncDropList);
+			
+			CPcNetZone nccdts = new CPcNetZone();
+			List<PcNetZone> nclists = resPeer.queryNetZoneList(nccdts, "ZONE_CODE, ID");
+			List<DropRecord> ncDropLists = ComponentUtil.toDropList(nclists, "ID", "zoneName", addAttr, addEmpty);
+			for(int i=fori; i<ncDropLists.size(); i++) {
+				DropRecord r = ncDropLists.get(i);
+				r.setParam1("3");
+				PcNetZone att = (PcNetZone)r.getAttributes();
+				r.setParentCode(String.valueOf(att.getResCenterId()));
+				if(!adda) r.setAttributes(null);
+			}
+			map.put("allnc", ncDropLists);
 		}
 		
 		return map;
