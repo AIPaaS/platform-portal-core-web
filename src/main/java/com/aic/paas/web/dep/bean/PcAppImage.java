@@ -30,7 +30,10 @@ public class PcAppImage implements EntityBean {
 	 */
 	private Long imageId;
 
-
+	/**
+	 * mapping-field: 镜像[IMAGE]
+	 */
+	private String image;
 	/**
 	 * mapping-field: 应用ID[APP_ID]
 	 */
@@ -305,8 +308,13 @@ public class PcAppImage implements EntityBean {
 	public void setImageId(Long imageId) {
 		this.imageId = imageId;
 	}
-
-
+	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
 	public Long getAppId() {
 		return this.appId;
 	}
