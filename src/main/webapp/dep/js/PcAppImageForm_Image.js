@@ -123,6 +123,9 @@ function initListener() {
 	$("#cpuCount").bind("keyup", refreshResidueRes);
 	$("#memSize").bind("keyup", refreshResidueRes);
 	$("#diskSize").bind("keyup", refreshResidueRes);
+	$("#instanceCount").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bin("keyup", refreshResidueRes);
+	
 	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
 	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
 	
@@ -222,22 +225,39 @@ function refreshResidueRes() {
 	var cpuCount = $("#cpuCount").val();
 	var memSize = $("#memSize").val();
 	var diskSize = $("#diskSize").val();
+	var instanceCount = $("#instanceCount").val();
+	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
 	
 	var reg1 = /^\d+(\.\d+)?$/;	//小数
 	var reg2 = /^\d+$/;		//整数
-		
+	var reg3 = 1 ;     //实例数
+	var isSupportFlex = $("#isSupportFlex").prop("checked") ? 1 : 0
+	if(isSupportFlex){
+		if(cpuFlexUpperLimit!=""){
+			reg3 = parseInt(cpuFlexUpperLimit);
+		}
+	}else{
+		if(instanceCount!=""){
+			reg3 =parseInt( instanceCount);
+		}
+	}
+	
+			
 	if(ResidueRes.netZoneId == OldUseRes.netZoneId) {
 		ResidueRes.cpuCount += OldUseRes.cpuCount;
 		ResidueRes.memSize += OldUseRes.memSize;
 		ResidueRes.diskSize += OldUseRes.diskSize;
 	}
-	if(!CU.isEmpty(cpuCount)&&reg1.test(cpuCount)) ResidueRes.cpuCount -= parseInt(parseFloat(cpuCount)*100);
-	if(!CU.isEmpty(memSize)&&reg2.test(memSize)) ResidueRes.memSize -= parseInt(memSize);
-	if(!CU.isEmpty(diskSize)&&reg2.test(diskSize)) ResidueRes.diskSize -= parseInt(diskSize);
+	if(!CU.isEmpty(cpuCount)&&reg1.test(cpuCount)) ResidueRes.cpuCount -= parseInt(parseFloat(cpuCount)*100*reg3);
+	if(!CU.isEmpty(memSize)&&reg2.test(memSize)) ResidueRes.memSize -= parseInt(memSize*reg3);
+	if(!CU.isEmpty(diskSize)&&reg2.test(diskSize)) ResidueRes.diskSize -= parseInt(diskSize*reg3);
 	
 	$("#div_residue_cpuCount").html(ResidueRes.cpuCount/100);
 	$("#div_residue_memSize").html(CU.toMegaByteUnit(ResidueRes.memSize));
 	$("#div_residue_diskSize").html(CU.toMegaByteUnit(ResidueRes.diskSize));
+	$("#cpuTotal").val(parseInt(parseFloat(cpuCount)*100*reg3));
+	$("#memTotal").val(parseInt(memSize*reg3));
+	$("#diskTotal").val(parseInt(diskSize*reg3));
 }
 
 
