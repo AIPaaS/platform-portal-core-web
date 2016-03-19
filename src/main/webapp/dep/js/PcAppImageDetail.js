@@ -2,6 +2,7 @@
 var ParamPageNum = 1;
 var CurrDataMap = {};
 var AppId = "";
+var AppStatus = "";
 var AppVnoId = "";
 var APP = null;
 
@@ -22,6 +23,7 @@ function initData(cb) {
 	ParamPageNum = PRQ.get("pageNum");
 	AppId = PRQ.get("appId");
 	AppVnoId = PRQ.get("appVnoId");
+	AppStatus = PRQ.get("status");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 
 	if(CU.isEmpty(AppId) || CU.isEmpty(AppVnoId)) {
@@ -53,9 +55,12 @@ function initData(cb) {
 
 
 function initComponent() {
+
 }
 function initListener() {
-	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/104050102?pageNum="+ParamPageNum+"&appId="+AppId+"&appVnoId="+AppVnoId;});
+	if(AppStatus ==1 ){
+		$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/104050102?pageNum="+ParamPageNum+"&appId="+AppId+"&appVnoId="+AppVnoId;});
+	}
 }
 function initFace() {
 }
@@ -81,15 +86,22 @@ function query(pageNum){
 			}
 			$('#appImageDetailTable-tmpl').tmpl({data:data}).appendTo("#appImageDetailTable");
 			
+				
 			for(var i=0; i<data.length; i++) {
-				$("#a_remove_app_image_"+data[i].appImage.id).bind("click",function(){
-					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					removeAppImage(obj.appImage.id);
-				});
+				if(AppStatus ==1){
+					$("#a_remove_app_image_"+data[i].appImage.id).bind("click",function(){
+						var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+						removeAppImage(obj.appImage.id);
+					});
+				}
+				else{
+					$("#a_remove_app_image_"+data[i].appImage.id).css("color","#EEE");
+					
+				}
 			}
 		}
 		
-		if(APP.appType==2 && !CU.isEmpty(rs) && rs.length>0) {
+		if((APP.appType==2 && !CU.isEmpty(rs) && rs.length>0)||APP.status !=1) {
 			$("#btn_add").hide();
 		}else {
 			$("#btn_add").show();

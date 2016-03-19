@@ -5,6 +5,8 @@ var APP = null;
 
 var AppImageId = "";
 var AppVnoId = "";
+
+var AppStatus = "";
 var AppType = "";
 var ParamPageNum = 1;
 
@@ -39,6 +41,7 @@ function initData(cb) {
 	AppId = PRQ.get("appId");
 	AppImageId = PRQ.get("appImageId");
 	AppVnoId = PRQ.get("appVnoId");
+	AppStatus = PRQ.get("status");
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 	
@@ -82,6 +85,8 @@ function initData(cb) {
 
 /** 初始化组件 **/
 function initComponent() {
+	
+	
 	CC.onBreadLineClick = function(moduId, moduCode, url) {
 		if(moduCode == "1040501") {
 			url += "?appId=" + AppId + "&appVnoId=" + AppVnoId;
