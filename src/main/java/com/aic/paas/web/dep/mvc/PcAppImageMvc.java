@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -39,6 +40,7 @@ import com.aic.paas.web.res.bean.PcComputerTag;
 import com.aic.paas.web.res.bean.PcNetZone;
 import com.aic.paas.web.res.peer.PcComputerPeer;
 import com.aic.paas.web.res.peer.PsResPeer;
+import com.binary.core.http.HttpClient;
 import com.binary.core.lang.Conver;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.util.ControllerUtils;
@@ -66,6 +68,9 @@ public class PcAppImageMvc {
 	@Autowired
 	PcServicePeer servicePeer;
 	
+	
+	@Value("${project.task.root}")
+	String taskRoot;
 	
 	@RequestMapping("/getAppImageFormInit")
 	public void getAppImageFormInit(HttpServletRequest request,HttpServletResponse response, Long appId) {
@@ -145,12 +150,22 @@ public class PcAppImageMvc {
 	public void saveAppImage(HttpServletRequest request,HttpServletResponse response, PcAppImage record){
 		record.setImageId(1l);
 		Long id = appImagePeer.saveAppImage(record);
+		
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/interface/dep/appaccess/add?record=" + JSON.toString(record));
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
 		ControllerUtils.returnJson(request, response, id);
 	} 
 	
 	@RequestMapping("/removeAppImage")
 	public void removeAppImage(HttpServletRequest request,HttpServletResponse response, Long appImageId){
 		int c = appImagePeer.removeAppImage(appImageId);
+		
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/interface/dep/appaccess/remove?record=" + appImageId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
 		ControllerUtils.returnJson(request, response, c);
 	} 
 	

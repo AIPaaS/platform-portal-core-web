@@ -248,6 +248,11 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 		//liwx3 add 该容器作为应用的访问入口
 		if(record.getCustom1()==1){
 			saveOrUpdateAppAccess(user,app,record,cn,isadd);
+		}else if(!isadd){
+			//是否本次取消访问入口
+			PcAppImage old = appImageSvc.queryById(record.getId());
+			if(old.getCustom1()==1)
+				removeAppAccess(old);
 		}
 		
 		return appImageSvc.saveOrUpdate(record);
