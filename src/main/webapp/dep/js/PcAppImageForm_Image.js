@@ -230,16 +230,21 @@ function refreshResidueRes() {
 	var cpuCount = $("#cpuCount").val();
 	var memSize = $("#memSize").val();
 	var diskSize = $("#diskSize").val();
-	var instanceCount = $("#instanceCount").val();
 	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
+	var instanceCount = $("#instanceCount").val();
+	var maxInstanceCount = $("#maxInstanceCount").val();
+	
 	
 	var reg1 = /^\d+(\.\d+)?$/;	//小数
 	var reg2 = /^\d+$/;		//整数
 	var reg3 = 1 ;     //实例数
 	var isSupportFlex = $("#isSupportFlex").prop("checked") ? 1 : 0
 	if(isSupportFlex){
+		if(maxInstanceCount!=""){
+			reg3 = parseInt(maxInstanceCount);
+		}
 		if(cpuFlexUpperLimit!=""){
-			reg3 = parseInt(cpuFlexUpperLimit);
+			cpuCount = cpuFlexUpperLimit;
 		}
 	}else{
 		if(instanceCount!=""){
