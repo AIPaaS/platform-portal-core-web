@@ -139,12 +139,12 @@ String ContextPath = request.getContextPath();
 	{{each(i,row) data}}
 		<tr>
 			<td class="text-center"><a href="<%=ContextPath%>/dispatch/mc/1040401?id={{= row.id}}&pageNum={{= pageNum}}">{{= row.svcCode}}</a></td>
-			<td class="text-center">{{= row.svcName}}</td>
+			<td class="text-center"><div title="{{= row.svcName}}">{{= sub(row.svcName)}}</div></td>
 			<td class="text-center">{{= PU.getDropValue("DV_DATA_CENTER_CODE",row.dataCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.resCenterId,false)}}</td>
 			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.protocol,false)}}</td>
 			<td class="text-center">{{= row.port}}</td>
-			<td class="text-left">{{= row.svcUrl}}</td>
+			<td class="text-left"><div title="{{= row.svcUrl}}">{{= sub(row.svcUrl)}}</div></td>
 			<td class="text-center">
 				<a id="a_svc_params_{{= row.id}}" href="###" class="table-link" title="参数详情">
 					<span class="fa-stack">

@@ -101,11 +101,11 @@ String ContextPath = request.getContextPath();
 	{{each(i,row) data}}
 		<tr>
 			<td class="text-center"><a href="<%=ContextPath%>/dispatch/mc/1041101?id={{= row.access.id}}&pageNum={{= pageNum}}">{{= row.appName}}</a></td>
-			<td class="text-center">{{= row.access.accessCode}}</td>
+			<td class="text-center"><div title="{{= row.access.accessCode}}">{{= sub(row.access.accessCode)}}</div></td>
 			<td class="text-center">{{= PU.getDropValue("DV_RES_CENTER_CODE",row.access.resCenterId,false)}}</td>
-			<td class="text-center">{{= row.imgName}}</td>
+			<td class="text-center"><div title="{{= row.imgName}}">{{= sub(row.imgName)}}</div></td>
 			<td class="text-center">{{= PU.getDropValue("V_PC_SERVICE_PROTOCOL",row.access.protocol,false)}}</td>
-			<td class="text-center">{{= row.access.accessUrl}}</td>
+			<td class="text-center"><div title="{{= row.access.accessUrl}}">{{= sub(row.access.accessUrl)}}</div></td>
 			<td class="text-center">{{= row.access.modifier}}</td>
 			<td class="text-center">
 				<a id="btn_del_{{= row.access.id}}" href="###" class="table-link danger" title="删除">

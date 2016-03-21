@@ -26,6 +26,16 @@ function init() {
 }
 
 
+function sub(str){
+	if(CU.isEmpty(str)){
+		return "";
+	}
+	if(str.length>10){
+		return str.substring(0,10);
+	}
+	return str;
+}
+
 function initData(cb) {
 	var pb = CC.getParentLayoutBorder();
 	ParentLeftWidth = pb.width;
