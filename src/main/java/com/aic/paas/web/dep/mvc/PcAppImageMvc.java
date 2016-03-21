@@ -150,22 +150,12 @@ public class PcAppImageMvc {
 	public void saveAppImage(HttpServletRequest request,HttpServletResponse response, PcAppImage record){
 		record.setImageId(1l);
 		Long id = appImagePeer.saveAppImage(record);
-		
-		HttpClient client = HttpClient.getInstance(taskRoot);
-		String json = client.request("/interface/dep/appaccess/add?record=" + JSON.toString(record));
-		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		
 		ControllerUtils.returnJson(request, response, id);
 	} 
 	
 	@RequestMapping("/removeAppImage")
 	public void removeAppImage(HttpServletRequest request,HttpServletResponse response, Long appImageId){
 		int c = appImagePeer.removeAppImage(appImageId);
-		
-		HttpClient client = HttpClient.getInstance(taskRoot);
-		String json = client.request("/interface/dep/appaccess/remove?record=" + appImageId);
-		json = ControllerUtils.toRemoteJsonObject(json, String.class);
-		
 		ControllerUtils.returnJson(request, response, c);
 	} 
 	
