@@ -365,11 +365,13 @@ function submitForm(cb){
 		if(parseFloat(cpuFlexLowerLimit) >= parseFloat(cpuFlexUpperLimit)){
 			CC.showMsg({msg:"CPU下限不得大于CPU上限"}); return;
 		}
-		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
-		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
+		if(parseFloat(cpuFlexUpperLimit)<bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU上限不能小于CPU数"}); return;}
+		if(parseFloat(cpuFlexLowerLimit)>bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU下限不能大于CPU数"}); return;}
 		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){
 			CC.showMsg({msg:"容器伸缩CPU上限不能小于下限"}); return;
 		}
+		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
+		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
 		bean.cpuFlexUpperLimit = parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10);
 		bean.cpuFlexLowerLimit = parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10);
 	}
