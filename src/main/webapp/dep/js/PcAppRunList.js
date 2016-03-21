@@ -329,7 +329,10 @@ function selectAppVnoTplClick(rb, type) {
 		$("#a_app_start_"+appId).editable("hide");
 		
 		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
-			
+			if(json =='999998'){
+				CC.showMsg({msg:"还未申请资源!"});
+				return ;
+			}
 				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
 				$("#a_app_start_"+appId).hide();
 				$("#a_app_loading_"+appId).show();
