@@ -13,7 +13,7 @@ var pageTimer = null;
 var ParentLeftWidth = 0;
 var ParentHeaderHeight = 0;
 
-var parentAppId = null;
+var ParentAppId = "";
 
 function init() {
 	initData(function() {
@@ -21,7 +21,7 @@ function init() {
 		initComponent();
 		initListener();
 		initFace();
-		appStatus(parentAppId);
+		query(ParentAppId);
 	});
 	
 }
@@ -30,25 +30,11 @@ function initData(cb) {
 	var pb = CC.getParentLayoutBorder();
 	ParentLeftWidth = pb.width;
 	ParentHeaderHeight = pb.height;
-	
-	parentAppId = PRQ.get("appId");
+	ParentAppId = PRQ.get("appId");
+	if(CU.isFunction(cb))cb();
 	
 }
 function initComponent() {
-	$("#sel_forcenter").treeview({data:TreeData,color:"#428bca",selectedBackColor:"#f0f8ff",selectedColor:"#428bca",collapseIcon:"fa fa-minus-square-o",expandIcon:"fa fa-plus-square-o",onNodeSelected: function(e, node) {
-		if(CU.isEmpty(node.id)) {
-			SelForCenterType = null;
-			SelForCenterId = null;
-			$("#forcenter").val("");
-		}else {
-			SelForCenterType = node.param1;
-			SelForCenterId = node.id;
-			$("#forcenter").val(node.text);
-		}
-		$('#sel_forcenter').hide();
-		query(1);
-	}});
-	$("#sel_forcenter").treeview("collapseAll", {silent:true});
 }
 function initListener() {
 
@@ -57,9 +43,7 @@ function initFace() {
 }
 
 
-function appStatus(appId) {
-	
-	var appId = appinfo.app.id ;
+function query(appId) {
 	RS.ajax({url:"/dep/applog/log/status",
 		ps:{appId:appId},
 		cb:function(json) {
@@ -70,10 +54,19 @@ function appStatus(appId) {
 				+ '<th><a href="#"><span>'+json.resultMsg+'</span></a></th>';
 			$("#appLogTable").html(status_resultMsg);
 			
-			var app = json.status[0].app;
-			var status_app = '<div class="table-responsive">';
-			status_app += '<table class="table"><thead><tr><th><a href="#">应用</a></th></tr></thead>';
-			status_app += '<tbody><tr>'
+			
+			
+			var status_app ='<div class="panel-group accordion">';
+			for(var j =0;j< json.status.length;j++){
+				var app = json.status[0].app;
+				status_app+= '<div class="panel panel-default">'+
+				'<div class="panel-heading"><h4 class="panel-title">'+
+				'<a class="accordion-toggle" data-toggle="collapse" data-parent="#task" href="#app_'+j+'">'+
+				app.id+
+				'</a></h4></div><div id="app_'+j+'" class="panel-collapse collapse in"><div class="panel-body">';
+				status_app += '<div class="table-responsive">';
+				status_app += '<table class="table"><thead><tr><th><a href="#">应用</a></th></tr></thead>';
+				status_app += '<tbody><tr>'
 					+ '<td><a href="#">应用代码</a></td><td>'
 					+ app.id
 					+ '</td>'
@@ -119,40 +112,52 @@ function appStatus(appId) {
 					+ '<td><a href="#">端口</a></td><td>'
 					+ app.ports
 					+ '</td></tr></tbody></thead></table></div>';
+				
+				
+				status_app +='<div class="panel-group accordion" id="task">';
+				for(var i=0;i<app.tasks.length;i++){
+					var task=app.tasks[i];
+					status_app+=
+						'<div class="panel panel-default">'+
+						'<div class="panel-heading"><h4 class="panel-title">'+
+						'<a class="accordion-toggle" data-toggle="collapse" data-parent="#task" href="#collapse_'+task.slaveId+'">'
+						+
+						'</a></h4></div><div id="collapse_'+task.slaveId+'" class="panel-collapse collapse in"><div class="panel-body">'+
+						'<table class="table"><tbody><tr>'+
+						'<td><a href="javascript:void(0);" >Id</a></td><td><a href="javascript:void(0);" id="taskId_'+task.slaveId+'">'
+						+ task.id
+						+ '</a></td>'+
+						'<td><a href="#">host</a></td><td>'
+						+ task.host
+						+ '</td>'+
+						'<td><a href="#">版本</a></td><td>'
+						+ task.version
+						+ 
+						'</tr><tbody></table>'+
+						'<div class="modal-body" style=" min-height: 400px;display:none;" id="iframe_'+task.slaveId+'">'+
+						'<iframe width="780px;" height="400px;"   ></iframe >'+
+						'</div></div></div></div>';
+				}
+				status_app+='</div></div></div></div>';
+				}
+			status_app +='</div>';
 			$("#appLogTable").append(status_app);
-			
-			var appTaskHtml='<div class="panel-group accordion" id="task">';
-			for(var i=0;i<app.tasks.length;i++){
-				var task=app.tasks[i];
-				appTaskHtml+=
-				'<div class="panel panel-default">'+
-				'<div class="panel-heading"><h4 class="panel-title">'+
-				'<a class="accordion-toggle" data-toggle="collapse" data-parent="#task" href="#collapse'+i+'">'
-				+'Task'+
-				'</a></h4></div><div id="collapse'+i+'" class="panel-collapse collapse in"><div class="panel-body">'+
-				'<table class="table"><tbody><tr>'+
-				'<td><a href="#">Id</a></td><td>'
-				+ task.id
-				+ '</td>'+
-				'<td><a href="#">host</a></td><td>'
-				+ task.host
-				+ '</td>'+
-				'<td><a href="#">版本</a></td><td>'
-				+ task.version
-				+ 
-				'</tr><tbody></table></div></div></div>';
+			for(var j =0;j< json.status.length;j++){
+				var app =  json.status[j].app;
+				for(var i=0;i<app.tasks.length;i++){
+					var task=app.tasks[i];
+					$("#taskId_"+task.slaveId).bind("click",function(){
+						var slaveId = $(this).attr("id").replace("taskId_","");
+						var url = "http://10.1.241.124:8022";
+						$("#iframe_"+slaveId).slideToggle();
+						$("#iframe_"+slaveId).find("iframe").attr("src",url);
+					});
+					
+				}
+				
+				
 			}
-			appTaskHtml+='</div>';
-			$("#appLogTable").append(appTaskHtml);
-			var app_versionInfo="";
-			app_versionInfo+='<table class="table"><tr>'+
-			'<td>最后缩放时间</td><td>'+
-			versionInfo.lastScalingAt+
-			'</td></tr><tr>'+
-			'<td>配置最终修改时间</td><td>'+
-			versionInfo.lastConfigChangeAt
-			'</td></tr></table></div></div>';
-			$("#appLogTable").append(app_versionInfo);
 	}});
 }
+
 
