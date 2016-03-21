@@ -144,6 +144,9 @@ public class PcAppImageMvc {
 	@RequestMapping("/saveAppImage")
 	public void saveAppImage(HttpServletRequest request,HttpServletResponse response, PcAppImage record){
 		record.setImageId(1l);
+		if(!record.getImage().isEmpty()){
+			record.setImage("0");
+		}
 		Long id = appImagePeer.saveAppImage(record);
 		ControllerUtils.returnJson(request, response, id);
 	} 
