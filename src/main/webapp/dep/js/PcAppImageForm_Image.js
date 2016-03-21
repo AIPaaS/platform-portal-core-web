@@ -130,6 +130,8 @@ function initListener() {
 	$("#diskSize").bind("keyup", refreshResidueRes);
 	$("#instanceCount").bind("keyup", refreshResidueRes);
 	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#maxInstanceCount").bind("keyup", refreshResidueRes);
 	
 	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
 	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
