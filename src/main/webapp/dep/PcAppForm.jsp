@@ -16,7 +16,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="appCode" class="col-lg-2 control-label">应用代码<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<input type="text" name="appCode" class="form-control" id="appCode" required pattern="([0-9]|[a-zA-Z]|[_]){1,40}" placeholder="必填">
+					<input type="text" name="appCode" class="form-control" id="appCode" required pattern="([0-9]|[a-zA-Z]|[-]|[.]){1,40}" placeholder="必填">
 				</div>
 				<div class="col-lg-5">
 					<span>1-40位字母、数字的组合</span>
