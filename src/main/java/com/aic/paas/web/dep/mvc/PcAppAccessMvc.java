@@ -54,11 +54,11 @@ public class PcAppAccessMvc {
 	//保存
 	@RequestMapping("/saveOrUpdate")
 	public void saveOrUpdate(HttpServletRequest request,HttpServletResponse response, PcAppAccess record) {
-		Long id = appAccessPeer.saveOrUpdate(record);
-		
 		HttpClient client = HttpClient.getInstance(taskRoot);
 		String json = client.request("/interface/dep/appaccess/add?record=" + JSON.toString(record));
 		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		
+		Long id = appAccessPeer.saveOrUpdate(record);
 		ControllerUtils.returnJson(request, response, id);
 	}
 	//删除
