@@ -316,7 +316,7 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 		svccdt = new CPcService();
 		svccdt.setSvcType(3);
 		svccdt.setMntId(user.getMerchent().getId());
-		svccdt.setAppId(appId);
+//		svccdt.setAppId(appId);
 		svccdt.setStatus(1);
 		List<PcServiceInfo> ls3 = serviceSvc.queryInfoList(svccdt, " SVC_CODE ");
 		for(int i=0; i<ls3.size(); i++) {
