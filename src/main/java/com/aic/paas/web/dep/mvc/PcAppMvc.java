@@ -88,7 +88,7 @@ public class PcAppMvc {
 		appPeer.setAppMgrs(appId, mgrIds);
 		ControllerUtils.returnJson(request, response, appId);
 		}catch(Exception e){
-			ControllerUtils.returnJson(request, response, false);
+			ControllerUtils.returnJson(request, response, "errMsg:"+e.getMessage());
 		}
 	}
 
