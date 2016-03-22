@@ -23,6 +23,8 @@ function initData(cb) {
 }
 function initComponent() {
 }
+
+
 function initListener() {
 	$("#form_appAccess").submit(function(e){
 	    e.preventDefault();
@@ -70,6 +72,11 @@ function queryInfo(callback) {
 
 
 function submitForm() {	
+	var remarkVal = $("#remark").val();
+	if(CU.isEmpty(remarkVal)){
+		CC.showMsg({msg:"描述信息不能为空!"});
+		return;
+	}
 	var bean = PU.getFormData("form_appAccess");
 	if(!CU.isEmpty(CurrentId)) bean.id = CurrentId;
 	
