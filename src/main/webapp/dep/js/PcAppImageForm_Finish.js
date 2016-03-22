@@ -25,7 +25,6 @@ function initData(cb) {
 	AppVnoId = PRQ.get("appVnoId");
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
-	
 	if(CU.isEmpty(AppId) || CU.isEmpty(AppImageId) || CU.isEmpty(AppVnoId)) {
 		alert("没有找到应用["+AppId+"]或镜像["+AppImageId+"]!");
 		pageBack();
