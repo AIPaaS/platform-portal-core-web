@@ -32,10 +32,13 @@ String ContextPath = request.getContextPath();
 						<input type="text" name="forcenter" id="forcenter" class="form-control" style="width:120px;" readOnly >
 					</div>
 				</div>
+				<button id="btn_query" class="btn btn-primary"><i class="fa fa-search fa-lg"></i> 查询</button>
 			</div>
+			
 		</div>
 	</div>
 </div>
+
 
 <!-- 正文 -->
 
