@@ -124,15 +124,27 @@ function submitForm(){
 	
 	RS.ajax({url:"/dep/app/saveOrUpdate",ps:bean,cb:function(rs) {
 		var code = $("#appCode").val();
-		if(!rs){
+		if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 1"){
 			CC.showMsg({msg:"代码为"+code+"的应用已存在，请修改!"});
 		}
-		else{
-		CurrentId = rs;
-		var url = ContextPath+"/dispatch/mc/10401";
-		if(!CU.isEmpty(PageNum)) url += "?pageNum="+PageNum;
-		window.location = url;
-		}}});
+		else {
+			if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 2"){
+				CC.showMsg({msg:"应用不存在!"});
+			}
+			else {
+				if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 3"){
+					CC.showMsg({msg:"不能修改!"});
+				}
+				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 3"){
+					CC.showMsg({msg:"版本已存在!"});
+				}
+				else{
+					CurrentId = rs;
+					var url = ContextPath+"/dispatch/mc/10401";
+					if(!CU.isEmpty(PageNum)) url += "?pageNum="+PageNum;
+					window.location = url;
+				}}}}});
+		
 }
 
 
