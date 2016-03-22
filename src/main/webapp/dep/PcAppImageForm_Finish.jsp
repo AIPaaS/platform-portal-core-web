@@ -280,7 +280,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 								<td width="10%" style="<%=tdcss%>" align="right">容器名：</td>
 								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.containerName}}"></td>
 								<td width="10%" style="<%=tdcss%>" align="right">镜像名：</td>
-								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= getImageName(data.image)}}"></td>
+								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.image}}"></td>
 								<td width="10%" style="<%=tdcss%>" align="right">网络区域：</td>
 								<td style="border:0px;padding:0px;"><input type="text" readOnly style="<%=incss%>" value="{{= PU.getDropValue("DV_NET_ZONE_CODE", data.appImage.netZoneId,false)}}"></td>
 							</tr>
