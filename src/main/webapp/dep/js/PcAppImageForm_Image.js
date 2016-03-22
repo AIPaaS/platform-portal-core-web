@@ -130,6 +130,8 @@ function initListener() {
 	$("#diskSize").bind("keyup", refreshResidueRes);
 	$("#instanceCount").bind("keyup", refreshResidueRes);
 	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#maxInstanceCount").bind("keyup", refreshResidueRes);
 	
 	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
 	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
@@ -230,16 +232,21 @@ function refreshResidueRes() {
 	var cpuCount = $("#cpuCount").val();
 	var memSize = $("#memSize").val();
 	var diskSize = $("#diskSize").val();
-	var instanceCount = $("#instanceCount").val();
 	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
+	var instanceCount = $("#instanceCount").val();
+	var maxInstanceCount = $("#maxInstanceCount").val();
+	
 	
 	var reg1 = /^\d+(\.\d+)?$/;	//小数
 	var reg2 = /^\d+$/;		//整数
 	var reg3 = 1 ;     //实例数
 	var isSupportFlex = $("#isSupportFlex").prop("checked") ? 1 : 0
 	if(isSupportFlex){
+		if(maxInstanceCount!=""){
+			reg3 = parseInt(maxInstanceCount);
+		}
 		if(cpuFlexUpperLimit!=""){
-			reg3 = parseInt(cpuFlexUpperLimit);
+			cpuCount = cpuFlexUpperLimit;
 		}
 	}else{
 		if(instanceCount!=""){
@@ -358,11 +365,13 @@ function submitForm(cb){
 		if(parseFloat(cpuFlexLowerLimit) >= parseFloat(cpuFlexUpperLimit)){
 			CC.showMsg({msg:"CPU下限不得大于CPU上限"}); return;
 		}
-		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
-		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
+		if(parseFloat(cpuFlexUpperLimit)<bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU上限不能小于CPU数"}); return;}
+		if(parseFloat(cpuFlexLowerLimit)>bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU下限不能大于CPU数"}); return;}
 		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){
 			CC.showMsg({msg:"容器伸缩CPU上限不能小于下限"}); return;
 		}
+		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
+		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
 		bean.cpuFlexUpperLimit = parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10);
 		bean.cpuFlexLowerLimit = parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10);
 	}
