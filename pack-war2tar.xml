@@ -8,7 +8,7 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.testOutputDirectory}</directory>
+			<directory>${project.basedir}/src/test/resources</directory>
 			<excludes>
 				<exclude>**/*.class</exclude>
 			</excludes>

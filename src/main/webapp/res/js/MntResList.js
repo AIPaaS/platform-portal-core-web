@@ -51,6 +51,10 @@ function initData(cb) {
 		DROP["DV_RES_CENTER_CODE"] = result["rc"];
 		DROP["DV_NET_ZONE_CODE"] = result["nc"];
 		
+		DROP["ALL_DV_DATA_CENTER_CODE"] = result["alldc"];
+		DROP["ALL_DV_RES_CENTER_CODE"] = result["allrc"];
+		DROP["ALL_DV_NET_ZONE_CODE"] = result["allnc"];
+		
 		var dropList = [];
 		for(var i=1; i<result["dc"].length; i++) dropList.push(result["dc"][i]);
 		for(var i=1; i<result["rc"].length; i++) dropList.push(result["rc"][i]);
@@ -204,9 +208,9 @@ function queryRes(){
 			var row = rs[i];
 			row.titlebg = bgcolors[i%bgcolors.length]; 
 			
-			var dc = CU.getDropItemRecord("DV_DATA_CENTER_CODE", row.dataCenterId);
-			var rc = CU.getDropItemRecord("DV_RES_CENTER_CODE", row.resCenterId);
-			var nc = CU.getDropItemRecord("DV_NET_ZONE_CODE", row.netZoneId);
+			var dc = CU.getDropItemRecord("ALL_DV_DATA_CENTER_CODE", row.dataCenterId);
+			var rc = CU.getDropItemRecord("ALL_DV_RES_CENTER_CODE", row.resCenterId);
+			var nc = CU.getDropItemRecord("ALL_DV_NET_ZONE_CODE", row.netZoneId);
 			if(!CU.isEmpty(dc)) row.dataCenterName = "[" + dc.attributes.code + "] " + dc.name;
 			if(!CU.isEmpty(rc)) row.resCenterName = "[" + rc.attributes.resCode + "] " + rc.name;
 			if(!CU.isEmpty(nc)) row.netZoneName = "[" + nc.attributes.zoneCode + "] " + nc.name;

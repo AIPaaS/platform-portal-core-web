@@ -306,7 +306,7 @@ function getSelectAppVnoTpl(appId, type) {
 	if(!CU.isEmpty(obj) && !CU.isEmpty(obj.appVnos)) {
 		var appVnos = obj.appVnos;
 		for(var i=0; i<appVnos.length; i++) {
-			tpl.push("<input id='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"' name=id='a_app_image_dep_"+type+"_"+appId+"' type='radio' onclick='selectAppVnoTplClick(this, "+type+")'>"
+			tpl.push("<input id='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"' name=id='a_app_image_dep_"+type+"_"+appId+"' type='radio' onclick='selectAppVnoTplClick(this, "+type+","+appVnos[i].setupStatus+")'>"
 						+ "<span style='padding-left:5px;'></span>"
 						+ "<label for='a_app_image_dep_"+type+"_"+appId+"_"+appVnos[i].id+"'>" + appVnos[i].versionNo 
 						+ "<span style='padding-left:25px;'></span>"
@@ -320,7 +320,11 @@ function getSelectAppVnoTpl(appId, type) {
 }
 
 	
-function selectAppVnoTplClick(rb, type) {
+function selectAppVnoTplClick(rb, type,setupStatus) {
+	if(setupStatus == 0 ){
+		CC.showMsg({msg:"部署配置未完成，请先配置应用!"});
+		return ;
+	}
 	var id = rb.id;
 	var appVnoId = id.substring(id.lastIndexOf('_')+1);
 	id = id.substring(0, id.lastIndexOf('_'));
@@ -329,7 +333,10 @@ function selectAppVnoTplClick(rb, type) {
 		$("#a_app_start_"+appId).editable("hide");
 		
 		RS.ajax({url:"/dep/app/startDeploy", ps:{appId:appId, appVnoId:appVnoId}, cb:function(json) {
-			
+			if(json =='999998'){
+				CC.showMsg({msg:"还未申请资源!"});
+				return ;
+			}
 				$("#a_app_start_"+appId).parent().parent().find(".deploy").html("");
 				$("#a_app_start_"+appId).hide();
 				$("#a_app_loading_"+appId).show();

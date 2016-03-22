@@ -32,10 +32,13 @@ String ContextPath = request.getContextPath();
 						<input type="text" name="forcenter" id="forcenter" class="form-control" style="width:120px;" readOnly >
 					</div>
 				</div>
+				<button id="btn_query" class="btn btn-primary"><i class="fa fa-search fa-lg"></i> 查询</button>
 			</div>
+			
 		</div>
 	</div>
 </div>
+
 
 <!-- 正文 -->
 
@@ -55,7 +58,7 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">资源中心</th>
 								<th class="text-center">网络区域</th>
 								<th class="text-center">镜像名</th>
-								<th class="text-center">监控信息</th>
+								<th class="text-center">监控日志</th>
 							</tr>
 						</thead>
 						<tbody id="appMonitorTable">
@@ -137,8 +140,8 @@ String ContextPath = request.getContextPath();
 			
 			<div class="tabs-wrapper tabs-no-header">
 				<ul class="nav nav-tabs" id="tabs">
-					<li id="tab_1" class="active"><a href="#tab-monitor-chart" data-toggle="tab">性能监测数据</a></li>
-					<li id="tab_2"><a href="#tab-monitor-log" data-toggle="tab">性能监测图</a></li>
+					<li id="tab_1" class="active"><a href="#tab-monitor-chart" data-toggle="tab">性能监测</a></li>
+					<li id="tab_2"><a href="#tab-monitor-log" data-toggle="tab">监测日志</a></li>
 				</ul>
 				<div class="tab-content" style="padding:0px 0px 0px 0px;">
 					<div class="tab-pane fade in active" id="tab-monitor-chart" style="padding:0px 0px 0px 0px;">

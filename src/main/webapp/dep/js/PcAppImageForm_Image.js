@@ -5,6 +5,8 @@ var APP = null;
 
 var AppImageId = "";
 var AppVnoId = "";
+
+var AppStatus = "";
 var AppType = "";
 var ParamPageNum = 1;
 
@@ -39,6 +41,7 @@ function initData(cb) {
 	AppId = PRQ.get("appId");
 	AppImageId = PRQ.get("appImageId");
 	AppVnoId = PRQ.get("appVnoId");
+	AppStatus = PRQ.get("status");
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 	
@@ -87,6 +90,8 @@ function initData(cb) {
 
 /** 初始化组件 **/
 function initComponent() {
+	
+	
 	CC.onBreadLineClick = function(moduId, moduCode, url) {
 		if(moduCode == "1040501") {
 			url += "?appId=" + AppId + "&appVnoId=" + AppVnoId;
@@ -136,6 +141,11 @@ function initListener() {
 	$("#cpuCount").bind("keyup", refreshResidueRes);
 	$("#memSize").bind("keyup", refreshResidueRes);
 	$("#diskSize").bind("keyup", refreshResidueRes);
+	$("#instanceCount").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
+	$("#maxInstanceCount").bind("keyup", refreshResidueRes);
+	
 	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
 	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
 	
@@ -235,22 +245,44 @@ function refreshResidueRes() {
 	var cpuCount = $("#cpuCount").val();
 	var memSize = $("#memSize").val();
 	var diskSize = $("#diskSize").val();
+	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
+	var instanceCount = $("#instanceCount").val();
+	var maxInstanceCount = $("#maxInstanceCount").val();
+	
 	
 	var reg1 = /^\d+(\.\d+)?$/;	//小数
 	var reg2 = /^\d+$/;		//整数
-		
+	var reg3 = 1 ;     //实例数
+	var isSupportFlex = $("#isSupportFlex").prop("checked") ? 1 : 0
+	if(isSupportFlex){
+		if(maxInstanceCount!=""){
+			reg3 = parseInt(maxInstanceCount);
+		}
+		if(cpuFlexUpperLimit!=""){
+			cpuCount = cpuFlexUpperLimit;
+		}
+	}else{
+		if(instanceCount!=""){
+			reg3 =parseInt( instanceCount);
+		}
+	}
+	
+			
 	if(ResidueRes.netZoneId == OldUseRes.netZoneId) {
 		ResidueRes.cpuCount += OldUseRes.cpuCount;
 		ResidueRes.memSize += OldUseRes.memSize;
 		ResidueRes.diskSize += OldUseRes.diskSize;
 	}
-	if(!CU.isEmpty(cpuCount)&&reg1.test(cpuCount)) ResidueRes.cpuCount -= parseInt(parseFloat(cpuCount)*100);
-	if(!CU.isEmpty(memSize)&&reg2.test(memSize)) ResidueRes.memSize -= parseInt(memSize);
-	if(!CU.isEmpty(diskSize)&&reg2.test(diskSize)) ResidueRes.diskSize -= parseInt(diskSize);
+	if(!CU.isEmpty(cpuCount)&&reg1.test(cpuCount)) ResidueRes.cpuCount -= parseInt(parseFloat(cpuCount)*100*reg3);
+	if(!CU.isEmpty(memSize)&&reg2.test(memSize)) ResidueRes.memSize -= parseInt(memSize*reg3);
+	if(!CU.isEmpty(diskSize)&&reg2.test(diskSize)) ResidueRes.diskSize -= parseInt(diskSize*reg3);
 	
 	$("#div_residue_cpuCount").html(ResidueRes.cpuCount/100);
 	$("#div_residue_memSize").html(CU.toMegaByteUnit(ResidueRes.memSize));
 	$("#div_residue_diskSize").html(CU.toMegaByteUnit(ResidueRes.diskSize));
+	$("#cpuTotal").val(parseInt(parseFloat(cpuCount)*100*reg3));
+	$("#memTotal").val(parseInt(memSize*reg3));
+	$("#diskTotal").val(parseInt(diskSize*reg3));
 }
 
 
@@ -354,11 +386,13 @@ function submitForm(cb){
 		if(parseFloat(cpuFlexLowerLimit) >= parseFloat(cpuFlexUpperLimit)){
 			CC.showMsg({msg:"CPU下限不得大于CPU上限"}); return;
 		}
-		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
-		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
+		if(parseFloat(cpuFlexUpperLimit)<bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU上限不能小于CPU数"}); return;}
+		if(parseFloat(cpuFlexLowerLimit)>bean.cpuCount){CC.showMsg({msg:"容器伸缩CPU下限不能大于CPU数"}); return;}
 		if(parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10)<=parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10)){
 			CC.showMsg({msg:"容器伸缩CPU上限不能小于下限"}); return;
 		}
+		if(CU.isEmpty(maxInstanceCount)){CC.showMsg({msg:"最大实例数量不能为空"}); return;}
+		if(CU.isEmpty(minInstanceCount)){CC.showMsg({msg:"最小实例数量不能为空"}); return;}
 		bean.cpuFlexUpperLimit = parseInt(parseFloat(bean.cpuFlexUpperLimit)*100, 10);
 		bean.cpuFlexLowerLimit = parseInt(parseFloat(bean.cpuFlexLowerLimit)*100, 10);
 	}

@@ -229,9 +229,9 @@ function forwardSetup(appinfo, appVnoId) {
 	}
 	
 	if(CU.isEmpty(appinfo.imageTotal)) {
-		window.location = ContextPath + "/dispatch/mc/104050102?appId="+appinfo.app.id+"&appVnoId="+appVnoId;
+		window.location = ContextPath + "/dispatch/mc/104050102?appId="+appinfo.app.id+"&appVnoId="+appVnoId+"&status="+appinfo.app.status;
 	}else {
-		window.location = ContextPath + "/dispatch/mc/1040501?appId="+appinfo.app.id+"&appVnoId="+appVnoId+"&pageNum="+ParamPageNum;
+		window.location = ContextPath + "/dispatch/mc/1040501?appId="+appinfo.app.id+"&appVnoId="+appVnoId+"&pageNum="+ParamPageNum+"&status="+appinfo.app.status;
 	}
 }
 
