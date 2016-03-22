@@ -26,11 +26,16 @@ import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.aic.paas.web.dep.bean.PcServiceInfo;
 import com.aic.paas.web.dep.peer.PcAppImagePeer;
+import com.aic.paas.web.integration.MntUserMvc;
 import com.aic.paas.web.integration.UserAuthentication;
+import com.aic.paas.web.res.mvc.MntResMvc;
+import com.aic.paas.web.res.peer.MntResPeer;
+import com.aic.paas.web.res.peer.impl.MntResPeerImpl;
 import com.aic.paas.web.rest.PcAppImageSvc;
 import com.aic.paas.web.rest.PcAppSvc;
 import com.aic.paas.web.rest.PcImageSvc;
 import com.aic.paas.web.rest.PcServiceSvc;
+import com.aic.paas.web.rest.PsMntResSvc;
 import com.binary.core.util.BinaryUtils;
 import com.binary.framework.exception.ServiceException;
 import com.binary.jdbc.Page;
@@ -73,13 +78,14 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	
 	@Override
 	public List<PcAppImage> queryAppImageList(Long appId, Long appVnoId, CPcAppImage cdt, String orders) {
-		BinaryUtils.checkEmpty(appId, "appId");
-		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		//BinaryUtils.checkEmpty(appId, "appId");
+		//BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
 		if(cdt == null) cdt = new CPcAppImage();
 		cdt.setMntId(user.getMerchent().getId());
 		cdt.setAppId(appId);
 		cdt.setAppVnoId(appVnoId);
+		cdt.setMntId((user.getMerchent().getId()));
 		return appImageSvc.queryList(cdt, orders);
 	}
 
