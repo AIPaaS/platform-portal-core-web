@@ -376,7 +376,7 @@ function destoryAppTask(appinfo){
 		$("#a_app_open_"+appId).hide();
 		$("#a_app_update_"+appId).hide();
 		$("#a_app_destory_"+appId).parent().parent().find(".deploy").html('<font color="#ff8800">未部署</font>');
-		appLogTask(json.appId,json.reqId);
+		appLogTask(appId,json.reqId);
 	}});
 	
 }
@@ -412,27 +412,30 @@ function openAppTask(appinfo){
 appTimer ="";
 
 function appLogTask(appId,reqId){
-	RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
-		var tasks = json.tasks;
-		var lastTime = json.lastFetchTime;
-		$("#lastTime").val(lastTime);
-		var actionType =  CU.getDropItemRecord("V_PC_APP_RUN_STATUS", json.actionType).name;
-		var taskLog = actionType+"    开始…… \n";
+	if(reqId !=null && appId != null ){
 		
-		for(var i = 0 ;i<tasks.length;i++){
-			var task = tasks[i];
-			for(var j = 0 ;j<task.logs.length;j++){
-				var logs = task.logs[j];
-				var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
-				taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
+		RS.ajax({url:"/dep/applog/log", ps:{appId:appId,reqId:reqId,lastTime:0}, cb:function(json) {
+			var tasks = json.tasks;
+			var lastTime = json.lastFetchTime;
+			$("#lastTime").val(lastTime);
+			var actionType =  CU.getDropItemRecord("V_PC_APP_RUN_STATUS", json.actionType).name;
+			var taskLog = actionType+"    开始…… \n";
+			
+			for(var i = 0 ;i<tasks.length;i++){
+				var task = tasks[i];
+				for(var j = 0 ;j<task.logs.length;j++){
+					var logs = task.logs[j];
+					var logState =   CU.getDropItemRecord("V_PC_APP_RESULT_CODE", logs.taskState).name;
+					taskLog += logs.logTime+": " +task.taskName+"执行  "+logState+"\n";
+				}
 			}
-		}
-		$("#div_app_log").modal("show"); 
-		$("#logWindow").html("");
-		$("#logWindow").html(taskLog);
-	}});
-	clearInterval(appTimer);
-	appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
+			$("#div_app_log").modal("show"); 
+			$("#logWindow").html("");
+			$("#logWindow").html(taskLog);
+		}});
+		clearInterval(appTimer);
+		appTimer = setInterval(function(){ logTimer(appId,reqId) ;},1000*10);
+	}
 }
 
 function logTimer(appId,reqId){

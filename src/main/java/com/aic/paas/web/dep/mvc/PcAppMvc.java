@@ -203,4 +203,10 @@ public class PcAppMvc {
 		String newResp = ControllerUtils.toRemoteJsonObject(resp, String.class);
 		ControllerUtils.returnJson(request, response, JSON.toObject(newResp));
 	}
+	
+	@RequestMapping("/removeApp")
+	public void removeApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		int result = appPeer.removeById(appId);
+		ControllerUtils.returnJson(request, response, result);
+	}
 }

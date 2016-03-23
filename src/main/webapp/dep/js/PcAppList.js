@@ -3,6 +3,7 @@ var ParamPageNum = 1;
 var TreeData = null;
 var SelForCenterType = null;	//1=数据中心    2=资源中心    3=网络区域
 var SelForCenterId = null;
+var CurrDataMap = {};
 
 var mouseenter = false;
 
@@ -129,6 +130,10 @@ function query(pageNum){
 	RS.ajax({url:"/dep/app/queryInfoPage",ps:ps,cb:function(r) {
 		if(!CU.isEmpty(r)){
 			var data = r.data;
+			for(var i=0;i<data.length;i++){
+				CurrDataMap["key_"+data[i].app.id] = data[i];
+			}
+			
 			ParamPageNum = r.pageNum;
 			$("#ul_pagination").twbsPagination({
 		        totalPages: r.totalPages?r.totalPages:1,
@@ -156,7 +161,29 @@ function query(pageNum){
 					versionStr += appVersion.versionNo;
 				}
 				$("#td_version_"+appMgrInfo.app.id).prop("title",versionStr);
+				
+				$("#a_app_del_"+data[i].app.id).bind("click",function(){
+					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
+					removeApp(obj);
+				});
+				
 			}
+		}
+	}});
+}
+
+function removeApp(obj ){
+	var appId = obj.app.id ;
+	RS.ajax({url:"/dep/app/removeApp", ps:{appId:appId}, cb:function(json) {
+		if(json ==1 ){
+			CC.showMsg({msg:"删除成功!"});
+			query(1)
+		}else if (json == 3){
+			CC.showMsg({msg:"当前应用下存在已定义的容器，不允许删除!"});
+			
+		}else{
+			CC.showMsg({msg:"删除失败!"});
+			
 		}
 	}});
 }

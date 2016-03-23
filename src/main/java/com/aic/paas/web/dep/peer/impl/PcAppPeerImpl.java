@@ -283,6 +283,10 @@ public class PcAppPeerImpl implements PcAppPeer {
 
 	@Override
 	public int removeById(Long id) {
+		int imageCount  = queryAppImageCount(id);
+		if(imageCount != 0 ) {
+			return 3;
+		}
 		BinaryUtils.checkEmpty(id, "id");
 		userAuth.verifyUserAppAuth(id);
 		return appSvc.removeById(id);
