@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.aic.paas.comm.util.SystemUtil;
+import com.aic.paas.frame.cross.integration.PaasWebSsoLoginUser;
+import com.aic.paas.web.dep.bean.CPcApp;
 import com.aic.paas.web.dep.bean.CPcAppDepHistory;
 import com.aic.paas.web.dep.bean.CPcAppDepInstance;
 import com.aic.paas.web.dep.bean.PcAppDepHistory;
@@ -20,6 +23,9 @@ public class PcAppMonitorPeerImpl implements PcAppMonitorPeer {
 	
 	@Override
 	public Page<PcAppDepHistory> queryDepHistoryPage(Integer pageNum,Integer pageSize, CPcAppDepHistory cdt, String orders) {
+		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
+		if(cdt == null) cdt = new CPcAppDepHistory();
+		cdt.setMntId(user.getMerchent().getId());
 		return svc.queryDepHistoryPage(pageNum, pageSize, cdt, orders);
 	}
 
