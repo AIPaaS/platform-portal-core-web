@@ -171,35 +171,35 @@ String ContextPath = request.getContextPath();
 			<div id="div_time">
 			
 				<div class="form-group">
-					<label for="targs" class="pull-left  control-label" style="width:100px;">开始时间:</label>
+					<label for="targs" class="pull-left  control-label" style="width:100px;">开始时间<font color="red">*</font>:</label>
 					<div class="pull-left ">
-						<input type="text" class="form-control"  style="width:400px;" id="maskedDate">
+						<input type="text" class="form-control" required style="width:400px;" id="maskedDate">
 					</div>
 					<div class="pull-left ">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="pull-left">
-						<label for="timerExp" class="pull-left  control-label" style="width:100px;">执行间隔:</label>
+						<label for="timerExp" class="pull-left  control-label" style="width:100px;">执行间隔<font color="red">*</font>:</label>
 					</div>
 					<div class="pull-left " class="pull-left clearfix">
 						<div class="pull-left">
 							<label for="timer1" class="control-label pull-left">时:</label>
 						</div>
 						<div class="pull-left">
-							<input type="text" name="timer1" class="form-control pull-left" style="width:120px;" id="timer1" placeholder="">
+							<input type="text" name="timer1" class="form-control pull-left" required style="width:120px;" id="timer1" placeholder="">
 						</div>
 						<div class="pull-left">
 							<label for="timer2" class="control-label pull-left">分:</label>
 						</div>
 						<div class="pull-left">
-							<input type="text" name="timer2" class="form-control pull-left" style="width:120px;" id="timer2" placeholder="">
+							<input type="text" name="timer2" class="form-control pull-left" required style="width:120px;" id="timer2" placeholder="">
 						</div>
 						<div class="pull-left">
 							<label for="timer3" class="control-label pull-left">秒:</label>
 						</div>
 						<div class="pull-left">
-							<input type="text" name="timer3" class="form-control pull-left" style="width:120px;" id="timer3" placeholder="">
+							<input type="text" name="timer3" class="form-control pull-left" required style="width:120px;" id="timer3" placeholder="">
 						</div>
 						
 					</div>
