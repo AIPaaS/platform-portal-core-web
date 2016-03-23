@@ -1,8 +1,7 @@
 var CurrentId = "";
 var PageNum = "";
-
+var IsAdd = "";
 var MgrOpIds = null;
-
 /** 初始化 **/
 function init() {
 	initData(function() {
@@ -13,12 +12,14 @@ function init() {
 			queryInfo();
 		}
 	});
+	checkIsAdd(IsAdd);
 }
 
 /** 初始化页面、内存等基本数据 **/
 function initData(cb) {
 	CurrentId = PRQ.get("id");
 	PageNum = PRQ.get("pageNum");
+	IsAdd = PRQ.get("isAdd");
 	if(CU.isEmpty(CurrentId)) CurrentId = "";
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc"},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
@@ -52,6 +53,7 @@ function initListener() {
 function reloadResCenterId(dcId,cb){
 	$("#resCenterId").html("");
 	if(!CU.isEmpty(dcId)) {
+		
 		var rs = DROP["DV_RES_CENTER_CODE"];
 		var ls = [rs[0]];
 		for(var i=1; i<rs.length; i++) {
@@ -67,6 +69,15 @@ function reloadResCenterId(dcId,cb){
 function initFace() {
 	
 }
+
+function checkIsAdd(add){
+	if(add){
+		$("#appType").attr("disabled", false);
+		$("#dataCenterId").attr("disabled", false);
+		$("#resCenterId").attr("disabled", false);
+	}
+}
+
 function getSelOpHtml(ls){
 	var html = [];
 	if(!CU.isEmpty(ls)){

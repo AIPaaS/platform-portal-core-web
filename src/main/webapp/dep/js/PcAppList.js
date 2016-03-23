@@ -73,7 +73,7 @@ function initListener() {
 	});
 	$("#btn_query").bind("click",function(){query();});
 	$("#grid_pageSize").bind("change",function(){query();});
-	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040101?pageNum="+ParamPageNum;});
+	$("#btn_add").bind("click",function(){window.location = ContextPath + "/dispatch/mc/1040101?pageNum="+ParamPageNum+"&isAdd=true";});
 }
 function initFace() {
 }
