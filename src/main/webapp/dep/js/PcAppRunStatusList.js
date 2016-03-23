@@ -142,21 +142,21 @@ function query(appId) {
 				}
 			status_app +='</div>';
 			$("#appLogTable").append(status_app);
-			for(var j =0;j< json.status.length;j++){
-				var app =  json.status[j].app;
-				for(var i=0;i<app.tasks.length;i++){
-					var task=app.tasks[i];
-					$("#taskId_"+task.slaveId).bind("click",function(){
-						var slaveId = $(this).attr("id").replace("taskId_","");
-						var url = "http://10.1.241.124:8022";
-						$("#iframe_"+slaveId).slideToggle();
-						$("#iframe_"+slaveId).find("iframe").attr("src",url);
-					});
-					
-				}
-				
-				
-			}
+//			for(var j =0;j< json.status.length;j++){
+//				var app =  json.status[j].app;
+//				for(var i=0;i<app.tasks.length;i++){
+//					var task=app.tasks[i];
+////					$("#taskId_"+task.slaveId).bind("click",function(){
+////						var slaveId = $(this).attr("id").replace("taskId_","");
+////						var url = "http://10.1.241.124:8022";
+////						$("#iframe_"+slaveId).slideToggle();
+////						$("#iframe_"+slaveId).find("iframe").attr("src",url);
+////					});
+//					
+//				}
+//				
+//				
+//			}
 	}});
 }
 
