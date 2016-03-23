@@ -308,6 +308,14 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 								<td width="10%" style="<%=tdcss%>" align="right">容器标签：</td>
 								<td style="border:0px;padding:0px;"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.targs}}"></td>
 							</tr>
+							<tr>
+								{{if !CU.isEmpty(data.appImage.timerStartTime)}}
+									<td width="20%" style="<%=tdcss%>" align="right">定时开始时间：</td>
+									<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= CU.toStringDateTime(data.appImage.timerStartTime)}}"></td>
+									<td width="10%" style="<%=tdcss%>" align="right">时间间隔：</td>
+									<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= timeExp(data.appImage.timerExp)}}"></td>
+								{{/if}}							
+							</tr>
 						</tbody>
 					</table>
 				</div>

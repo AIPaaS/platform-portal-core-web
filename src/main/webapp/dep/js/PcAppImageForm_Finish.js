@@ -134,5 +134,17 @@ function forwardDetail() {
 	window.location = url;
 }
 
-
-
+function mo(f){
+	var s = f+"";
+	if(s.indexOf('.')>0){
+		s = s.substring(0,s.indexOf('.'));
+	}
+	return parseInt(s,10);
+}
+function timeExp(exp){
+	var timerExp = parseFloat(exp);
+	var h = mo(timerExp/3600);
+	var m = mo(timerExp%3600/60);
+	var s = mo(timerExp%60);
+	return h+"时"+m+"分"+s+"分";
+}
