@@ -5,7 +5,11 @@ String ContextPath = request.getContextPath();
 %>
 
 <jsp:include page="/layout/jsp/head.jsp"></jsp:include>
-
+<style>
+.table tbody > tr > td:first-child{
+font-size: 0.875em;
+}
+</style>
 
          	<div id="appLogTable" class="table-responsive">
          	</div>
