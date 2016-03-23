@@ -58,7 +58,6 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">容器个数</th>
 								<th class="text-center">容器实例数</th>
 								<th class="text-center">容器占用资源</th>
-								<th class="text-center">操作</th>
 							</tr>
 						</thead>
 						<tbody id="appImageTable">

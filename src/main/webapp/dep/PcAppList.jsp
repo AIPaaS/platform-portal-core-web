@@ -58,6 +58,7 @@ String ContextPath = request.getContextPath();
 								<th class="text-center">最近版本号</th>
 								<th class="text-center">应用管理员</th>
 								<th class="text-center">描述</th>
+								<th class="text-center">操作</th>
 							</tr>
 						</thead>
 						<tbody id="appTable">
@@ -119,6 +120,14 @@ String ContextPath = request.getContextPath();
 				{{/each}}	
 			</td>
 			<td class="text-center">{{= row.app.remark}}</td>
+			<td class="text-center"> 
+			<a id="a_app_del_{{= row.app.id}}" href="###" class="table-link danger" title="删除">
+					<span class="fa-stack">
+						<i class="fa fa-square fa-stack-2x"></i>
+						<i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+			</td>
 		</tr>
 {{/each}}
 </script>
