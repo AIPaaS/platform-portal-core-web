@@ -17,7 +17,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="containerName" class="pull-left pull-left control-label" style="width:100px;">容器名<font color="red">*</font>:</label>
 				<div class="pull-left col-lg-3 pull-left">
-					<input type="text" name="containerName" class="form-control" style="width:400px;" required id="containerName"  pattern="([0-9]|[a-zA-Z]){1,100}" placeholder="必填">
+					<input type="text" name="containerName" class="form-control" style="width:400px;" required id="containerName"  pattern="([0-9]|[a-zA-Z]|[-]|[.]){1,40}" placeholder="必填">
 				</div>
 				<div class="pull-left col-lg-3 pull-left">
 					<span>1-100位字母或数字的组合</span>
