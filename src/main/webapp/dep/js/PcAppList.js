@@ -174,17 +174,22 @@ function query(pageNum){
 
 function removeApp(obj ){
 	var appId = obj.app.id ;
-	RS.ajax({url:"/dep/app/removeApp", ps:{appId:appId}, cb:function(json) {
-		if(json ==1 ){
-			CC.showMsg({msg:"删除成功!"});
-			query(1)
-		}else if (json == 3){
-			CC.showMsg({msg:"当前应用下存在已定义的容器，不允许删除!"});
-			
-		}else{
-			CC.showMsg({msg:"删除失败!"});
-			
-		}
+	
+	CC.showMsg({msg:"您确定要删除[<font color='blue'>"+obj.app.appName+"</font>] 应用吗?",option:2,callback:function(r) {
+		if(r != "ok") return ;
+		RS.ajax({url:"/dep/app/removeApp", ps:{appId:appId}, cb:function(json) {
+			if(json ==1 ){
+				CC.showMsg({msg:"删除成功!"});
+				query(1)
+			}else if (json == 3){
+				CC.showMsg({msg:"当前应用下存在已定义的容器，不允许删除!"});
+				
+			}else{
+				CC.showMsg({msg:"删除失败!"});
+				
+			}
+		}});
 	}});
+	
 }
 
