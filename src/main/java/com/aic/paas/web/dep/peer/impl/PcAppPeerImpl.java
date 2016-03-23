@@ -297,6 +297,14 @@ public class PcAppPeerImpl implements PcAppPeer {
 		userAuth.verifyUserAppAuth(appId);
 		appSvc.setAppMgrs(appId, mgrIds);
 	}
+
+
+
+	@Override
+	public int queryAppImageCount(Long appId) {
+		
+		return appImageSvc.getAppImageCount(appId);
+	}
 	
 	
 	

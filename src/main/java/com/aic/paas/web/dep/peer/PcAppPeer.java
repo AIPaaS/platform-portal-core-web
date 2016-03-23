@@ -158,5 +158,6 @@ public interface PcAppPeer {
 	 */
 	public void setAppMgrs(Long appId, Long[] mgrIds);
 	
+	public int queryAppImageCount(Long appId);
 
 }
