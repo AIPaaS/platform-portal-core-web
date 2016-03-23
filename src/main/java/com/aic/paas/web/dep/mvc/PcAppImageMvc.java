@@ -205,7 +205,7 @@ public class PcAppImageMvc {
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		BinaryUtils.checkEmpty(appImageId, "appImageId");
 		
-		List<PcAppImage> imgls = appImagePeer.queryAppImageList(null, null, null, " CONTAINER_NAME ");
+		List<PcAppImage> imgls = appImagePeer.queryAppImageList(appId, appVnoId, null, " CONTAINER_NAME ");
 		for(int i=0; i<imgls.size(); i++) {
 			PcAppImage img = imgls.get(i);
 			if(img.getId().equals(appImageId)) {
