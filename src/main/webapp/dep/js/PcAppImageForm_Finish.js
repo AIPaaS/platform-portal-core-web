@@ -25,6 +25,7 @@ function initData(cb) {
 	AppVnoId = PRQ.get("appVnoId");
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
+	
 	if(CU.isEmpty(AppId) || CU.isEmpty(AppImageId) || CU.isEmpty(AppVnoId)) {
 		alert("没有找到应用["+AppId+"]或镜像["+AppImageId+"]!");
 		pageBack();
@@ -89,7 +90,6 @@ function queryInfo(cb){
 		if(!CU.isEmpty(rs)) {
 			rs.Param_AppId = AppId;
 			rs.Param_AppImageId = AppImageId;
-			rs.Param_AppVnoId = AppVnoId;
 			rs.Param_PageNum = ParamPageNum;
 			$("#div_settings-tmpl").tmpl({data:rs}).appendTo("#div_settings");
 		}
@@ -135,4 +135,18 @@ function forwardDetail() {
 }
 
 
+function mo(f) {
+	var s = f+"";
+	if(s.indexOf('.')>0) {
+		s = s.substring(0,s.indexOf('.'));
+	}
+	return parseInt(s, 10);
+}
+function timeExp(exp){
+	var timerExp = parseFloat(exp);
+	var h = mo(timerExp/3600);
+	var m = mo(timerExp%3600/60);
+	var s = (timerExp%60);
+	return h+"时"+m+"分"+s+"秒";
+}
 

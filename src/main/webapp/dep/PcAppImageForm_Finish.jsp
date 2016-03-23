@@ -271,7 +271,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 			<div class="filter-block">
 				<div class="form-group">
 					<div class="col-lg-11"><h1><font color="blue">容器定义</font></h1></div>
-					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050102?appId={{= data.Param_AppId}}&appImageId={{= data.Param_AppImageId}}&appVnoId={{= data.Param_AppVnoId}}&pageNum={{= data.Param_PageNum}}">[修改]</a></div>
+					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050102?appId={{= Param_AppId}}&appImageId={{= Param_AppImageId}}&pageNum={{= Param_PageNum}}">[修改]</a></div>
 				</div>
 				<div class="col-lg-12">
 					<table class="table">
@@ -280,7 +280,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 								<td width="10%" style="<%=tdcss%>" align="right">容器名：</td>
 								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.containerName}}"></td>
 								<td width="10%" style="<%=tdcss%>" align="right">镜像名：</td>
-								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.image}}"></td>
+								<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= getImageName(data.image)}}"></td>
 								<td width="10%" style="<%=tdcss%>" align="right">网络区域：</td>
 								<td style="border:0px;padding:0px;"><input type="text" readOnly style="<%=incss%>" value="{{= PU.getDropValue("DV_NET_ZONE_CODE", data.appImage.netZoneId,false)}}"></td>
 							</tr>
@@ -308,6 +308,14 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 								<td width="10%" style="<%=tdcss%>" align="right">容器标签：</td>
 								<td style="border:0px;padding:0px;"><input type="text" readOnly style="<%=incss%>" value="{{= data.appImage.targs}}"></td>
 							</tr>
+							<tr>
+								{{if !CU.isEmpty(data.appImage.timerStartTime)}}
+									<td width="20%" style="<%=tdcss%>" align="right">定时开始时间：</td>
+									<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= CU.toStringDateTime(data.appImage.timerStartTime)}}"></td>
+									<td width="20%" style="<%=tdcss%>" align="right">时间间隔：</td>
+									<td width="20%" style="<%=tdcss%>"><input type="text" readOnly style="<%=incss%>" value="{{= timeExp(data.appImage.timerExp)}}"></td>
+								{{/if}}
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -326,7 +334,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 			<div class="filter-block">
 				<div class="form-group">
 					<div class="col-lg-11"><h1><font color="blue">开放服务</font></h1></div>
-					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050103?appId={{= data.Param_AppId}}&appImageId={{= data.Param_AppImageId}}&appVnoId={{= data.Param_AppVnoId}}&pageNum={{= data.Param_PageNum}}">[编辑]</a></div>
+					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050103?appId={{= Param_AppId}}&appImageId={{= Param_AppImageId}}&pageNum={{= Param_PageNum}}">[编辑]</a></div>
 				</div>
 				<div class="col-lg-12">
 					<table class="table">
@@ -385,7 +393,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 			<div class="filter-block">
 				<div class="form-group">
 					<div class="col-lg-11"><h1><font color="blue">调用/依赖</font></h1></div>
-					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050104?appId={{= data.Param_AppId}}&appImageId={{= data.Param_AppImageId}}&appVnoId={{= data.Param_AppVnoId}}&pageNum={{= data.Param_PageNum}}">[编辑]</a></div>
+					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050104?appId={{= Param_AppId}}&appImageId={{= Param_AppImageId}}&pageNum={{= Param_PageNum}}">[编辑]</a></div>
 				</div>
 				<div class="col-lg-12">
 					<table class="table">
@@ -461,7 +469,7 @@ String divin = "font-size:15px;font-weight:300;width:100%;";
 			<div class="filter-block">
 				<div class="form-group">
 					<div class="col-lg-11"><h1><font color="blue">其他参数</font></h1></div>
-					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050105?appId={{= data.Param_AppId}}&appImageId={{= data.Param_AppImageId}}&appVnoId={{= data.Param_AppVnoId}}&pageNum={{= data.Param_PageNum}}">[编辑]</a></div>
+					<div class="col-lg-1"><a href="<%=ContextPath%>/dispatch/mc/104050105?appId={{= Param_AppId}}&appImageId={{= Param_AppImageId}}&pageNum={{= Param_PageNum}}">[编辑]</a></div>
 				</div>
 				<div class="col-lg-12">
 					<table class="table">
