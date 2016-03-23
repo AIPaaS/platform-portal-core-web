@@ -70,6 +70,10 @@ function initFace() {
 	
 }
 
+function checkImageExists(){
+	
+}
+
 function checkIsAdd(add){
 	if(add){
 		$("#appType").attr("disabled", false);
@@ -149,9 +153,7 @@ function submitForm(){
 				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 4"){
 					CC.showMsg({msg:"版本已存在!"});
 				}
-				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 5"){
-					CC.showMsg({msg:"应用容器已存在，不能修改应用代码!"});
-				}else{
+				else{
 					CurrentId = rs;
 					var url = ContextPath+"/dispatch/mc/10401";
 					if(!CU.isEmpty(PageNum)) url += "?pageNum="+PageNum;
