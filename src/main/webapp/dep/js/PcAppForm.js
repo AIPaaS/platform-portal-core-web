@@ -144,12 +144,14 @@ function submitForm(){
 			}
 			else {
 				if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 3"){
-					CC.showMsg({msg:"不能修改!"});
+					CC.showMsg({msg:"应用容器已经存在，应用资源中心不能修改!"});
 				}
-				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 3"){
+				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 4"){
 					CC.showMsg({msg:"版本已存在!"});
 				}
-				else{
+				else if(rs =="errMsg: call remote service 'PcAppSvc.saveOrUpdate()' error! 5"){
+					CC.showMsg({msg:"应用容器已存在，不能修改应用代码!"});
+				}else{
 					CurrentId = rs;
 					var url = ContextPath+"/dispatch/mc/10401";
 					if(!CU.isEmpty(PageNum)) url += "?pageNum="+PageNum;
