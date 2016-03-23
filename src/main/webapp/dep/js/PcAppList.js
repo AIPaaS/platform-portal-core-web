@@ -27,7 +27,7 @@ function initData(cb) {
 	
 	ParamPageNum = PRQ.get("pageNum");
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
-	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc"},cb:function(result) {
+	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc",status:1},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
 		DROP["DV_RES_CENTER_CODE"] = result["rc"];
 		var dropList = [];

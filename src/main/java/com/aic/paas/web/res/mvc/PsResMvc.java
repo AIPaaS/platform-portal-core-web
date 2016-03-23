@@ -70,8 +70,8 @@ public class PsResMvc {
 	 * @param opts dc|rc|nc
 	 */
 	@RequestMapping("/getResRegionDropListMap")
-	public void getResRegionDropListMap(HttpServletRequest request, HttpServletResponse response, Boolean addEmpty, Boolean addAttr, String opts) {
-		Map<String, List<DropRecord>> map = getComputerRegionDropListMap(addEmpty, addAttr, opts);
+	public void getResRegionDropListMap(HttpServletRequest request, HttpServletResponse response, Boolean addEmpty, Boolean addAttr, String opts,Integer status) {
+		Map<String, List<DropRecord>> map = getComputerRegionDropListMap(addEmpty, addAttr, opts,status);
 		ControllerUtils.returnJson(request, response, map);
 	}
 	
@@ -81,7 +81,7 @@ public class PsResMvc {
 	 * @param level 1=数据中心   2=数据中心+资源中心  3=数据中心+资源中心+网络区域
 	 */
 	@RequestMapping("/getResRegionTree")
-	public void getComputerRegionTree(HttpServletRequest request, HttpServletResponse response, Boolean addAttr, Integer level) {
+	public void getComputerRegionTree(HttpServletRequest request, HttpServletResponse response, Boolean addAttr, Integer level,Integer status) {
 		String opts = "dc|rc|nc";
 		if(level != null) {
 			switch (level.intValue()) {
@@ -91,7 +91,7 @@ public class PsResMvc {
 			}
 		}
 		
-		Map<String, List<DropRecord>> map = getComputerRegionDropListMap(false, addAttr, opts);
+		Map<String, List<DropRecord>> map = getComputerRegionDropListMap(false, addAttr, opts,status);
 		
 		List<DropRecord> dclist = map.get("dc");
 		List<DropRecord> rclist = map.get("rc");
@@ -116,7 +116,7 @@ public class PsResMvc {
 	
 	
 	
-	private Map<String, List<DropRecord>> getComputerRegionDropListMap(Boolean addEmpty, Boolean addAttr, String opts)  {
+	private Map<String, List<DropRecord>> getComputerRegionDropListMap(Boolean addEmpty, Boolean addAttr, String opts , Integer status )  {
 		Map<String, List<DropRecord>> map = new HashMap<String, List<DropRecord>>();
 		boolean adda = addAttr==null || addAttr.booleanValue();
 		
@@ -126,7 +126,10 @@ public class PsResMvc {
 		
 		if(opts==null || opts.indexOf("dc")>-1) {
 			CPcDataCenter dccdt = new CPcDataCenter();
-			dccdt.setStatus(1);
+//			if(status == null){
+//				status =1 ;
+//			}
+			dccdt.setStatus(status);
 			List<PcDataCenter> dclist = resPeer.queryDataCenterList(dccdt, "CODE, ID");
 			List<DropRecord> dcDropList = ComponentUtil.toDropList(dclist, "ID", "name", addAttr, addEmpty);
 			for(int i=fori; i<dcDropList.size(); i++) {
