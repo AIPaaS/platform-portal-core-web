@@ -34,7 +34,7 @@ function initData(cb) {
 	var selstatushtml = PU.getSelectOptionsHtml("V_PC_APP_STATUS");
 	$("#status").html(selstatushtml);
 	
-	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
+	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc",status:1},cb:function(result) {
 		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
 		DROP["DV_RES_CENTER_CODE"] = result["rc"];
 		DROP["DV_NET_ZONE_CODE"] = result["nc"];
