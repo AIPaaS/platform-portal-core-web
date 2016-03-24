@@ -7,6 +7,7 @@ import com.aic.paas.web.dep.bean.AppImageSettings;
 import com.aic.paas.web.dep.bean.AppImageSvcInfo;
 import com.aic.paas.web.dep.bean.CPcAppImage;
 import com.aic.paas.web.dep.bean.PcAppImage;
+import com.aic.paas.web.dep.bean.PcAppImageInfo;
 import com.aic.paas.web.dep.bean.PcKvPair;
 import com.aic.paas.web.dep.bean.PcService;
 import com.binary.jdbc.Page;
@@ -178,7 +179,38 @@ public interface PcAppImageSvc {
 	
 	
 	
+	/**
+	 * 更新容器暴露信息
+	 * @param isOpen 是否开放
+	 * @param isOpen 是否入口
+	 * @param appImageId
+	 * @param svc
+	 * @param params
+	 */
+	public Long updateAppImage(Integer isOpen, Long appImageId, Long isAccess,PcService svc, List<PcKvPair> params,Long merchentId);
 	
+	
+	/**
+	 * 不分页查询 带上容器暴露的参数
+	 * @param cdt : 条件对象
+	 * @param orders : 排序字段, 多字段以逗号分隔
+	 * @return 
+	 */
+	public List<PcAppImageInfo> queryAndParamList(CPcAppImage cdt, String orders);
+	
+	/**
+	 * 获取当前镜像依赖于其他镜像  带上容器暴露的参数
+	 * @param appImageId
+	 * @return
+	 */
+	public List<PcAppImageInfo> getAppImageDependImagesAndParam(Long appImageId);
+	
+	/**
+	 * 保存镜像镜像依赖于其他镜像关系 保存参数
+	 * @param appImageId
+	 * @param dependAppImages 镜像
+	 */
+	public void saveAppImageDependsAndParam(Long appImageId,  List<AppImageCallServiceRlt>  dependAppImages);
 	
 	
 }

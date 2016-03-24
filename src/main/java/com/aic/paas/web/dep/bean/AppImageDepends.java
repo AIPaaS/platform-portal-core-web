@@ -14,6 +14,8 @@ public class AppImageDepends implements Serializable {
 	/** 调用/依赖服务 **/
 	private List<AppImageSvcInfo> dependSvcs;
 
+	/** 依赖镜像  包含容器暴露的参数**/
+	private List<PcAppImageInfo> dependImageInfos;
 
 	public List<PcAppImage> getDependImages() {
 		return dependImages;
@@ -32,6 +34,16 @@ public class AppImageDepends implements Serializable {
 
 	public void setDependSvcs(List<AppImageSvcInfo> dependSvcs) {
 		this.dependSvcs = dependSvcs;
+	}
+
+
+	public List<PcAppImageInfo> getDependImageInfos() {
+		return dependImageInfos;
+	}
+
+
+	public void setDependImageInfos(List<PcAppImageInfo> dependImageInfos) {
+		this.dependImageInfos = dependImageInfos;
 	}
 
 	

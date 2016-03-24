@@ -3,6 +3,8 @@ package com.aic.paas.web.dep.bean;
 
 
 
+
+
 import com.binary.framework.bean.EntityBean;
 
 
@@ -30,10 +32,7 @@ public class PcAppImage implements EntityBean {
 	 */
 	private Long imageId;
 
-	/**
-	 * mapping-field: 镜像[IMAGE]
-	 */
-	private String image;
+
 	/**
 	 * mapping-field: 应用ID[APP_ID]
 	 */
@@ -86,12 +85,6 @@ public class PcAppImage implements EntityBean {
 
 
 	/**
-	 * mapping-field: CPU总数[CPU_TOTAL]
-	 */
-	private Integer cpuTotal;
-
-
-	/**
 	 * mapping-field: 内存大小[MEM_SIZE]
 	 * 单位：M
 	 */
@@ -99,22 +92,10 @@ public class PcAppImage implements EntityBean {
 
 
 	/**
-	 * mapping-field: 内存总数[MEM_TOTAL]
-	 */
-	private Long memTotal;
-
-
-	/**
 	 * mapping-field: 存储大小[DISK_SIZE]
 	 * 单位：M
 	 */
 	private Long diskSize;
-
-
-	/**
-	 * mapping-field: 存储总数[DISK_TOTAL]
-	 */
-	private Long diskTotal;
 
 
 	/**
@@ -284,6 +265,37 @@ public class PcAppImage implements EntityBean {
 	private Long modifyTime;
 
 
+	/**
+	 * mapping-field: 协议[PROTOCOL]
+	 * 1=HTTP 2=TPC
+	 */
+	private Integer protocol;
+
+
+	/**
+	 * mapping-field: IP[IP]
+	 */
+	private String ip;
+
+
+	/**
+	 * mapping-field: 端口[PORT]
+	 */
+	private Integer port;
+
+
+	/**
+	 * mapping-field: URL[SVC_URL]
+	 */
+	private String svcUrl;
+
+
+	/**
+	 * mapping-field: 是否应用入口[IS_ACCESS]
+	 */
+	private Long isAccess;
+
+
 
 
 	public Long getId() {
@@ -308,13 +320,8 @@ public class PcAppImage implements EntityBean {
 	public void setImageId(Long imageId) {
 		this.imageId = imageId;
 	}
-	
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
+
+
 	public Long getAppId() {
 		return this.appId;
 	}
@@ -379,14 +386,6 @@ public class PcAppImage implements EntityBean {
 	}
 
 
-	public Integer getCpuTotal() {
-		return this.cpuTotal;
-	}
-	public void setCpuTotal(Integer cpuTotal) {
-		this.cpuTotal = cpuTotal;
-	}
-
-
 	public Long getMemSize() {
 		return this.memSize;
 	}
@@ -395,27 +394,11 @@ public class PcAppImage implements EntityBean {
 	}
 
 
-	public Long getMemTotal() {
-		return this.memTotal;
-	}
-	public void setMemTotal(Long memTotal) {
-		this.memTotal = memTotal;
-	}
-
-
 	public Long getDiskSize() {
 		return this.diskSize;
 	}
 	public void setDiskSize(Long diskSize) {
 		this.diskSize = diskSize;
-	}
-
-
-	public Long getDiskTotal() {
-		return this.diskTotal;
-	}
-	public void setDiskTotal(Long diskTotal) {
-		this.diskTotal = diskTotal;
 	}
 
 
@@ -624,6 +607,46 @@ public class PcAppImage implements EntityBean {
 	}
 	public void setModifyTime(Long modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+
+	public Integer getProtocol() {
+		return this.protocol;
+	}
+	public void setProtocol(Integer protocol) {
+		this.protocol = protocol;
+	}
+
+
+	public String getIp() {
+		return this.ip;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+
+	public Integer getPort() {
+		return this.port;
+	}
+	public void setPort(Integer port) {
+		this.port = port;
+	}
+
+
+	public String getSvcUrl() {
+		return this.svcUrl;
+	}
+	public void setSvcUrl(String svcUrl) {
+		this.svcUrl = svcUrl;
+	}
+
+
+	public Long getIsAccess() {
+		return this.isAccess;
+	}
+	public void setIsAccess(Long isAccess) {
+		this.isAccess = isAccess;
 	}
 
 

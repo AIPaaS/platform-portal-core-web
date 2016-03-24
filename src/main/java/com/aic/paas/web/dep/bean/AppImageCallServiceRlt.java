@@ -22,9 +22,6 @@ public class AppImageCallServiceRlt implements Serializable {
 	private List<PcKvPair> params;
 
 	
-	
-	
-
 	public Long getSvcId() {
 		return svcId;
 	}

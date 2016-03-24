@@ -209,6 +209,39 @@ public interface PcAppImagePeer {
 	
 	
 	
+	/**
+	 * 更新容器暴露信息
+	 * @param isOpen 是否开放
+	 * @param isOpen 是否入口
+	 * @param appImageId
+	 * @param svc
+	 * @param params
+	 */
+	public Long updateAppImage(Integer isOpen, Long appImageId, Long isAccess,PcService svc, List<PcKvPair> params);
 	
-
+	
+	/**
+	 * 不分页查询 带上容器的暴露参数
+	 * @param cdt : 条件对象
+	 * @param orders : 排序字段, 多字段以逗号分隔
+	 * @return 
+	 */
+	public List<PcAppImageInfo> queryAppImageParamList(Long appId, Long appVnoId, CPcAppImage cdt, String orders);
+	
+	
+	/**
+	 * 获取当前镜像依赖  带上容器的依赖参数
+	 * @param appImageId
+	 * @return
+	 */
+	public AppImageDepends getAppImageInfoDepends(Long appImageId);
+	
+	
+	/**
+	 * 保存镜像调用的服务列表  依赖容器
+	 * @param appImageId
+	 * @param svcinfos
+	 */
+	public void saveAppImageDepends(Long appImageId, List<AppImageCallServiceRlt> rlts, List<AppImageCallServiceRlt> dependAppImages);
+	
 }

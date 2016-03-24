@@ -8,11 +8,13 @@ var ParamPageNum = 1;
 
 var BTN_TYPE = 1;	//-1=prev 0=save 1=next
 var GridAddId = 1;
+var GridAddImageId = 1;
 var APP = null;
 
 var ImagesList = [];
 var ServiceList = [];
 var ServiceMap = {};
+var ImageMap = {};
 
 var SelectImageIds = [];
 
@@ -25,7 +27,8 @@ function init() {
 		initListener();
 		initFace();
 		queryInfo(function() {
-			createAppImagesSelector();
+//			createAppImagesSelector();
+			createImageSelector();
 			createServiceSelector();
 		});
 	});
@@ -51,6 +54,9 @@ function initData(cb) {
 		ServiceList = rs.svcs;
 		for(var i=0; i<ServiceList.length; i++) {
 			ServiceMap["SVC_"+ServiceList[i].svc.id] = ServiceList[i];
+		}
+		for(var i=0; i<ImagesList.length; i++) {
+			ImageMap["IMG_"+ImagesList[i].appImage.id] = ImagesList[i];
 		}
 
 		RS.ajax({url:"/dep/appimage/getAppImageFormInit",ps:{appId:AppId},cb:function(rs) {
@@ -157,6 +163,112 @@ function setSelectAppImageValue2Input(pps) {
 
 
 
+function createImageSelector() {
+	$("#a_select_img").editable({
+		display:false,
+		showbuttons: "bottom",
+        source: getSelectImageSource,
+		url: setSelectImage
+	});
+}
+
+
+function getSelectImageSource() {
+	var exists = [];
+	var trs = $("#imageTable").find("tr");
+	for(var i=0; i<trs.length; i++) {
+		var trid = $(trs[i]).prop("id");
+		var imgid = trid.substring(trid.lastIndexOf("_")+1);
+		exists.push(imgid);
+	}
+	
+	var ss = [];
+	for(var i=0; i<ImagesList.length; i++) {
+		var img = ImagesList[i].appImage;
+		if(exists.indexOf(""+img.id) > -1) {
+			continue ;
+		}
+		
+		var text = img.containerFullName;
+		ss.push({value:img.id,text:text});
+	}
+	return ss;
+}
+
+
+function setSelectImage(pps) {
+	var imgIds = pps.value;
+	if(CU.isEmpty(imgIds)) return ;
+	
+	for(var i=0; i<imgIds.length; i++) {
+		var imginfo = ImageMap["IMG_"+imgIds[i]];
+		var img = imginfo.appImage;
+		var params = imginfo.params;
+		addImageTableRow(img, params);
+	}
+}
+
+
+
+
+function addImageTableRow(img, params, callType) {
+	GridAddImageId ++ ;
+	var trid = "tr_add_" + GridAddImageId +  "_4_" + img.id;
+	var tr = $("<tr id='"+trid+"'></tr>");
+	var a = $("<a href=\"###\" class=\"table-link  danger\" title=\"删除参数\">"
+			+ "<span class=\"fa-stack\">"
+			+ "<i class=\"fa fa-square fa-stack-2x\"></i>"
+			+ "<i class=\"fa fa-minus fa-stack-1x fa-inverse\"></i>"
+			+ "</span>"
+			+ "</a>");
+	
+	var pslength = CU.isEmpty(params) ? 0 : params.length;
+	
+	tr.append($("<td class=\"text-center\" valign=\"top\" title=\""+img.containerFullName+"\">"+img.containerFullName+"</td>"));
+	
+	var td1 = $("<td class=\"text-center\"></td>");
+	var td2 = $("<td class=\"text-center\"></td>");
+	var td3 = $("<td class=\"text-center\"></td>");
+	var td4 = $("<td class=\"text-center\"></td>");
+	
+	tr.append(td1);
+	tr.append(td2);
+	tr.append(td3);
+	tr.append(td4);
+	
+	for(var i=0; i<pslength; i++) {
+		if(i > 0) {
+			td1.append("<br>");
+			td2.append("<br>");
+			td3.append("<br>");
+			td4.append("<br>");
+		}
+		
+		var key = params[i].kvKey;
+		var keyDesc = params[i].keyDesc;
+		var keyAlias = params[i].keyAlias;
+		var value = params[i].kvVal;
+		if(CU.isEmpty(keyAlias)) keyAlias = key;
+		if(CU.isEmpty(keyDesc)) keyDesc = "";
+		if(CU.isEmpty(value)) value = "";
+		
+		td1.append("<input type=\"text\" class=\"form-control\" id=\"param_key_"+i+"_"+img.id+"\" name=\"param_key\" value=\""+key+"\" maxlength=\"50\" readOnly/>");
+		td2.append("<input type=\"text\" class=\"form-control\" id=\"param_keyDesc_"+i+"_"+img.id+"\" name=\"param_keyDesc\" value=\""+keyDesc+"\" maxlength=\"20\" readOnly/>");
+		td3.append("<input type=\"text\" class=\"form-control\" id=\"param_keyAlias_"+i+"_"+img.id+"\" name=\"param_keyAlias\" value=\""+keyAlias+"\" maxlength=\"50\" />");
+		if(1==params[i].custom1)
+			td4.append("<input type=\"text\" class=\"form-control\" id=\"param_value_"+i+"_"+img.id+"\" name=\"param_value\" value=\""+value+"\" maxlength=\"300\" readOnly/>");
+		else
+			td4.append("<input type=\"text\" class=\"form-control\" id=\"param_value_"+i+"_"+img.id+"\" name=\"param_value\" value=\""+value+"\" maxlength=\"300\" />");
+
+	}
+	
+	tr.append($("<td class=\"text-center\" valign=\"top\"></td>").append(a));
+	a.bind("click", function() {removeServiceTableRow(trid);});
+	$("#imageTable").append(tr);
+}
+
+
+
 
 
 function createServiceSelector() {
@@ -252,7 +364,10 @@ function addServiceTableRow(svc, params, callType) {
 		td1.append("<input type=\"text\" class=\"form-control\" id=\"param_key_"+i+"_"+svc.id+"\" name=\"param_key\" value=\""+key+"\" maxlength=\"50\" readOnly/>");
 		td2.append("<input type=\"text\" class=\"form-control\" id=\"param_keyDesc_"+i+"_"+svc.id+"\" name=\"param_keyDesc\" value=\""+keyDesc+"\" maxlength=\"20\" readOnly/>");
 		td3.append("<input type=\"text\" class=\"form-control\" id=\"param_keyAlias_"+i+"_"+svc.id+"\" name=\"param_keyAlias\" value=\""+keyAlias+"\" maxlength=\"50\" />");
-		td4.append("<input type=\"text\" class=\"form-control\" id=\"param_value_"+i+"_"+svc.id+"\" name=\"param_value\" value=\""+value+"\" maxlength=\"300\" />");
+		if(1==params[i].custom1)
+			td4.append("<input type=\"text\" class=\"form-control\" id=\"param_value_"+i+"_"+svc.id+"\" name=\"param_value\" value=\""+value+"\" maxlength=\"300\" readOnly />");
+		else
+			td4.append("<input type=\"text\" class=\"form-control\" id=\"param_value_"+i+"_"+svc.id+"\" name=\"param_value\" value=\""+value+"\" maxlength=\"300\" />");
 	}
 	
 	tr.append($("<td class=\"text-center\" valign=\"top\"></td>").append(a));
@@ -269,13 +384,19 @@ function removeServiceTableRow(elId){
 
 function queryInfo(cb){
 	RS.ajax({url:"/dep/appimage/getAppImageDepends",ps:{appImageId:AppImageId},cb:function(rs) {
-		if(!CU.isEmpty(rs.dependImages)) {
-			var imgnames = [];
-			for(var i=0; i<rs.dependImages.length; i++) {
-				SelectImageIds.push(rs.dependImages[i].id);
-				imgnames.push(rs.dependImages[i].containerName);
+//		if(!CU.isEmpty(rs.dependImages)) {
+//			var imgnames = [];
+//			for(var i=0; i<rs.dependImages.length; i++) {
+//				SelectImageIds.push(rs.dependImages[i].id);
+//				imgnames.push(rs.dependImages[i].containerName);
+//			}
+//			$("#imageIds").val(imgnames.join(","));
+//		}
+		if(!CU.isEmpty(rs.dependImageInfos)) {
+			for(var i=0; i<rs.dependImageInfos.length; i++) {
+				var info = rs.dependImageInfos[i];
+				addImageTableRow(info.appImage, info.params,2);
 			}
-			$("#imageIds").val(imgnames.join(","));
 		}
 		
 		if(!CU.isEmpty(rs.dependSvcs)) {
@@ -356,7 +477,71 @@ function submitForm(cb) {
 	
 	var ps = {appImageId:AppImageId};
 	if(rlts.length > 0) ps.jsonRlts = CU.toString(rlts);
-	if(!CU.isEmpty(SelectImageIds)) ps.strDependAppImageIds = SelectImageIds.join(",");
+	
+	var imgIds = [];
+	var imgTypes = [];
+	var callTypes = [];
+	var imgpsmap = {};		//key=IMG_+imgId, value=params
+	
+	var trs = $("#imageTable").find("tr");
+	for(var i=0; i<trs.length; i++) {
+		var trid = $(trs[i]).prop("id");
+		var imgid = trid.substring(trid.lastIndexOf("_")+1);
+		var s = trid.substring(0, trid.lastIndexOf("_"));
+		var imgtype = s.substring(s.lastIndexOf("_")+1);
+		var calltype = $($(trs[i]).find("select")[0]).val();
+		
+		imgIds.push(imgid);
+		imgTypes.push(imgtype);
+		callTypes.push(calltype);		
+	}
+	
+	if(imgIds.length > 0) {
+		var aliases = [];
+		var param_keys = $("input[name='param_key']");
+		var param_keyDesc = $("input[name='param_keyDesc']");
+		var param_keyAlias = $("input[name='param_keyAlias']");
+		var param_value = $("input[name='param_value']");
+		
+		for(var i=0;i<param_keys.length;i++){
+			var alias = $.trim($(param_keyAlias[i]).val());
+			if(alias.length == 0) {
+				CC.showMsg({msg:"第["+(i+1)+"]行，参数别名不可以为空!!"});
+	    		return;
+			}
+			if(aliases.indexOf(alias) > -1) {
+	 			CC.showMsg({msg:"参数别名<font color='blue'>["+alias+"]</font>不可以重复!"});
+	    		return;
+	 		}
+			aliases.push(alias);
+			
+			var psImage = {kvKey:$.trim($(param_keys[i]).val()), keyDesc:$.trim($(param_keyDesc[i]).val()), keyAlias:alias, kvVal:$.trim($(param_value[i]).val())};
+			
+			var imgId = $.trim($(param_keys[i]).prop("id"));
+			imgId = imgId.substring(imgId.lastIndexOf('_')+1);
+			
+			var imgps = imgpsmap["IMG_"+imgId];
+			if(CU.isEmpty(imgps)) {
+				imgps = [];
+				imgpsmap["IMG_"+imgId] = imgps;
+			}
+			imgps.push(psImage);
+		}
+	}	
+	
+	var imgrlts = [];
+	for(var i=0; i<imgIds.length; i++) {
+		var rlt = {svcId:imgIds[i], imgType:imgTypes[i], callType:callTypes[i]};
+		var ps = imgpsmap["IMG_"+imgIds[i]];
+		if(!CU.isEmpty(psImage)) rlt.params = ps;
+		imgrlts.push(rlt);
+	}
+	
+	var ps = {appImageId:AppImageId};
+	if(rlts.length > 0) ps.jsonRlts = CU.toString(rlts);
+	if(imgrlts.length > 0) ps.imgrlts = CU.toString(imgrlts);
+	
+//	if(!CU.isEmpty(SelectImageIds)) ps.strDependAppImageIds = SelectImageIds.join(",");
 	
 	RS.ajax({url:"/dep/appimage/saveAppImageDepends",ps:ps,cb:function(r) {
 		$("#btn_save").prop("title", "保存成功");

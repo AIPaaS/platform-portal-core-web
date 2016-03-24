@@ -54,7 +54,7 @@ function initData(cb) {
 		
 		$("#protocol").html("");
 		$("#paramsTable").html("");
-		$("#div_isOpen_yes").hide();
+//		$("#div_isOpen_yes").hide();
 		var selhtml = PU.getSelectOptionsHtml("V_PC_SERVICE_PROTOCOL");
 		$("#protocol").html(selhtml);
 		if(CU.isFunction(cb))cb();
@@ -74,13 +74,13 @@ function initComponent() {
 
 /** 对组件设置监听 **/
 function initListener() {
-	$("#isOpen").bind("change",function(){
-		if($("#isOpen").prop("checked")){
-			$("#div_isOpen_yes").show();
-		}else{
-			$("#div_isOpen_yes").hide();
-		}
-	});
+//	$("#isOpen").bind("change",function(){
+//		if($("#isOpen").prop("checked")){
+//			$("#div_isOpen_yes").show();
+//		}else{
+//			$("#div_isOpen_yes").hide();
+//		}
+//	});
 	$("#a_add_param").bind("click",function(){addParamRow();});
 	$("#btn_prev").bind("click", function(){BTN_TYPE=-1;});
 	$("#btn_save").bind("click", function() {BTN_TYPE=0;});
@@ -177,14 +177,21 @@ function removeParam(elId){
 function queryInfo(cb){
 	RS.ajax({url:"/dep/appimage/getAppImageOpenService",ps:{appImageId:AppImageId},cb:function(rs) {
 		if(!CU.isEmpty(rs)){
-			$("#div_isOpen_yes").show();
+//			$("#div_isOpen_yes").show();
 			PU.setFormData(rs.svc, "form_openSvc");
 			if(!CU.isEmpty(rs.params)) setTableParams(rs.params);
 			$("#isOpen").prop("checked",true);
 			SvcId = rs.svc.id;
 		}else {
 			$("#isOpen").prop("checked",false);
-		}
+			RS.ajax({url:"/dep/appimage/queryAppImageById",ps:{appImageId:AppImageId},cb:function(rs) {
+				if(!CU.isEmpty(rs)){
+					PU.setFormData(rs, "form_openSvc");
+//					if(!CU.isEmpty(rs.params)) setTableParams(rs.params);
+				}
+				}
+			});
+		}	
 	}});
 }
 
@@ -193,26 +200,26 @@ function submitForm(cb){
 	var bean = PU.getFormData("form_openSvc");
 	
 	bean.isOpen = $("#isOpen").prop("checked") ? 1 : 0;
-	if(!bean.isOpen){
-		delete bean.protocol;
-		delete bean.port;
-		delete bean.svcUrl;
-		delete bean.monitorUrl;
-	}else {
-		var protocol = $("#protocol").val();
-		var port = $("#port").val();
-		var svcUrl = $("#svcUrl").val();
-		if(CU.isEmpty(protocol)){CC.showMsg({msg:"开放协议不能为空"}); return;}
-		if(CU.isEmpty(port)){CC.showMsg({msg:"开放端口不能为空"}); return;}
-		if(CU.isEmpty(svcUrl)){CC.showMsg({msg:"开放URL不能为空"}); return;}
-	}
+//	if(!bean.isOpen){
+//		delete bean.protocol;
+//		delete bean.port;
+//		delete bean.svcUrl;
+//		delete bean.monitorUrl;
+//	}else {
+//		var protocol = $("#protocol").val();
+//		var port = $("#port").val();
+//		var svcUrl = $("#svcUrl").val();
+//		if(CU.isEmpty(protocol)){CC.showMsg({msg:"开放协议不能为空"}); return;}
+//		if(CU.isEmpty(port)){CC.showMsg({msg:"开放端口不能为空"}); return;}
+//		if(CU.isEmpty(svcUrl)){CC.showMsg({msg:"开放URL不能为空"}); return;}
+//	}
 	
 	bean.appId = AppId;
 	bean.appVnoId = AppVnoId;
 	var strParams =  getTableParams();
 	if(strParams === false) return;
 	
-	var ps = {isOpen:bean.isOpen,appImageId:AppImageId,svcUrl:bean.svcUrl,protocol:bean.protocol,port:bean.port,monitorUrl:bean.monitorUrl,strParams:strParams};
+	var ps = {isOpen:bean.isOpen,appImageId:AppImageId,isAccess:bean.isAccess,svcUrl:bean.svcUrl,protocol:bean.protocol,port:bean.port,monitorUrl:bean.monitorUrl,strParams:strParams};
 	if(!CU.isEmpty(SvcId)) ps.id = SvcId;
 	
 	RS.ajax({url:"/dep/appimage/saveAppImageOpenService",ps:ps,cb:function(rs) {

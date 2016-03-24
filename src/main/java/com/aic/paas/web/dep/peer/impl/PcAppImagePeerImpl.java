@@ -134,8 +134,7 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	}
 
 	
-	
-	
+
 	@Override
 	public Page<PcAppImageInfo> queryAppImageInfoPage(Integer pageNum, Integer pageSize, Long appId, Long appVnoId, CPcAppImage cdt, String orders) {
 		BinaryUtils.checkEmpty(appId, "appId");
@@ -246,14 +245,14 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 		}
 
 		//liwx3 add 该容器作为应用的访问入口
-		if(record.getCustom1()==1){
-			saveOrUpdateAppAccess(user,app,record,cn,isadd);
-		}else if(!isadd){
-			//是否本次取消访问入口
-			PcAppImage old = appImageSvc.queryById(record.getId());
-			if(old.getCustom1()==1)
-				removeAppAccess(old);
-		}
+//		if(record.getCustom1()==1){
+//			saveOrUpdateAppAccess(user,app,record,cn,isadd);
+//		}else if(!isadd){
+//			//是否本次取消访问入口
+//			PcAppImage old = appImageSvc.queryById(record.getId());
+//			if(old.getCustom1()==1)
+//				removeAppAccess(old);
+//		}
 		
 		return appImageSvc.saveOrUpdate(record);
 	}
@@ -399,11 +398,13 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 	public AppImageDepends getAppImageDepends(Long appImageId) {
 		BinaryUtils.checkEmpty(appImageId, "appImageId");
 		userAuth.verifyAppImageAuth(appImageId);
-		List<PcAppImage> dependImages = appImageSvc.getAppImageDependImages(appImageId);
+		List<PcAppImageInfo> dependImageInfos = appImageSvc.getAppImageDependImagesAndParam(appImageId);
+//		List<PcAppImage> dependImages = appImageSvc.getAppImageDependImages(appImageId);
 		List<AppImageSvcInfo> dependSvcs = appImageSvc.getAppImageCallService(appImageId);
 		
 		AppImageDepends depends = new AppImageDepends();
-		depends.setDependImages(dependImages);
+//		depends.setDependImages(dependImages);
+		depends.setDependImageInfos(dependImageInfos);
 		depends.setDependSvcs(dependSvcs);
 		
 		return depends;
@@ -463,6 +464,60 @@ public class PcAppImagePeerImpl implements PcAppImagePeer {
 		BinaryUtils.checkEmpty(appImageId, "appImageId");
 		userAuth.verifyAppImageAuth(appImageId);
 		appImageSvc.finishAppImageSettings(appImageId);
+	}
+
+
+
+	@Override
+	public Long updateAppImage(Integer isOpen, Long appImageId, Long isAccess,PcService svc,
+			List<PcKvPair> params) {
+		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
+		return appImageSvc.updateAppImage(isOpen, appImageId, isAccess, svc, params,user.getMerchent().getId());
+	}
+
+
+
+	@Override
+	public List<PcAppImageInfo> queryAppImageParamList(Long appId,
+			Long appVnoId, CPcAppImage cdt, String orders) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
+		PaasWebSsoLoginUser user = (PaasWebSsoLoginUser)SystemUtil.getLoginUser();
+		if(cdt == null) cdt = new CPcAppImage();
+		cdt.setMntId(user.getMerchent().getId());
+		cdt.setAppId(appId);
+		cdt.setAppVnoId(appVnoId);
+		return appImageSvc.queryAndParamList(cdt, orders);
+	}
+
+
+
+	@Override
+	public AppImageDepends getAppImageInfoDepends(Long appImageId) {
+		BinaryUtils.checkEmpty(appImageId, "appImageId");
+		userAuth.verifyAppImageAuth(appImageId);
+//		List<PcAppImage> dependImages = appImageSvc.getAppImageDependImages(appImageId);
+		List<PcAppImageInfo> dependImageInfos = appImageSvc.getAppImageDependImagesAndParam(appImageId);
+		List<AppImageSvcInfo> dependSvcs = appImageSvc.getAppImageCallService(appImageId);
+		
+		AppImageDepends depends = new AppImageDepends();
+//		depends.setDependImages(dependImages);
+		depends.setDependImageInfos(dependImageInfos);
+		depends.setDependSvcs(dependSvcs);
+		
+		return depends;
+	}
+
+
+
+	@Override
+	public void saveAppImageDepends(Long appImageId,
+			List<AppImageCallServiceRlt> rlts,
+			List<AppImageCallServiceRlt> dependAppImages) {
+		BinaryUtils.checkEmpty(appImageId, "appImageId");
+		userAuth.verifyAppImageAuth(appImageId);
+		appImageSvc.saveAppImageDependsAndParam(appImageId, dependAppImages);
+		appImageSvc.saveAppImageCallService(appImageId, rlts);
 	}
 	
 	

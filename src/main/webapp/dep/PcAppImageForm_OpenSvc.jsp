@@ -23,9 +23,18 @@ String ContextPath = request.getContextPath();
 					<span></span>
 				</div>
 			</div>	
+			<div class="form-group">
+				<label for="isOpen" class="col-lg-2 control-label">是否应用入口:</label>
+				<div class="col-lg-1">
+					<input type="checkbox" name="isAccess" id="isAccess">
+				</div>
+				<div class="col-lg-11">
+					<span></span>
+				</div>
+			</div>	
 			<div id="div_isOpen_yes">
 				<div class="form-group">
-					<label for="protocol" class="col-lg-2 control-label">开放协议<font color="red">*</font>:</label>
+					<label for="protocol" class="col-lg-2 control-label">开放协议:</label>
 					<div class="col-lg-5">
 						<select id="protocol" name="protocol" class="form-control">
 						</select>
@@ -35,7 +44,7 @@ String ContextPath = request.getContextPath();
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="port" class="col-lg-2 control-label">开放端口<font color="red">*</font>:</label>
+					<label for="port" class="col-lg-2 control-label">开放端口:</label>
 					<div class="col-lg-5">
 						<input type="text" name="port" class="form-control" id="port" pattern="\d{1,8}" maxlength="8" placeholder="必填">
 					</div>
@@ -44,7 +53,7 @@ String ContextPath = request.getContextPath();
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="svcUrl" class="col-lg-2 control-label">开放URL<font color="red">*</font>:</label>
+					<label for="svcUrl" class="col-lg-2 control-label">开放URL:</label>
 					<div class="col-lg-5">
 						<input type="text" name="svcUrl" class="form-control" id="svcUrl" maxlength="200" placeholder="必填">
 					</div>

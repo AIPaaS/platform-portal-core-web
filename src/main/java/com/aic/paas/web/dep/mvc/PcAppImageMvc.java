@@ -170,12 +170,14 @@ public class PcAppImageMvc {
 	}
 	
 	@RequestMapping("/saveAppImageOpenService")
-	public void saveAppImageOpenService(HttpServletRequest request,HttpServletResponse response, Integer isOpen, Long appImageId, PcService svc, String strParams){
+	public void saveAppImageOpenService(HttpServletRequest request,HttpServletResponse response, Integer isOpen, Long appImageId,
+			Long isAccess, PcService svc, String strParams){
 		List<PcKvPair> params = new ArrayList<PcKvPair>();
 		if(!BinaryUtils.isEmpty(strParams)){
 			params = JSON.toList(strParams, PcKvPair.class);
 		}
 		Long id = appImagePeer.saveAppImageOpenService(isOpen, appImageId, svc, params);
+		appImagePeer.updateAppImage(isOpen, appImageId, isAccess, svc, params);
 		ControllerUtils.returnJson(request, response, id);
 	}
 	
@@ -210,10 +212,11 @@ public class PcAppImageMvc {
 		BinaryUtils.checkEmpty(appVnoId, "appVnoId");
 		BinaryUtils.checkEmpty(appImageId, "appImageId");
 		
-		List<PcAppImage> imgls = appImagePeer.queryAppImageList(appId, appVnoId, null, " CONTAINER_NAME ");
+//		List<PcAppImage> imgls = appImagePeer.queryAppImageList(appId, appVnoId, null, " CONTAINER_NAME ");
+		List<PcAppImageInfo> imgls = appImagePeer.queryAppImageParamList(appId, appVnoId, null, " CONTAINER_NAME ");
 		for(int i=0; i<imgls.size(); i++) {
-			PcAppImage img = imgls.get(i);
-			if(img.getId().equals(appImageId)) {
+			PcAppImageInfo img = imgls.get(i);
+			if(img.getAppImage().getId().equals(appImageId)) {
 				imgls.remove(i);
 				break;
 			}
@@ -240,21 +243,29 @@ public class PcAppImageMvc {
 	
 	
 	@RequestMapping("/saveAppImageDepends")
-	public void saveAppImageDepends(HttpServletRequest request,HttpServletResponse response, Long appImageId, String jsonRlts, String strDependAppImageIds) {
+	public void saveAppImageDepends(HttpServletRequest request,HttpServletResponse response, Long appImageId, String jsonRlts, String imgrlts) {
 		List<AppImageCallServiceRlt> rlts = null;
-		Long[] dependAppImageIds = null;
+		List<AppImageCallServiceRlt> imgrls = null;
+//		Long[] dependAppImageIds = null;
 		if(!BinaryUtils.isEmpty(jsonRlts)) {
 			rlts = JSON.toList(jsonRlts, AppImageCallServiceRlt.class);
 		}
 		if(rlts == null){
 			rlts = new ArrayList<AppImageCallServiceRlt>();
 		}
-		
-		if(!BinaryUtils.isEmpty(strDependAppImageIds)) {
-			dependAppImageIds = Conver.to(strDependAppImageIds.split(","), Long.class);
+		if(!BinaryUtils.isEmpty(imgrlts)) {
+			imgrls = JSON.toList(imgrlts, AppImageCallServiceRlt.class);
+		}
+		if(imgrls == null){
+			imgrls = new ArrayList<AppImageCallServiceRlt>();
 		}
 		
-		appImagePeer.saveAppImageDepends(appImageId, rlts, dependAppImageIds);
+//		if(!BinaryUtils.isEmpty(strDependAppImageIds)) {
+//			dependAppImageIds = Conver.to(strDependAppImageIds.split(","), Long.class);
+//		}
+		
+		
+		appImagePeer.saveAppImageDepends(appImageId, rlts, imgrls);
 		ControllerUtils.returnJson(request, response, true);
 	}
 	

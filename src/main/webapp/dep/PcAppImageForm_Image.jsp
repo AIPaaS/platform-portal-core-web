@@ -170,27 +170,6 @@ String ContextPath = request.getContextPath();
 					<a href="###" id="btn_select_targs" data-type="checklist" data-title="选择标签" class="fa fa-search fa-lg"></a>
 				</div>
 			</div>	
-			<div class="form-group">
-				<label for="custom1" class="pull-left  control-label" style="width:100px;">应用入口:</label>
-				<div class="pull-left col-lg-1">
-					<input type="checkbox" name="custom1" id="custom1">
-				</div>
-				<div class="pull-left col-lg-11">
-					<span></span>
-				</div>
-			</div>	
-			<div id="div_isAccess_yes">
-				<div class="form-group">
-					<label for="custom2" class="pull-left  control-label" style="width:100px;">开放协议<font color="red">*</font>:</label>
-					<div class="pull-left ">
-						<select id="custom2" name="custom2"  style="POSITION: absolute;width:400px;" class="form-control">
-						</select>
-					</div>
-					<div class="pull-left ">
-						<span></span>
-					</div>
-				</div>
-			</div>
 			<div id="div_time">
 			
 				<div class="form-group">

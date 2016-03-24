@@ -1,6 +1,7 @@
 package com.aic.paas.web.dep.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class PcAppImageInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -16,7 +17,8 @@ public class PcAppImageInfo implements Serializable {
 	private PcImage image;
 
 
-
+	/** 参数 **/
+	private List<PcKvPair> params;
 	
 	public PcAppImage getAppImage() {
 		return appImage;
@@ -39,8 +41,18 @@ public class PcAppImageInfo implements Serializable {
 	public void setImage(PcImage image) {
 		this.image = image;
 	}
-	
-	
+
+
+
+	public List<PcKvPair> getParams() {
+		return params;
+	}
+
+
+
+	public void setParams(List<PcKvPair> params) {
+		this.params = params;
+	}
 	
 	
 	
