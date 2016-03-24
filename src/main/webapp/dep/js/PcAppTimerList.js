@@ -456,22 +456,22 @@ function appStatus(appinfo) {
 			var statusApp = '<div class="table-responsive">';
 			statusApp += '<table class="table"><thead><tr><th><a href="#"><span>应用状态</span></a></th></tr></thead>';
 			statusApp += '<tbody><tr>'
-					+ '<td><a href="#">应用名称</a></td><td>'
+					+ '<td style="font-size:0.875em"><a href="#">应用名称</a></td><td>'
 					+ json.appName
 					+ '</td></tr>'
-					+ '<tr><td><a href="#">进度表</a></td><td>'
+					+ '<tr><td style="font-size:0.875em"><a href="#">进度表</a></td><td>'
 					+ json.schedule
 					+ '</td></tr>'
-					+ '<tr><td><a href="#">最后成功时间</a></td><td>'
+					+ '<tr><td style="font-size:0.875em"><a href="#">最后成功时间</a></td><td>'
 					+ json.lastSuccess
 					+ '</td></tr>'
-					+ '<tr><td><a href="#">错误统计</a></td><td>'
+					+ '<tr><td style="font-size:0.875em"><a href="#">错误统计</a></td><td>'
 					+ json.errorCount
 					+ '</td></tr>'
-					+ '<tr><td><a href="#">成功统计</a></td><td>'
+					+ '<tr><td style="font-size:0.875em"><a href="#">成功统计</a></td><td>'
 					+ json.successCount
 					+ '</td></tr>'
-					+ '<tr><td><a href="#">最终失败</a></td><td>'
+					+ '<tr><td style="font-size:0.875em"><a href="#">最终失败</a></td><td>'
 					+ json.lastError
 					+ '</td></tr></tbody></thead></table></div>';
 			$("#appLogTable").append(statusApp);
