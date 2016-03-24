@@ -397,7 +397,7 @@ function pauseAppTask(appinfo) {
 
 function openAppTask(appinfo){
 	var appId = appinfo.app.id ;
-	RS.ajax({url:"/dep/app/resumeApp", ps:{appId:appId}, cb:function(json) {
+	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_open_"+appId).editable("hide");
 		$("#a_app_open_"+appId).hide();
 		$("#a_app_loading_"+appId).show();
