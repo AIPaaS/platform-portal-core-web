@@ -179,15 +179,13 @@ function removeApp(obj ){
 		if(r != "ok") return ;
 		RS.ajax({url:"/dep/app/removeApp", ps:{appId:appId}, cb:function(json) {
 			if(json ==1 ){
-				CC.showMsg({msg:"删除成功!"});
-				query(1)
+				alert("删除成功!");
 			}else if (json == 3){
-				CC.showMsg({msg:"当前应用下存在已定义的容器，不允许删除!"});
-				
+				alert("当前应用下存在已定义的容器，不允许删除!");
 			}else{
-				CC.showMsg({msg:"删除失败!"});
-				
+				alert("删除失败!");
 			}
+			query(ParamPageNum);
 		}});
 	}});
 	
