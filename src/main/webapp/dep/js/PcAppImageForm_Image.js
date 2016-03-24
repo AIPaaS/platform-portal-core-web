@@ -329,19 +329,24 @@ function mo(f) {
 function submitForm(cb){
 	
 	var bean = PU.getFormData("form_appImage");
-	
 	if(AppType == 2){
 		var d = $("#maskedDate").val();
 		d = d.replace(/-/g, "");
 		d = d.replace(/ /g, "");
 		d = d.replace(/:/g, "");
 		bean.timerStartTime = d;
+		if(CU.isEmpty(d)){CC.showMsg({msg:"开始时间不能为空"}); return;}
 		
 		var t1 = parseInt($("#timer1").val(),10);
 		var t2 = parseInt($("#timer2").val(),10);
 		var t3 = parseInt($("#timer3").val(),10);
-		var timerExp = t1*3600+t2*60+t3;
 		
+		if(CU.isEmpty(t1)){CC.showMsg({msg:"时间不能为空"}); return;}
+		if(CU.isEmpty(t2)){CC.showMsg({msg:"分钟不能为空"}); return;}
+		if(CU.isEmpty(t3)){CC.showMsg({msg:"毫秒不能为空"}); return;}
+		
+		var timerExp = t1*3600+t2*60+t3;
+		if(isNaN(timerExp) || CU.isEmpty(timerExp)){CC.showMsg({msg:"时间间隔不能为空"}); return;}
 		bean.timerExp = timerExp;
 		bean.timerType = 1;
 	}else{
