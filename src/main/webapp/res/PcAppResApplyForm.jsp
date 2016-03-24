@@ -28,7 +28,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="cpuCount" class="col-lg-2 control-label">CPU个数<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<input type="text" name="cpuCount" required maxLength=8 class="form-control" id="cpuCount" pattern="\d+(\.\d{0,1})?" placeholder="必填">
+					<input type="text" name="cpuCount" required maxLength=8 class="form-control" id="cpuCount" pattern="\d+(\.\d{0,1})?" placeholder="可保留一位小数">
 				</div>
 				<div class="col-lg-5">
 					<span></span>
@@ -37,7 +37,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="memSize" class="col-lg-2 control-label">内存大小<font color="red">*</font>:</label>
 				<div class="col-lg-5">
-					<input type="text" name="memSize" required maxLength=8 class="form-control" id="memSize"  pattern="[0-9]{1,8}" placeholder="必填">
+					<input type="text" name="memSize" required maxLength=8 class="form-control" id="memSize"  pattern="[0-9]{1,8}" placeholder="1-8位">
 				</div>
 				<div class="col-lg-5">
 					<span>单位:M</span>
@@ -46,7 +46,7 @@ String ContextPath = request.getContextPath();
 			<div class="form-group">
 				<label for="diskSize" class="col-lg-2 control-label">存储大小:</label>
 				<div class="col-lg-5">
-					<input type="text" name="diskSize" maxLength=8 class="form-control" id="diskSize" pattern="[0-9]{1,8}">
+					<input type="text" name="diskSize" maxLength=8 class="form-control" id="diskSize" pattern="[0-9]{1,8}" placeholder="1-8位">
 				</div>
 				<div class="col-lg-5">
 					<span>单位:G</span>
