@@ -21,9 +21,9 @@ function initData(cb) {
 	if(CU.isEmpty(ParamPageNum)) ParamPageNum = 1;
 
 	RS.ajax({url:"/res/res/getResRegionDropListMap",ps:{addEmpty:true, addAttr:true,opts:"dc|rc|nc"},cb:function(result) {
-		DROP["DV_DATA_CENTER_CODE"] = result["dc"];
-		DROP["DV_RES_CENTER_CODE"] = result["rc"];
-		DROP["DV_NET_ZONE_CODE"] = result["nc"];
+		DROP["DV_DATA_CENTER_CODE"] = result["alldc"];
+		DROP["DV_RES_CENTER_CODE"] = result["allrc"];
+		DROP["DV_NET_ZONE_CODE"] = result["allnc"];
 		if(CU.isFunction(cb))cb();
 	}});
 }
