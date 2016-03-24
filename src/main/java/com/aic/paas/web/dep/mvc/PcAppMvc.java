@@ -158,6 +158,15 @@ public class PcAppMvc {
 		ControllerUtils.returnJson(request, response, JSON.toObject(json));
 	}
 
+	@RequestMapping("/resumeApp")
+	public void resumeApp(HttpServletRequest request, HttpServletResponse response, Long appId) {
+		BinaryUtils.checkEmpty(appId, "appId");
+		HttpClient client = HttpClient.getInstance(taskRoot);
+		String json = client.request("/dep/appimage/resumeApp?appId=" + appId);
+		json = ControllerUtils.toRemoteJsonObject(json, String.class);
+		ControllerUtils.returnJson(request, response, JSON.toObject(json));
+	}
+	
 	@RequestMapping("/timer/deploy")
 	public void startTimerDeploy(HttpServletRequest request, HttpServletResponse response, Long appId, Long appVnoId) {
 		BinaryUtils.checkEmpty(appId, "appId");

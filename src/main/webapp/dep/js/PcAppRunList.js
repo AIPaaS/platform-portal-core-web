@@ -287,7 +287,7 @@ function query(pageNum){
 				
 				$("#a_app_status_"+data[i].app.id).bind("click",function(){
 					var obj = CurrDataMap["key_"+this.id.substring(this.id.lastIndexOf("_")+1)];
-					appStatus(obj);
+					window.location = ContextPath + "/dispatch/mc/104060104?appId="+obj.app.id;
 				});
 			}
 		}
@@ -397,7 +397,7 @@ function pauseAppTask(appinfo) {
 
 function openAppTask(appinfo){
 	var appId = appinfo.app.id ;
-	RS.ajax({url:"/dep/app/startApp", ps:{appId:appId}, cb:function(json) {
+	RS.ajax({url:"/dep/app/resumeApp", ps:{appId:appId}, cb:function(json) {
 		$("#a_app_open_"+appId).editable("hide");
 		$("#a_app_open_"+appId).hide();
 		$("#a_app_loading_"+appId).show();
@@ -467,6 +467,9 @@ function logTimer(appId,reqId){
 function appStatus(appinfo) {
 	
 	var appId = appinfo.app.id ;
+	
+	
+	
 	RS.ajax({url:"/dep/applog/log/status",
 		ps:{appId:appId},
 		cb:function(json) {
