@@ -132,6 +132,7 @@ function initListener() {
 	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
 	$("#cpuFlexUpperLimit").bind("keyup", refreshResidueRes);
 	$("#maxInstanceCount").bind("keyup", refreshResidueRes);
+	$("#image").bind("keyup",cleanImageId);
 	
 	$("#cpuFlexUpperLimit").bind("blur", checkBalance);
 	$("#cpuFlexLowerLimit").bind("blur", checkBalance);
@@ -143,6 +144,9 @@ function initListener() {
 function initFace() {
 }
 
+function cleanImageId(){
+	$("#imageId").val("0");
+}
 
 function checkBalance(){
 	var cpuFlexUpperLimit = $("#cpuFlexUpperLimit").val();
