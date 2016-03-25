@@ -430,6 +430,42 @@ public class CPcImage implements Condition {
 	private Long endModifyTime;
 
 
+	/**
+	 * condition-field: 构建TAG[DEP_TAG] operate-Like[like]
+	 */
+	private String depTag;
+
+
+	/**
+	 * condition-field: 构建TAG[DEP_TAG] operate-Equal[=]
+	 */
+	private String depTagEqual;
+
+
+	/**
+	 * condition-field: 构建TAG[DEP_TAG] operate-In[in]
+	 */
+	private String[] depTags;
+
+
+	/**
+	 * condition-field: 构建返回BUILD_ID[BACK_BUILD_ID] operate-Like[like]
+	 */
+	private String backBuildId;
+
+
+	/**
+	 * condition-field: 构建返回BUILD_ID[BACK_BUILD_ID] operate-Equal[=]
+	 */
+	private String backBuildIdEqual;
+
+
+	/**
+	 * condition-field: 构建返回BUILD_ID[BACK_BUILD_ID] operate-In[in]
+	 */
+	private String[] backBuildIds;
+
+
 
 
 	public Long getId() {
@@ -965,6 +1001,54 @@ public class CPcImage implements Condition {
 	}
 	public void setEndModifyTime(Long endModifyTime) {
 		this.endModifyTime = endModifyTime;
+	}
+
+
+	public String getDepTag() {
+		return this.depTag;
+	}
+	public void setDepTag(String depTag) {
+		this.depTag = depTag;
+	}
+
+
+	public String getDepTagEqual() {
+		return this.depTagEqual;
+	}
+	public void setDepTagEqual(String depTagEqual) {
+		this.depTagEqual = depTagEqual;
+	}
+
+
+	public String[] getDepTags() {
+		return this.depTags;
+	}
+	public void setDepTags(String[] depTags) {
+		this.depTags = depTags;
+	}
+
+
+	public String getBackBuildId() {
+		return this.backBuildId;
+	}
+	public void setBackBuildId(String backBuildId) {
+		this.backBuildId = backBuildId;
+	}
+
+
+	public String getBackBuildIdEqual() {
+		return this.backBuildIdEqual;
+	}
+	public void setBackBuildIdEqual(String backBuildIdEqual) {
+		this.backBuildIdEqual = backBuildIdEqual;
+	}
+
+
+	public String[] getBackBuildIds() {
+		return this.backBuildIds;
+	}
+	public void setBackBuildIds(String[] backBuildIds) {
+		this.backBuildIds = backBuildIds;
 	}
 
 

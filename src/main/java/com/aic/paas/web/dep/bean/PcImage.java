@@ -147,6 +147,18 @@ public class PcImage implements EntityBean {
 	private Long modifyTime;
 
 
+	/**
+	 * mapping-field: 构建TAG[DEP_TAG]
+	 */
+	private String depTag;
+
+
+	/**
+	 * mapping-field: 构建返回BUILD_ID[BACK_BUILD_ID]
+	 */
+	private String backBuildId;
+
+
 
 
 	public Long getId() {
@@ -314,6 +326,22 @@ public class PcImage implements EntityBean {
 	}
 	public void setModifyTime(Long modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+
+
+	public String getDepTag() {
+		return this.depTag;
+	}
+	public void setDepTag(String depTag) {
+		this.depTag = depTag;
+	}
+
+
+	public String getBackBuildId() {
+		return this.backBuildId;
+	}
+	public void setBackBuildId(String backBuildId) {
+		this.backBuildId = backBuildId;
 	}
 
 
