@@ -83,7 +83,7 @@ function initListener() {
 //	});
 	$("#a_add_param").bind("click",function(){addParamRow();});
 	$("#btn_prev").bind("click", function(){BTN_TYPE=-1;});
-	$("#btn_save").bind("click", function() {BTN_TYPE=0;});
+	$("#btn_save").bind("click", function(){BTN_TYPE=0;});
 	$("#btn_next").bind("click", function(){BTN_TYPE=1;});
 	$("#form_openSvc").submit(function(e){
 	    e.preventDefault();
@@ -213,6 +213,10 @@ function submitForm(cb){
 //		if(CU.isEmpty(port)){CC.showMsg({msg:"开放端口不能为空"}); return;}
 //		if(CU.isEmpty(svcUrl)){CC.showMsg({msg:"开放URL不能为空"}); return;}
 //	}
+	
+	if(CU.isEmpty($("#protocol").val())){CC.showMsg({msg:"开放协议不能为空"}); return;}
+	if(CU.isEmpty($("#port").val())){CC.showMsg({msg:"开放端口不能为空"}); return;}
+	if(CU.isEmpty($("#svcUrl").val())){CC.showMsg({msg:"开放URL不能为空"}); return;}
 	
 	bean.appId = AppId;
 	bean.appVnoId = AppVnoId;
