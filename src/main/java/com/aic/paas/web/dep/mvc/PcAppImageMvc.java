@@ -84,7 +84,7 @@ public class PcAppImageMvc {
 			List<PcImage> imageList = imagePeer.queryImageList(imgcdt, " IMAGE_FULL_NAME ");
 			if (CollectionUtils.isNotEmpty(imageList)) {
 				for (PcImage pcImage : imageList) {
-					pcImage.setImageFullName(pcImage.getImageName() + ":" + pcImage.getDepTag());
+					pcImage.setImageFullName(pcImage.getDirName() + "/" + pcImage.getImageName() + ":" + pcImage.getDepTag());
 				}
 			}
 
