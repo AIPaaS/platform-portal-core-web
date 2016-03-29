@@ -221,7 +221,7 @@ function addServiceTableRow(svc, params, callType) {
 	var pslength = CU.isEmpty(params) ? 0 : params.length;
 	
 	tr.append($("<td class=\"text-center\" valign=\"top\" title=\""+PU.getDropValue("V_PC_SERVICE_SVC_TYPE", svc.svcType, false)+"\">["+svc.svcCode+"] "+svc.svcName+"</td>"));
-	tr.append($("<td class=\"text-center\" valign=\"top\" style=\"width:100px;\"><select class=\"form-control\" style=\"width:100px;\"><option value='1'>调用</option><option value='2'>依赖</option></select></td>"));
+	tr.append($("<td class=\"text-center\" valign=\"top\" style=\"width:100px;\"><select class=\"form-control\" name=\"form-control\" style=\"width:100px;\"><option value='1'>调用</option><option value='2'>依赖</option></select></td>"));
 	
 	var td1 = $("<td class=\"text-center\"></td>");
 	var td2 = $("<td class=\"text-center\"></td>");
@@ -282,6 +282,8 @@ function queryInfo(cb){
 			for(var i=0; i<rs.dependSvcs.length; i++) {
 				var info = rs.dependSvcs[i];
 				addServiceTableRow(info.svc, info.params, info.appImgSvc.callType);
+				var selectors = document.getElementsByName("form-control");
+				selectors[i].value=info.appImgSvc.callType;
 			}
 		}
 		
